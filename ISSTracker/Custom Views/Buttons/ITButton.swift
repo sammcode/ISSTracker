@@ -26,9 +26,14 @@ class ITButton: UIButton {
 
     private func configure(){
         layer.cornerRadius = 10
-        titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+        titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
         setTitleColor(.white, for: .normal)
         translatesAutoresizingMaskIntoConstraints = false
+
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.5
+        layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
+        layer.shadowRadius = 5
     }
 
     func set(backgroundColor: UIColor, title: String){

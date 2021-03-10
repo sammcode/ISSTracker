@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainVC: UIViewController {
+class MainVC: ITDataLoadingVC {
 
     let imageData = [Images.iss8, Images.iss1, Images.iss2, Images.iss3, Images.iss4, Images.iss5, Images.iss6, Images.iss7, Images.iss8, Images.iss1]
 
@@ -20,15 +20,15 @@ class MainVC: UIViewController {
     var trackISSButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Track ISS")
     var trackISSDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
 
-    var predictPassesButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Track ISS")
+    var predictPassesButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Predict Pass Times")
     var predictPassesDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
 
-    var peopleInSpaceButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Track ISS")
-
+    var peopleInSpaceButton = ITButton(backgroundColor: Colors.midnightBlue, title: "People In Space")
+    var peopleInSpaceDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "ISSTracker🛰"
+        title = "ISS Tracker🛰"
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white
 
@@ -47,6 +47,9 @@ class MainVC: UIViewController {
     func configure(){
         configureCollectionView()
         configureImagesDescriptionLabel()
+        configureButtonDescriptionLabels()
+        configureButtonConstraints()
+        configureButtonsStackView()
     }
 
     func configureCollectionView() {
@@ -63,19 +66,87 @@ class MainVC: UIViewController {
             collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * 0.15),
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collectionView.widthAnchor.constraint(equalToConstant: view.bounds.width),
-            collectionView.heightAnchor.constraint(equalToConstant: view.bounds.height * 0.35)
+            collectionView.heightAnchor.constraint(equalToConstant: view.bounds.height * 0.38)
         ])
     }
 
     func configureImagesDescriptionLabel(){
         view.addSubview(imagesDescriptionLabel)
         NSLayoutConstraint.activate([
-            imagesDescriptionLabel.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 20),
+            imagesDescriptionLabel.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 10),
             imagesDescriptionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imagesDescriptionLabel.widthAnchor.constraint(equalToConstant: 200),
             imagesDescriptionLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
-        imagesDescriptionLabel.text = "Recent Photos From the ISS"
+        imagesDescriptionLabel.text = "Recent photos from the ISS"
+    }
+
+    func configureButtonDescriptionLabels(){
+        trackISSDescriptionLabel.text = "Track the current location of the ISS"
+        predictPassesDescriptionLabel.text = "Predict times when the ISS will pass over your location"
+        peopleInSpaceDescriptionLabel.text = "How many people are in space? Who are they?"
+    }
+
+    func configureButtonConstraints(){
+
+        addActionToTrackISSButton()
+        NSLayoutConstraint.activate([
+            trackISSButton.heightAnchor.constraint(equalToConstant: 60),
+            trackISSButton.widthAnchor.constraint(equalToConstant: 240)
+        ])
+
+        addActionToPredictPassesButton()
+        NSLayoutConstraint.activate([
+            predictPassesButton.heightAnchor.constraint(equalToConstant: 60),
+            predictPassesButton.widthAnchor.constraint(equalToConstant: 240)
+        ])
+
+        addActionToPeopleInSpaceButton()
+        NSLayoutConstraint.activate([
+            peopleInSpaceButton.heightAnchor.constraint(equalToConstant: 60),
+            peopleInSpaceButton.widthAnchor.constraint(equalToConstant: 240)
+        ])
+    }
+
+    func configureButtonDescriptionLabelConstraints(){
+        NSLayoutConstraint.activate([
+            trackISSDescriptionLabel.heightAnchor.constraint(equalToConstant: 40),
+            trackISSDescriptionLabel.widthAnchor.constraint(equalToConstant: 240)
+        ])
+
+        NSLayoutConstraint.activate([
+            predictPassesDescriptionLabel.heightAnchor.constraint(equalToConstant: 40),
+            predictPassesDescriptionLabel.widthAnchor.constraint(equalToConstant: 240)
+        ])
+        predictPassesDescriptionLabel.numberOfLines = 0
+
+        NSLayoutConstraint.activate([
+            peopleInSpaceDescriptionLabel.heightAnchor.constraint(equalToConstant: 40),
+            peopleInSpaceDescriptionLabel.widthAnchor.constraint(equalToConstant: 240)
+        ])
+        peopleInSpaceDescriptionLabel.numberOfLines = 0
+    }
+
+    func configureButtonsStackView(){
+        view.addSubview(buttonsStackView)
+        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.distribution = .equalCentering
+        buttonsStackView.alignment = .center
+        buttonsStackView.axis = .vertical
+
+        NSLayoutConstraint.activate([
+            buttonsStackView.topAnchor.constraint(equalTo: imagesDescriptionLabel.bottomAnchor, constant: 40),
+            buttonsStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+            buttonsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonsStackView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.8),
+        ])
+
+        if DeviceType.isiPhone8Standard {
+            buttonsStackView.addArrangedSubviews(trackISSButton, predictPassesButton, peopleInSpaceButton)
+        }else{
+            configureButtonDescriptionLabelConstraints()
+            buttonsStackView.addArrangedSubviews(trackISSButton, trackISSDescriptionLabel, predictPassesButton, predictPassesDescriptionLabel, peopleInSpaceButton, peopleInSpaceDescriptionLabel)
+        }
     }
 
     func createHorizontalFlowLayout() -> UICollectionViewFlowLayout{
@@ -87,7 +158,60 @@ class MainVC: UIViewController {
         return layout
     }
 
+    func addActionToTrackISSButton(){
+        trackISSButton.addTarget(self, action: #selector(issButtonTapped), for: .touchUpInside)
+    }
 
+    @objc func issButtonTapped(){
+        getISSLocation()
+    }
+
+    func addActionToPredictPassesButton(){
+        predictPassesButton.addTarget(self, action: #selector(predictPassesButtonTapped), for: .touchUpInside)
+    }
+
+    @objc func predictPassesButtonTapped(){
+        let predictPassesVC = PredictPassesVC()
+        let navController = UINavigationController(rootViewController: predictPassesVC)
+
+        self.present(navController, animated: true)
+    }
+
+    func addActionToPeopleInSpaceButton(){
+        peopleInSpaceButton.addTarget(self, action: #selector(issButtonTapped), for: .touchUpInside)
+    }
+
+    @objc func peopleInSpaceButtonTapped(){
+        let peopleInSpaceVC = PeopleInSpaceVC()
+        let navController = UINavigationController(rootViewController: peopleInSpaceVC)
+
+        self.present(navController, animated: true)
+    }
+
+    func getISSLocation() {
+        showLoadingView()
+
+        NetworkManager.shared.getISSLocation { [weak self] result in
+
+            guard let self = self else { return }
+
+            self.dismissLoadingView()
+
+            switch result {
+            case .success(let gpsLocation):
+                print(gpsLocation.timestamp)
+                print(gpsLocation.issPosition.longitude)
+                DispatchQueue.main.async {
+                    let trackISSVC = TrackISSVC()
+                    trackISSVC.gpsLocation = gpsLocation
+                    let navController = UINavigationController(rootViewController: trackISSVC)
+                    self.present(navController, animated: true)
+                }
+            case .failure(let error):
+                self.presentGFAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
+            }
+        }
+    }
 }
 
 extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -124,4 +248,6 @@ extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             break
         }
     }
+
+    #warning("fix so that on scroll it goes to next/previous item, doesn't continue scrolling")
 }

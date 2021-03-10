@@ -8,6 +8,7 @@
 import UIKit
 
 enum Images {
+    static let issIcon = UIImage(named: "ISSIcon")
     static let iss1 = UIImage(named: "ISS1")
     static let iss2 = UIImage(named: "ISS2")
     static let iss3 = UIImage(named: "ISS3")
@@ -24,4 +25,30 @@ enum Colors {
     static let calmBlue = UIColor(red: 0, green: 0.247, blue: 0.533, alpha: 1)
     static let darkGray = UIColor(red: 0.338, green: 0.3, blue: 0.3, alpha: 1)
     static let deepYellow = UIColor(red: 1, green: 0.835, blue: 0, alpha: 1)
+}
+
+enum ScreenSize {
+    static let width        = UIScreen.main.bounds.size.width
+    static let height       = UIScreen.main.bounds.size.height
+    static let maxLength    = max(ScreenSize.width, ScreenSize.height)
+    static let minLength    = min(ScreenSize.width, ScreenSize.height)
+}
+
+enum DeviceType {
+    static let idiom                    = UIDevice.current.userInterfaceIdiom
+    static let nativeScale              = UIScreen.main.nativeScale
+    static let scale                    = UIScreen.main.scale
+
+    static let isiPhoneSE               = idiom == .phone && ScreenSize.maxLength == 568.0
+    static let isiPhone8Standard        = idiom == .phone && ScreenSize.maxLength == 667.0 && nativeScale == scale
+    static let isiPhone8Zoomed          = idiom == .phone && ScreenSize.maxLength == 667.0 && nativeScale > scale
+    static let isiPhone8PlusStandard    = idiom == .phone && ScreenSize.maxLength == 736.0
+    static let isiPhone8PlusZoomed      = idiom == .phone && ScreenSize.maxLength == 736.0 && nativeScale < scale
+    static let isiPhoneX                = idiom == .phone && ScreenSize.maxLength == 812.0
+    static let isiPhoneXsMaxAndXr       = idiom == .phone && ScreenSize.maxLength == 896.0
+    static let isiPad                   = idiom == .phone && ScreenSize.maxLength == 1024.0
+
+    static func isiPhoneXAspectRation() -> Bool {
+        return isiPhoneX || isiPhoneXsMaxAndXr
+    }
 }

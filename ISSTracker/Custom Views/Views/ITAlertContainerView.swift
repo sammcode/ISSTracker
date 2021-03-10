@@ -1,13 +1,13 @@
 //
-//  ITImageView.swift
+//  ITAlertContainerView.swift
 //  ISSTracker
 //
-//  Created by Sam McGarry on 3/7/21.
+//  Created by Sam McGarry on 3/8/21.
 //
 
 import UIKit
 
-class ITImageView: UIImageView {
+class ITAlertContainerView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,10 +19,10 @@ class ITImageView: UIImageView {
     }
 
     private func configure(){
-        contentMode = .scaleAspectFill
-        clipsToBounds = true
+        backgroundColor = .white
+        layer.cornerRadius = 12
+        layer.borderWidth = 2
+        layer.borderColor = Colors.calmBlue.cgColor
         translatesAutoresizingMaskIntoConstraints = false
-        layer.cornerRadius = 10
     }
-
 }
