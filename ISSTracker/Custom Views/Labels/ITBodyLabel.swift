@@ -32,5 +32,4 @@ class ITBodyLabel: UILabel {
         lineBreakMode = .byTruncatingTail
         translatesAutoresizingMaskIntoConstraints = false
     }
-
 }

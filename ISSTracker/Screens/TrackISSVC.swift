@@ -19,10 +19,6 @@ class TrackISSVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        title = "Track ISS"
-        view.backgroundColor = .white
-
         configure()
         startUpdating()
     }
@@ -31,13 +27,22 @@ class TrackISSVC: UIViewController {
         timer.invalidate()
     }
 
+    
     func configure(){
+        configureViewController()
         configureCoordinatesView()
         configureMapView()
     }
 
+    func configureViewController(){
+        title = "Track ISS"
+        view.backgroundColor = .white
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
+        navigationItem.rightBarButtonItem = doneButton
+    }
+
     func configureCoordinatesView(){
-        coordinatesView = ITCoordinatesView(title: "ISS GPS Coordinates", latitude: gpsLocation.issPosition.latitude, longitude: gpsLocation.issPosition.longitude, timestamp: HelpfulFunctions.convertTimestampToString(timestamp: gpsLocation.timestamp))
+        coordinatesView = ITCoordinatesView(title: "ISS GPS Coordinates", latitude: gpsLocation.issPosition.latitude, longitude: gpsLocation.issPosition.longitude, timestamp: gpsLocation.timestamp.convertTimestampToString())
         view.addSubview(coordinatesView)
 
         NSLayoutConstraint.activate([
@@ -73,6 +78,10 @@ class TrackISSVC: UIViewController {
         timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
     }
 
+    @objc func dismissVC(){
+        dismiss(animated: true)
+    }
+
     @objc func updateMapView() {
         NetworkManager.shared.getISSLocation { [weak self] result in
 
@@ -92,9 +101,7 @@ class TrackISSVC: UIViewController {
 
                     self.coordinatesView.latitudeLabel.text = "Latitude: " + self.gpsLocation.issPosition.latitude
                     self.coordinatesView.longitudeLabel.text = "Longitude: " + self.gpsLocation.issPosition.longitude
-                    self.coordinatesView.timestampLabel.text = "Timestamp: " + HelpfulFunctions.convertTimestampToString(timestamp: self.gpsLocation.timestamp)
-
-                    print("HERE")
+                    self.coordinatesView.timestampLabel.text = "Timestamp: " + self.gpsLocation.timestamp.convertTimestampToString()
 
                     self.mapView.addAnnotation(self.anno)
                 }

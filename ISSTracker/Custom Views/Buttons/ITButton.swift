@@ -40,5 +40,4 @@ class ITButton: UIButton {
         self.backgroundColor = backgroundColor
         setTitle(title, for: .normal)
     }
-
 }

@@ -5,20 +5,16 @@
 //  Created by Sam McGarry on 3/8/21.
 //
 
-import Foundation
+import UIKit
 
+#warning("delete if no other functions are added")
 enum HelpfulFunctions {
-    static func convertTimestampToString(timestamp: Int) -> String {
-        let date = Date(timeIntervalSince1970: Double(timestamp))
-
-        let dateFormatter = DateFormatter()
-
-        #warning("fix timezone issue")
-        dateFormatter.timeZone = TimeZone(abbreviation: "EST") //Set timezone that you want
-        dateFormatter.locale = NSLocale.current
-        dateFormatter.dateFormat = "MM/dd HH:mm" //Specify your format that you want
-        let strDate = dateFormatter.string(from: date)
-
-        return strDate
+    static func createHorizontalFlowLayout() -> UICollectionViewFlowLayout{
+        let width = ScreenSize.width * 0.8
+        let height = ScreenSize.height * 0.3
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: width, height: height)
+        return layout
     }
 }

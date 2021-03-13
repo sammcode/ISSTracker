@@ -8,7 +8,7 @@
 import UIKit
 import CoreLocation
 
-class PredictPassesVC: ITDataLoadingVC {
+class PredictPassesVC: UIViewController {
 
     var coordinatesView: ITCoordinatesView!
     var passTime: PassTime!
@@ -20,19 +20,19 @@ class PredictPassesVC: ITDataLoadingVC {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        title = "Predict Pass Times"
-        view.backgroundColor = .white
-
         configure()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-
+    func configure(){
+        configureViewController()
+        configureTableView()
     }
 
-    func configure(){
-        configureTableView()
+    func configureViewController(){
+        title = "Predict Pass Times"
+        view.backgroundColor = .white
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
+        navigationItem.rightBarButtonItem = doneButton
     }
 
     func configureTableView(){
@@ -84,6 +84,10 @@ class PredictPassesVC: ITDataLoadingVC {
         ])
     }
 
+    @objc func dismissVC(){
+        dismiss(animated: true)
+    }
+
     func getPassTimes(){
         //showLoadingView()
 
@@ -112,10 +116,6 @@ class PredictPassesVC: ITDataLoadingVC {
 
 extension PredictPassesVC: UITableViewDelegate, UITableViewDataSource {
 
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return "Predicted Passes"
-//    }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
     }
@@ -132,15 +132,14 @@ extension PredictPassesVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width * 0.9, height: 195)) //set these values as necessary
+        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width * 0.9, height: 195))
         returnedView.backgroundColor = .white
 
         let date = Date()
 
         let dateFormatter = DateFormatter()
-        //dateFormatter.timeZone = TimeZone(abbreviation: "EST") //Set timezone that you want
         dateFormatter.locale = NSLocale.current
-        dateFormatter.dateFormat = "MM/dd HH:mm" //Specify your format that you want
+        dateFormatter.dateFormat = "MM/dd HH:mm"
         let strDate = dateFormatter.string(from: date)
 
         let coordinatesView = ITCoordinatesView(title: "Your GPS Coordinates", latitude: "\(Double(round(userLocation.latitude * 10000)/10000))", longitude: "\(Double(round(userLocation.longitude * 10000)/10000))", timestamp: strDate)

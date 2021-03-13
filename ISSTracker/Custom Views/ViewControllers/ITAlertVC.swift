@@ -36,23 +36,23 @@ class ITAlertVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
-        view.addSubviews(containerView, titleLabel, actionButton, messageLabel)
+        configure()
+    }
 
+    func configure(){
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
         configureContainerView()
         configureTitleLabel()
         configureActionButton()
         configureMessageLabel()
-
         if settingsButtonNeeded ?? false {
-            view.addSubview(settingsButton)
             configureSettingsButton()
         }
     }
 
     func configureContainerView(){
-
-        let height: CGFloat = (settingsButtonNeeded ?? false ? 260 : 220)
+        view.addSubview(containerView)
+        let height: CGFloat = (settingsButtonNeeded ?? false ? 260 : 200)
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -62,8 +62,8 @@ class ITAlertVC: UIViewController {
     }
 
     func configureTitleLabel() {
+        view.addSubview(titleLabel)
         titleLabel.text = alertTitle ?? "Something went wrong"
-
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
@@ -73,9 +73,9 @@ class ITAlertVC: UIViewController {
     }
 
     func configureMessageLabel(){
+        view.addSubview(messageLabel)
         messageLabel.text = message ?? "Unable to complete request"
         messageLabel.numberOfLines = 4
-
         NSLayoutConstraint.activate([
             messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
@@ -85,9 +85,9 @@ class ITAlertVC: UIViewController {
     }
 
     func configureActionButton(){
+        view.addSubview(actionButton)
         actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
-
         NSLayoutConstraint.activate([
             actionButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: -padding),
             actionButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
@@ -97,9 +97,9 @@ class ITAlertVC: UIViewController {
     }
 
     func configureSettingsButton(){
+        view.addSubview(settingsButton)
         settingsButton.setTitle("Settings", for: .normal)
         settingsButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-
         NSLayoutConstraint.activate([
             settingsButton.topAnchor.constraint(equalTo: actionButton.bottomAnchor, constant: padding),
             settingsButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),

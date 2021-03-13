@@ -33,15 +33,18 @@ class ITCoordinatesView: UIView {
     }
 
     private func configure(){
-        backgroundColor = Colors.midnightBlue
-        layer.cornerRadius = 12
-        layer.borderWidth = 2
-        translatesAutoresizingMaskIntoConstraints = false
-
+        configureView()
         configureTitleLabel()
         configureLatitudeLabel()
         configureLongitudeLabel()
         configureTimestampLabel()
+    }
+
+    private func configureView(){
+        backgroundColor = Colors.midnightBlue
+        layer.cornerRadius = 12
+        layer.borderWidth = 2
+        translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func configureTitleLabel(){
@@ -63,7 +66,6 @@ class ITCoordinatesView: UIView {
         latitudeLabel.textAlignment = .left
         latitudeLabel.textColor = .white
         addSubview(latitudeLabel)
-
         NSLayoutConstraint.activate([
             latitudeLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
             latitudeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
@@ -93,7 +95,6 @@ class ITCoordinatesView: UIView {
         timestampLabel.textAlignment = .left
         timestampLabel.textColor = .white
         addSubview(timestampLabel)
-
         NSLayoutConstraint.activate([
             timestampLabel.topAnchor.constraint(equalTo: longitudeLabel.bottomAnchor, constant: 5),
             timestampLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),

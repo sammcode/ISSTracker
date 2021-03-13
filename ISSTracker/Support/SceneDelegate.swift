@@ -11,7 +11,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -20,6 +19,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         window?.rootViewController = UINavigationController(rootViewController: MainVC())
         window?.makeKeyAndVisible()
+
+        configureNavigationBar()
+    }
+
+    func configureNavigationBar(){
+        UINavigationBar.appearance().tintColor = Colors.midnightBlue
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {}

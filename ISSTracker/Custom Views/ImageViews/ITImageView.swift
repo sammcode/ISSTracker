@@ -24,5 +24,4 @@ class ITImageView: UIImageView {
         translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 10
     }
-
 }

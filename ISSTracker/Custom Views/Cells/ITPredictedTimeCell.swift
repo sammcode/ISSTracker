@@ -20,7 +20,6 @@ class ITPredictedTimeCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        //set the values for top,left,bottom,right margins
         let margins = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
         contentView.frame = contentView.frame.inset(by: margins)
     }
@@ -29,20 +28,9 @@ class ITPredictedTimeCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func set(timestamp: Int){
-        let date = Date(timeIntervalSince1970: Double(timestamp))
-
-        let dateFormatter = DateFormatter()
-
-        dateFormatter.timeZone = TimeZone(abbreviation: "EST") //Set timezone that you want
-        dateFormatter.locale = NSLocale.current
-        dateFormatter.dateFormat = "MM/dd/yy" //Specify your format that you want
-        let strDay = dateFormatter.string(from: date)
-        dateFormatter.dateFormat = "HH:mm" //Specify your format that you want
-        let strTime = dateFormatter.string(from: date)
-
-        dayLabel.text = "Day: " + strDay
-        timeLabel.text = "Time: " + strTime
+    func set(risetime: Int, duration: Int){
+        dayLabel.text = "Risetime: " + risetime.convertTimestampToString()
+        timeLabel.text = "Duration: \(duration) seconds"
     }
 
     private func configure(){
