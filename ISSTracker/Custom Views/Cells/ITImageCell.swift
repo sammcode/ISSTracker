@@ -18,7 +18,9 @@ class ITImageCell: UICollectionViewCell {
     }
 
     func set(img: UIImage){
-        imageView.image = img
+        DispatchQueue.main.async {
+            self.imageView.image = img
+        }
     }
 
     required init?(coder: NSCoder) {

@@ -38,6 +38,7 @@
 		B21D0DD625F6EB0400A87141 /* ITCoordinatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0DD525F6EB0400A87141 /* ITCoordinatesView.swift */; };
 		B21D0DDB25F70DE900A87141 /* HelpfulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0DDA25F70DE900A87141 /* HelpfulFunctions.swift */; };
 		B21D0DE325F89F9500A87141 /* ITTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0DE225F89F9400A87141 /* ITTimestampView.swift */; };
+		B21D0DF025FA7DDF00A87141 /* ITPredictedTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0DEF25FA7DDF00A87141 /* ITPredictedTimeCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		B21D0DD525F6EB0400A87141 /* ITCoordinatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITCoordinatesView.swift; sourceTree = "<group>"; };
 		B21D0DDA25F70DE900A87141 /* HelpfulFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpfulFunctions.swift; sourceTree = "<group>"; };
 		B21D0DE225F89F9400A87141 /* ITTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITTimestampView.swift; sourceTree = "<group>"; };
+		B21D0DEF25FA7DDF00A87141 /* ITPredictedTimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITPredictedTimeCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,6 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				B21D0D4725F5764800A87141 /* ITImageCell.swift */,
+				B21D0DEF25FA7DDF00A87141 /* ITPredictedTimeCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B21D0DF025FA7DDF00A87141 /* ITPredictedTimeCell.swift in Sources */,
 				B21D0DDB25F70DE900A87141 /* HelpfulFunctions.swift in Sources */,
 				B21D0DD625F6EB0400A87141 /* ITCoordinatesView.swift in Sources */,
 				B21D0D6C25F593CC00A87141 /* Ext+UIView.swift in Sources */,
@@ -634,7 +638,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sammcgarry.ISSTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -653,7 +657,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sammcgarry.ISSTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

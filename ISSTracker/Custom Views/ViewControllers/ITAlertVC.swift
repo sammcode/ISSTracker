@@ -13,18 +13,21 @@ class ITAlertVC: UIViewController {
     let titleLabel = ITTitleLabel(textAlignment: .center, fontSize: 20)
     let messageLabel = ITBodyLabel(textAlignment: .center)
     let actionButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Ok")
+    let settingsButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Settings")
 
     var alertTitle: String?
     var message: String?
     var buttonTitle: String?
+    var settingsButtonNeeded: Bool?
 
     let padding: CGFloat = 20
 
-    init(title: String, message: String, buttonTitle: String){
+    init(title: String, message: String, buttonTitle: String, settingsButtonNeeded: Bool? = nil){
         super.init(nibName: nil, bundle: nil)
         self.alertTitle = title
         self.message = message
         self.buttonTitle = buttonTitle
+        self.settingsButtonNeeded = settingsButtonNeeded
     }
 
     required init?(coder: NSCoder) {
@@ -40,14 +43,21 @@ class ITAlertVC: UIViewController {
         configureTitleLabel()
         configureActionButton()
         configureMessageLabel()
+
+        if settingsButtonNeeded ?? false {
+            view.addSubview(settingsButton)
+            configureSettingsButton()
+        }
     }
 
     func configureContainerView(){
+
+        let height: CGFloat = (settingsButtonNeeded ?? false ? 260 : 220)
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             containerView.widthAnchor.constraint(equalToConstant: 280),
-            containerView.heightAnchor.constraint(equalToConstant: 220)
+            containerView.heightAnchor.constraint(equalToConstant: height)
         ])
     }
 
@@ -59,18 +69,6 @@ class ITAlertVC: UIViewController {
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
             titleLabel.heightAnchor.constraint(equalToConstant: 28)
-        ])
-    }
-
-    func configureActionButton(){
-        actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
-        actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
-
-        NSLayoutConstraint.activate([
-            actionButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -padding),
-            actionButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
-            actionButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
-            actionButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 
@@ -86,7 +84,35 @@ class ITAlertVC: UIViewController {
         ])
     }
 
+    func configureActionButton(){
+        actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
+        actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
+
+        NSLayoutConstraint.activate([
+            actionButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: -padding),
+            actionButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
+            actionButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
+            actionButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+    }
+
+    func configureSettingsButton(){
+        settingsButton.setTitle("Settings", for: .normal)
+        settingsButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+
+        NSLayoutConstraint.activate([
+            settingsButton.topAnchor.constraint(equalTo: actionButton.bottomAnchor, constant: padding),
+            settingsButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
+            settingsButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
+            settingsButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+    }
+
     @objc func dismissVC() {
         dismiss(animated: true)
+    }
+
+    @objc func openSettings(){
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
     }
 }

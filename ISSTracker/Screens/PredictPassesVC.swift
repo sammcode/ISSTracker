@@ -14,16 +14,9 @@ class PredictPassesVC: ITDataLoadingVC {
     var passTime: PassTime!
     var userLocation: CLLocationCoordinate2D!
 
-    var locationManager = CLLocationManager()
     var stackView = UIStackView()
-
     var tableView = UITableView()
-
-    let dateView1 = ITTimestampView()
-    let dateView2 = ITTimestampView()
-    let dateView3 = ITTimestampView()
-    let dateView4 = ITTimestampView()
-    let dateView5 = ITTimestampView()
+    var dataHasBeenSet = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,28 +27,42 @@ class PredictPassesVC: ITDataLoadingVC {
         configure()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+
+    }
+
     func configure(){
-        //configureCoordinatesView()
         configureTableView()
-        configureLocationManager()
     }
 
     func configureTableView(){
         view.addSubview(tableView)
+        tableView.register(ITPredictedTimeCell.self, forCellReuseIdentifier: ITPredictedTimeCell.reuseID)
+        tableView.rowHeight = 80
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 10, right: 0)
+        tableView.allowsSelection = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tableView.heightAnchor.constraint(equalToConstant: view.bounds.height * 0.9),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            tableView.heightAnchor.constraint(equalToConstant: view.bounds.height),
             tableView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9)
         ])
-
-        coordinatesView = ITCoordinatesView(title: "Your GPS Coordinates", latitude: "", longitude: "", timestamp: "")
-        tableView.setTableHeaderView(headerView: coordinatesView)
     }
 
     func configureCoordinatesView(){
-        coordinatesView = ITCoordinatesView(title: "Your GPS Coordinates", latitude: "", longitude: "", timestamp: "")
+
+        let date = Date()
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "EST") //Set timezone that you want
+        dateFormatter.locale = NSLocale.current
+        dateFormatter.dateFormat = "MM/dd/yy HH:mm" //Specify your format that you want
+        let strDate = dateFormatter.string(from: date)
+
+        coordinatesView = ITCoordinatesView(title: "Your GPS Coordinates", latitude: "\(Double(round(userLocation.latitude * 10000)/10000))", longitude: "\(Double(round(userLocation.longitude * 10000)/10000))", timestamp: strDate)
         view.addSubview(coordinatesView)
 
         NSLayoutConstraint.activate([
@@ -77,18 +84,6 @@ class PredictPassesVC: ITDataLoadingVC {
         ])
     }
 
-
-
-
-    func configureLocationManager(){
-        locationManager.requestWhenInUseAuthorization()
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-        }
-    }
-
     func getPassTimes(){
         //showLoadingView()
 
@@ -101,6 +96,12 @@ class PredictPassesVC: ITDataLoadingVC {
                 switch result {
                 case .success(let passes):
                     self.passTime = passes
+                    self.dataHasBeenSet = true
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        self.configure()
+                    }
+
                     print(self.passTime.response[0].risetime)
                 case .failure(let error):
                     self.presentGFAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
@@ -109,57 +110,73 @@ class PredictPassesVC: ITDataLoadingVC {
     }
 }
 
-extension PredictPassesVC: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let coords: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        userLocation = coords
+extension PredictPassesVC: UITableViewDelegate, UITableViewDataSource {
 
-        DispatchQueue.main.async {
-            self.coordinatesView.latitudeLabel.text = "Latitude: \(Double(round(coords.latitude * 10000)/10000))"
-            self.coordinatesView.longitudeLabel.text = "Longitude: \(Double(round(coords.longitude * 10000)/10000))"
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return "Predicted Passes"
+//    }
 
-            let date = Date()
-            let calendar = Calendar.current
-            let hour = calendar.component(.hour, from: date)
-            let minutes = calendar.component(.minute, from: date)
-
-            let dateFormatter = DateFormatter()
-            dateFormatter.timeZone = TimeZone(abbreviation: "EST") //Set timezone that you want
-            dateFormatter.locale = NSLocale.current
-            dateFormatter.dateFormat = "MM/dd/yy HH:mm" //Specify your format that you want
-            let strDate = dateFormatter.string(from: date)
-
-
-            self.coordinatesView.timestampLabel.text = "Timestamp: " + strDate
-
-            self.getPassTimes()
-
-
-//            for time in self.passTime.response {
-//                let date = Date(timeIntervalSince1970: Double(time.risetime))
-//
-//                let dateFormatter = DateFormatter()
-//
-//                dateFormatter.timeZone = TimeZone(abbreviation: "EST") //Set timezone that you want
-//                dateFormatter.locale = NSLocale.current
-//                dateFormatter.dateFormat = "MM/dd/yy" //Specify your format that you want
-//                let strDay = dateFormatter.string(from: date)
-//                dateFormatter.dateFormat = "HH:mm" //Specify your format that you want
-//                let strTime = dateFormatter.string(from: date)
-//                let v = ITTimestampView(day: strDay, time: strTime)
-//
-//                NSLayoutConstraint.activate([
-//                    v.heightAnchor.constraint(equalToConstant: 60),
-//                    v.widthAnchor.constraint(equalToConstant: self.view.bounds.width * 0.9)
-//                ])
-//
-//                self.stackView.addArrangedSubview(v)
-//            }
-
-
-        }
-        //getISSPasstimes(latitude: coords.latitude, longitude: coords.longitude)
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
     }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ITPredictedTimeCell.reuseID) as! ITPredictedTimeCell
+        let timestamp = passTime.response[indexPath.row].risetime
+        cell.set(timestamp: timestamp)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width * 0.9, height: 195)) //set these values as necessary
+        returnedView.backgroundColor = .white
+
+        let date = Date()
+
+        let dateFormatter = DateFormatter()
+        //dateFormatter.timeZone = TimeZone(abbreviation: "EST") //Set timezone that you want
+        dateFormatter.locale = NSLocale.current
+        dateFormatter.dateFormat = "MM/dd HH:mm" //Specify your format that you want
+        let strDate = dateFormatter.string(from: date)
+
+        let coordinatesView = ITCoordinatesView(title: "Your GPS Coordinates", latitude: "\(Double(round(userLocation.latitude * 10000)/10000))", longitude: "\(Double(round(userLocation.longitude * 10000)/10000))", timestamp: strDate)
+        returnedView.addSubview(coordinatesView)
+
+        NSLayoutConstraint.activate([
+            coordinatesView.centerXAnchor.constraint(equalTo: returnedView.centerXAnchor),
+            coordinatesView.topAnchor.constraint(equalTo: returnedView.topAnchor),
+            coordinatesView.widthAnchor.constraint(equalToConstant: returnedView.bounds.width),
+            coordinatesView.heightAnchor.constraint(equalToConstant: 150)
+        ])
+
+        let label = ITTitleLabel(textAlignment: .left, fontSize: 24)
+
+        returnedView.addSubview(label)
+
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: returnedView.centerXAnchor),
+            label.topAnchor.constraint(equalTo: coordinatesView.bottomAnchor, constant: 12),
+            label.heightAnchor.constraint(equalToConstant: 20),
+            label.widthAnchor.constraint(equalTo: returnedView.widthAnchor)
+        ])
+
+
+
+        label.textColor = Colors.darkGray
+        label.text = "Next 5 Predictions"
+
+
+        return returnedView
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 195
+    }
+
 }
 
 extension UITableView {

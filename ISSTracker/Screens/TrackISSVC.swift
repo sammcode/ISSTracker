@@ -42,7 +42,7 @@ class TrackISSVC: UIViewController {
 
         NSLayoutConstraint.activate([
             coordinatesView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            coordinatesView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
+            coordinatesView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70),
             coordinatesView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
             coordinatesView.heightAnchor.constraint(equalToConstant: 150)
         ])
