@@ -18,7 +18,7 @@ class MainVC: ITDataLoadingVC {
     var initalScroll = false
     var collectionView: UICollectionView!
     var locationManager = CLLocationManager()
-    var userLocation: CLLocationCoordinate2D!
+    var userLocation = CLLocationCoordinate2D(latitude: 45.570195, longitude: -122.825434)
 
     var imagesDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
 
@@ -58,6 +58,9 @@ class MainVC: ITDataLoadingVC {
         title = "ISS Tracker"
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white
+
+        let infoButton = UIBarButtonItem(image: UIImage(systemName: "questionmark.circle"), style: .plain, target: self, action: #selector(infoButtonTapped))
+        navigationItem.rightBarButtonItem = infoButton
     }
 
 
@@ -81,7 +84,6 @@ class MainVC: ITDataLoadingVC {
         collectionView.backgroundColor = .white
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(ITImageCell.self, forCellWithReuseIdentifier: ITImageCell.reuseID)
-
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * 0.15),
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -238,30 +240,30 @@ class MainVC: ITDataLoadingVC {
             }
         }
     }
+
+    @objc func infoButtonTapped(){
+        let infoVC = InfoVC()
+        let navController = UINavigationController(rootViewController: infoVC)
+        self.present(navController, animated: true)
+    }
 }
 
 extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
+    /// Returns the number of items in the collection view section, which is set to the number of images in the imageData array
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageData.count
     }
 
+    /// Returns the custom collection view cell to be used, and sets the image based on the indexPath
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ITImageCell.reuseID, for: indexPath) as! ITImageCell
-
         let image = imageData[indexPath.row]
-
-        DispatchQueue.main.async {
-            cell.set(img: image!)
-        }
-
-        cell.layer.shouldRasterize = true
-        cell.layer.rasterizationScale = UIScreen.main.scale
-
+        cell.set(img: image!)
         return cell
     }
 
+    /// Returns the edge insets for the collection view section
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     }
@@ -285,6 +287,8 @@ extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
 }
 
 extension MainVC: CLLocationManagerDelegate {
+
+    /// When the user's location is updated, the new coordinates are assigned to the userLocation variable
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let coords: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         userLocation = coords

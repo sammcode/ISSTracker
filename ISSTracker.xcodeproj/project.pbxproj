@@ -37,6 +37,9 @@
 		B21D0DDB25F70DE900A87141 /* HelpfulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0DDA25F70DE900A87141 /* HelpfulFunctions.swift */; };
 		B21D0DF025FA7DDF00A87141 /* ITPredictedTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0DEF25FA7DDF00A87141 /* ITPredictedTimeCell.swift */; };
 		B21D0E0B25FD200900A87141 /* Ext+Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E0A25FD200900A87141 /* Ext+Int.swift */; };
+		B21D0E1625FD550000A87141 /* Ext+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E1525FD54FF00A87141 /* Ext+Date.swift */; };
+		B21D0E1B25FD5E0F00A87141 /* Ext+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E1A25FD5E0E00A87141 /* Ext+UITableView.swift */; };
+		B21D0E2025FD648700A87141 /* InfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E1F25FD648700A87141 /* InfoVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +96,9 @@
 		B21D0DDA25F70DE900A87141 /* HelpfulFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpfulFunctions.swift; sourceTree = "<group>"; };
 		B21D0DEF25FA7DDF00A87141 /* ITPredictedTimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITPredictedTimeCell.swift; sourceTree = "<group>"; };
 		B21D0E0A25FD200900A87141 /* Ext+Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Int.swift"; sourceTree = "<group>"; };
+		B21D0E1525FD54FF00A87141 /* Ext+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Date.swift"; sourceTree = "<group>"; };
+		B21D0E1A25FD5E0E00A87141 /* Ext+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+UITableView.swift"; sourceTree = "<group>"; };
+		B21D0E1F25FD648700A87141 /* InfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +185,7 @@
 				B21D0D3625F562B100A87141 /* MainVC.swift */,
 				B21D0D7525F69B2D00A87141 /* TrackISSVC.swift */,
 				B21D0D7A25F69B4C00A87141 /* PredictPassesVC.swift */,
+				B21D0E1F25FD648700A87141 /* InfoVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -232,6 +239,8 @@
 				B21D0D7025F5DAE700A87141 /* Ext+UIStackView.swift */,
 				B21D0DBD25F6C53400A87141 /* Ext+UIViewController.swift */,
 				B21D0E0A25FD200900A87141 /* Ext+Int.swift */,
+				B21D0E1525FD54FF00A87141 /* Ext+Date.swift */,
+				B21D0E1A25FD5E0E00A87141 /* Ext+UITableView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -430,11 +439,14 @@
 				B21D0DF025FA7DDF00A87141 /* ITPredictedTimeCell.swift in Sources */,
 				B21D0DDB25F70DE900A87141 /* HelpfulFunctions.swift in Sources */,
 				B21D0DD625F6EB0400A87141 /* ITCoordinatesView.swift in Sources */,
+				B21D0E1625FD550000A87141 /* Ext+Date.swift in Sources */,
 				B21D0D6C25F593CC00A87141 /* Ext+UIView.swift in Sources */,
+				B21D0E1B25FD5E0F00A87141 /* Ext+UITableView.swift in Sources */,
 				B21D0D7125F5DAE800A87141 /* Ext+UIStackView.swift in Sources */,
 				B21D0D5A25F58C9C00A87141 /* ITDescriptionLabel.swift in Sources */,
 				B21D0DA325F6C2E300A87141 /* ITAlertVC.swift in Sources */,
 				B21D0D8625F6B05C00A87141 /* GPSLocation.swift in Sources */,
+				B21D0E2025FD648700A87141 /* InfoVC.swift in Sources */,
 				B21D0D9325F6B29700A87141 /* NetworkManager.swift in Sources */,
 				B21D0D3725F562B100A87141 /* MainVC.swift in Sources */,
 				B21D0DB025F6C35500A87141 /* ITBodyLabel.swift in Sources */,

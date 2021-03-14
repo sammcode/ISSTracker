@@ -10,11 +10,9 @@ import CoreLocation
 
 class PredictPassesVC: UIViewController {
 
-    var coordinatesView: ITCoordinatesView!
     var passTime: PassTime!
     var userLocation: CLLocationCoordinate2D!
 
-    var stackView = UIStackView()
     var tableView = UITableView()
     var dataHasBeenSet = false
 
@@ -23,11 +21,13 @@ class PredictPassesVC: UIViewController {
         configure()
     }
 
+    /// Calls all configuration methods for the ViewController
     func configure(){
         configureViewController()
         configureTableView()
     }
 
+    /// Configures properties for the ViewController
     func configureViewController(){
         title = "Predict Pass Times"
         view.backgroundColor = .white
@@ -35,6 +35,10 @@ class PredictPassesVC: UIViewController {
         navigationItem.rightBarButtonItem = doneButton
     }
 
+
+    /// Configures table view properties
+    /// Registers the ITPredictedTimeCell for use in the table view
+    /// Constraints it to the view
     func configureTableView(){
         view.addSubview(tableView)
         tableView.register(ITPredictedTimeCell.self, forCellReuseIdentifier: ITPredictedTimeCell.reuseID)
@@ -43,152 +47,87 @@ class PredictPassesVC: UIViewController {
         tableView.dataSource = self
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 10, right: 0)
         tableView.allowsSelection = false
+        tableView.removeExcessCells()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            tableView.heightAnchor.constraint(equalToConstant: view.bounds.height),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9)
         ])
+        createAndSetTableHeaderView()
     }
 
-    func configureCoordinatesView(){
+    /// Creates and sets a custom header view for the table view section
+    /// The created view is a container view that has an ITCoordinatesView displaying the user's current location,
+    /// an ITLabel that acts a table view section title, and an ITDescriptionLabel that acts a section subtitle
+    func createAndSetTableHeaderView(){
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width * 0.9, height: 210))
+        containerView.backgroundColor = .white
 
-        let date = Date()
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(abbreviation: "EST") //Set timezone that you want
-        dateFormatter.locale = NSLocale.current
-        dateFormatter.dateFormat = "MM/dd/yy HH:mm" //Specify your format that you want
-        let strDate = dateFormatter.string(from: date)
-
-        coordinatesView = ITCoordinatesView(title: "Your GPS Coordinates", latitude: "\(Double(round(userLocation.latitude * 10000)/10000))", longitude: "\(Double(round(userLocation.longitude * 10000)/10000))", timestamp: strDate)
-        view.addSubview(coordinatesView)
-
+        let coordinatesView = ITCoordinatesView(title: "Your GPS Coordinates", latitude: "\(Double(round(userLocation.latitude * 10000)/10000))", longitude: "\(Double(round(userLocation.longitude * 10000)/10000))", timestamp: Date().convertTimestampToString())
+        containerView.addSubview(coordinatesView)
         NSLayoutConstraint.activate([
-            coordinatesView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            coordinatesView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
-            coordinatesView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
+            coordinatesView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            coordinatesView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            coordinatesView.widthAnchor.constraint(equalToConstant: containerView.bounds.width),
             coordinatesView.heightAnchor.constraint(equalToConstant: 150)
         ])
-    }
 
-    func configureStackView(){
-        view.addSubview(stackView)
-
+        let titleLabel = ITTitleLabel(textAlignment: .left, fontSize: 24)
+        titleLabel.textColor = Colors.darkGray
+        titleLabel.text = "Next 5 Predictions"
+        containerView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.topAnchor.constraint(equalTo: coordinatesView.bottomAnchor, constant: 30),
-            stackView.heightAnchor.constraint(equalToConstant: 300),
-            stackView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9)
+            titleLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: coordinatesView.bottomAnchor, constant: 12),
+            titleLabel.heightAnchor.constraint(equalToConstant: 20),
+            titleLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor)
         ])
+
+        let bodyLabel = ITDescriptionLabel(textAlignment: .left, fontSize: 18)
+        bodyLabel.textColor = Colors.calmBlue
+        bodyLabel.text = "When the ISS will pass over your location"
+        containerView.addSubview(bodyLabel)
+        NSLayoutConstraint.activate([
+            bodyLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            bodyLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            bodyLabel.heightAnchor.constraint(equalToConstant: 20),
+            bodyLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor)
+        ])
+
+        tableView.tableHeaderView = containerView
     }
 
+    /// Dismisses the ViewController
     @objc func dismissVC(){
         dismiss(animated: true)
-    }
-
-    func getPassTimes(){
-        //showLoadingView()
-
-        NetworkManager.shared.getISSPasstimes(latitude: userLocation.latitude, longitude: userLocation.longitude) { [weak self] result in
-
-                guard let self = self else { return }
-
-                //self.dismissLoadingView()
-
-                switch result {
-                case .success(let passes):
-                    self.passTime = passes
-                    self.dataHasBeenSet = true
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                        self.configure()
-                    }
-
-                    print(self.passTime.response[0].risetime)
-                case .failure(let error):
-                    self.presentGFAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
-                }
-        }
     }
 }
 
 extension PredictPassesVC: UITableViewDelegate, UITableViewDataSource {
 
+    /// Returns the number of rows in the table view section, which is set to 5; the number of returned pass time predictions
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
     }
 
+    /// Returns the number of sections in the table view
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
+    /// Returns the  custom table view cell to be used, and assigns the risetime and duration data from the response array (within the passTime variable) based on the current index path
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ITPredictedTimeCell.reuseID) as! ITPredictedTimeCell
-        let timestamp = passTime.response[indexPath.row].risetime
-        cell.set(timestamp: timestamp)
+        let risetime = passTime.response[indexPath.row].risetime
+        let duration = passTime.response[indexPath.row].duration
+        cell.set(risetime: risetime, duration: duration)
         return cell
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width * 0.9, height: 195))
-        returnedView.backgroundColor = .white
-
-        let date = Date()
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = NSLocale.current
-        dateFormatter.dateFormat = "MM/dd HH:mm"
-        let strDate = dateFormatter.string(from: date)
-
-        let coordinatesView = ITCoordinatesView(title: "Your GPS Coordinates", latitude: "\(Double(round(userLocation.latitude * 10000)/10000))", longitude: "\(Double(round(userLocation.longitude * 10000)/10000))", timestamp: strDate)
-        returnedView.addSubview(coordinatesView)
-
-        NSLayoutConstraint.activate([
-            coordinatesView.centerXAnchor.constraint(equalTo: returnedView.centerXAnchor),
-            coordinatesView.topAnchor.constraint(equalTo: returnedView.topAnchor),
-            coordinatesView.widthAnchor.constraint(equalToConstant: returnedView.bounds.width),
-            coordinatesView.heightAnchor.constraint(equalToConstant: 150)
-        ])
-
-        let label = ITTitleLabel(textAlignment: .left, fontSize: 24)
-
-        returnedView.addSubview(label)
-
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: returnedView.centerXAnchor),
-            label.topAnchor.constraint(equalTo: coordinatesView.bottomAnchor, constant: 12),
-            label.heightAnchor.constraint(equalToConstant: 20),
-            label.widthAnchor.constraint(equalTo: returnedView.widthAnchor)
-        ])
-
-
-
-        label.textColor = Colors.darkGray
-        label.text = "Next 5 Predictions"
-
-
-        return returnedView
-    }
-
+    ///Returns the height for the table view header, which is set to a pre-determined constant
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 195
+        return 225
     }
-
-}
-
-extension UITableView {
-    //set the tableHeaderView so that the required height can be determined, update the header's frame and set it again
-    func setTableHeaderView(headerView: UIView) {
-            headerView.translatesAutoresizingMaskIntoConstraints = false
-
-            self.tableHeaderView = headerView
-
-            // ** Must setup AutoLayout after set tableHeaderView.
-            headerView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-            headerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-            headerView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-            headerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        }
 }
