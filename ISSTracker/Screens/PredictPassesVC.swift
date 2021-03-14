@@ -83,7 +83,7 @@ class PredictPassesVC: UIViewController {
             titleLabel.widthAnchor.constraint(equalToConstant: containerView.bounds.width)
         ])
 
-        let bodyLabel = ITDescriptionLabel(textAlignment: .left, fontSize: 18)
+        let bodyLabel = ITSecondaryTitleLabel(textAlignment: .left, fontSize: 18)
         bodyLabel.textColor = Colors.calmBlue
         bodyLabel.text = "When the ISS will pass over your location"
         containerView.addSubview(bodyLabel)
@@ -104,7 +104,7 @@ class PredictPassesVC: UIViewController {
 
     /// Presents a custom alert with information about the presented data
     @objc func presentInfoAlert(){
-        presentITAlertOnMainThread(title: "Info", message: "Risetime: the time when the ISS becomes visible on the horizon \nDuration: how long the ISS remains visible in the sky", buttonTitle: "Ok")
+        presentITAlertOnMainThread(title: "Info", message: "Risetime: the time when the ISS becomes visible on the horizon. \nDuration: how long the ISS remains visible in the sky.", buttonTitle: "Ok")
     }
 }
 

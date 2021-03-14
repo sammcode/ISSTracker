@@ -57,7 +57,7 @@ enum DF {
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = NSLocale.current
-        formatter.dateFormat = "MM/dd HH:mm"
+        formatter.dateFormat = "HH:mm MM/dd"
         return formatter
     }()
 }

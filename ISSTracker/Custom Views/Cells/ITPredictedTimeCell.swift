@@ -10,8 +10,8 @@ import UIKit
 class ITPredictedTimeCell: UITableViewCell {
 
     static let reuseID = "PredictedTimeCell"
-    let dayLabel = ITSecondaryTitleLabel(textAlignment: .left, fontSize: 24)
-    let timeLabel = ITSecondaryTitleLabel(textAlignment: .left, fontSize: 24)
+    let risetimeLabel = ITSecondaryTitleLabel(textAlignment: .left, fontSize: 24)
+    let durationLabel = ITSecondaryTitleLabel(textAlignment: .left, fontSize: 24)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,27 +29,29 @@ class ITPredictedTimeCell: UITableViewCell {
     }
 
     func set(risetime: Int, duration: Int){
-        dayLabel.text = "Risetime: " + risetime.convertTimestampToString()
-        timeLabel.text = "Duration: \(duration) seconds"
+        risetimeLabel.text = "Risetime: " + risetime.convertTimestampToString()
+        durationLabel.text = "Duration: \(duration) seconds"
     }
 
     private func configure(){
         contentView.backgroundColor = Colors.midnightBlue
         contentView.layer.cornerRadius = 10
-        contentView.addSubviews(dayLabel, timeLabel)
+        contentView.addSubviews(risetimeLabel, durationLabel)
+        risetimeLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        durationLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
 
         let padding: CGFloat = 10
 
         NSLayoutConstraint.activate([
-            dayLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
-            dayLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            dayLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            dayLabel.heightAnchor.constraint(equalToConstant: 30),
+            risetimeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
+            risetimeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            risetimeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            risetimeLabel.heightAnchor.constraint(equalToConstant: 30),
 
-            timeLabel.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: 4),
-            timeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            timeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            timeLabel.heightAnchor.constraint(equalToConstant: 30)
+            durationLabel.topAnchor.constraint(equalTo: risetimeLabel.bottomAnchor),
+            durationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            durationLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            durationLabel.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
 

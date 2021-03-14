@@ -52,7 +52,7 @@ class ITAlertVC: UIViewController {
 
     func configureContainerView(){
         view.addSubview(containerView)
-        let height: CGFloat = (settingsButtonNeeded ?? false ? 260 : 220)
+        let height: CGFloat = (settingsButtonNeeded ?? false ? 280 : 220)
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),

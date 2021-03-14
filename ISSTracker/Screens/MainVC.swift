@@ -217,7 +217,7 @@ class MainVC: ITDataLoadingVC {
     /// On failure, a custom alert is presented stating the error in question
     @objc func getPassTimes(){
         if locationManager.authorizationStatus == .denied {
-            self.presentITAlertOnMainThread(title: "Oh no!", message: "Looks like you have location services disabled for this app. Please enable them in settings :)", buttonTitle: "Ok", settingsButtonNeeded: true)
+            self.presentITAlertOnMainThread(title: "Location Access Disabled", message: ITError.locationServicesTurnedOff.rawValue, buttonTitle: "Ok", settingsButtonNeeded: true)
             return
         }else if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()

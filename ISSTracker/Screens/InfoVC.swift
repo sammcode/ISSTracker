@@ -53,7 +53,7 @@ class InfoVC: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            scrollView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
+            scrollView.widthAnchor.constraint(equalToConstant: view.bounds.width),
             scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             scrollView.bottomAnchor.constraint(equalTo: jumpInButton.topAnchor, constant: -20)
         ])
@@ -166,7 +166,7 @@ class InfoVC: UIViewController {
         addActionToJumpInButton()
         NSLayoutConstraint.activate([
             jumpInButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            jumpInButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
+            jumpInButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
             jumpInButton.widthAnchor.constraint(equalToConstant: 200),
             jumpInButton.heightAnchor.constraint(equalToConstant: 60)
         ])
