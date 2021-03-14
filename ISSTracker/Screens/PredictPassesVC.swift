@@ -33,6 +33,8 @@ class PredictPassesVC: UIViewController {
         view.backgroundColor = .white
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = doneButton
+        let infoButton = UIBarButtonItem(image: UIImage(systemName: "lightbulb"), style: .plain, target: self, action: #selector(presentInfoAlert))
+        navigationItem.leftBarButtonItem = infoButton
     }
 
 
@@ -45,16 +47,12 @@ class PredictPassesVC: UIViewController {
         tableView.rowHeight = 80
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 10, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        tableView.separatorStyle = .none
         tableView.allowsSelection = false
         tableView.removeExcessCells()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9)
-        ])
+        tableView.pinToEdges(of: view)
         createAndSetTableHeaderView()
     }
 
@@ -82,7 +80,7 @@ class PredictPassesVC: UIViewController {
             titleLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: coordinatesView.bottomAnchor, constant: 12),
             titleLabel.heightAnchor.constraint(equalToConstant: 20),
-            titleLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor)
+            titleLabel.widthAnchor.constraint(equalToConstant: containerView.bounds.width)
         ])
 
         let bodyLabel = ITDescriptionLabel(textAlignment: .left, fontSize: 18)
@@ -93,7 +91,7 @@ class PredictPassesVC: UIViewController {
             bodyLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             bodyLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             bodyLabel.heightAnchor.constraint(equalToConstant: 20),
-            bodyLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor)
+            bodyLabel.widthAnchor.constraint(equalToConstant: containerView.bounds.width)
         ])
 
         tableView.tableHeaderView = containerView
@@ -102,6 +100,11 @@ class PredictPassesVC: UIViewController {
     /// Dismisses the ViewController
     @objc func dismissVC(){
         dismiss(animated: true)
+    }
+
+    /// Presents a custom alert with information about the presented data
+    @objc func presentInfoAlert(){
+        presentITAlertOnMainThread(title: "Info", message: "Risetime: the time when the ISS becomes visible on the horizon \nDuration: how long the ISS remains visible in the sky", buttonTitle: "Ok")
     }
 }
 

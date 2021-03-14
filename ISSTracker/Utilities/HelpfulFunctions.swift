@@ -7,8 +7,10 @@
 
 import UIKit
 
-#warning("delete if no other functions are added")
 enum HelpfulFunctions {
+
+    /// Creates a horizontal UICollectionViewFlowLayout with a predetermined width and height, calculated based on the size of the device screen
+    /// - Returns: UICollectionViewFlowLayout
     static func createHorizontalFlowLayout() -> UICollectionViewFlowLayout{
         let width = ScreenSize.width * 0.8
         let height = ScreenSize.height * 0.3

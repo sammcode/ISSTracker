@@ -12,9 +12,9 @@ class InfoVC: UIViewController {
     var titleLabel: ITTitleLabel!
     var welcomeLabel: ITTitleLabel!
     var requirementsIntroLabel: ITDescriptionLabel!
-    var requirementsLabel: ITDescriptionLabel!
+    var requirementsLabel: ITBodyLabel!
     var solutionIntroLabel: ITDescriptionLabel!
-    var solutionLabel: ITDescriptionLabel!
+    var solutionLabel: ITBodyLabel!
     var jumpInButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Jump in!")
     var scrollView = UIScrollView()
     var contentView = UIView()
@@ -44,6 +44,8 @@ class InfoVC: UIViewController {
         navigationItem.rightBarButtonItem = doneButton
     }
 
+    /// Constrains scroll between the top of the view and the jump in button on the bottom
+    /// Constraints content view to the edges of the scroll view
     func configureScrollView(){
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -55,14 +57,15 @@ class InfoVC: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             scrollView.bottomAnchor.constraint(equalTo: jumpInButton.topAnchor, constant: -20)
         ])
-
         NSLayoutConstraint.activate([
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint(equalToConstant: 820)
+            contentView.heightAnchor.constraint(equalToConstant: 800)
         ])
 
     }
 
+    /// Configures title label properties, assigns the text to be presented
+    /// Constrains title label to the top of the contentView
     func configureTitleLabel(){
         titleLabel = ITTitleLabel(textAlignment: .left, fontSize: 36)
         contentView.addSubview(titleLabel)
@@ -77,6 +80,8 @@ class InfoVC: UIViewController {
         ])
     }
 
+    /// Configures welcome label properties, assigns text to be presented
+    /// Constrains welcome label to the bottom of the title label
     func configureWelcomeLabel(){
         welcomeLabel = ITTitleLabel(textAlignment: .left, fontSize: 24)
         contentView.addSubview(welcomeLabel)
@@ -91,12 +96,14 @@ class InfoVC: UIViewController {
         ])
     }
 
+    /// Configures requirements intro label properties, assigns text to be presented
+    /// Constrains requirements intro label to the bottom of the welcome label
     func configureRequirementsIntroLabel(){
         requirementsIntroLabel = ITDescriptionLabel(textAlignment: .left, fontSize: 18)
         contentView.addSubview(requirementsIntroLabel)
         requirementsIntroLabel.textColor = Colors.calmBlue
         requirementsIntroLabel.numberOfLines = 0
-        requirementsIntroLabel.text = "For this assessment I was tasked with creating creating an app that satisfied the following three requirements:"
+        requirementsIntroLabel.text = "For this assessment I was tasked with creating an app that satisfied the following three requirements:"
         NSLayoutConstraint.activate([
             requirementsIntroLabel.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 20),
             requirementsIntroLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
@@ -105,8 +112,10 @@ class InfoVC: UIViewController {
         ])
     }
 
+    /// Configures requirements label properties, assigns text to be presented
+    /// Constrains requirements label to the bottom of the requirements intro label
     func configureRequirementsLabel(){
-        requirementsLabel = ITDescriptionLabel(textAlignment: .left, fontSize: 18)
+        requirementsLabel = ITBodyLabel(textAlignment: .left)
         contentView.addSubview(requirementsLabel)
         requirementsLabel.textColor = Colors.darkGray
         requirementsLabel.numberOfLines = 0
@@ -119,12 +128,14 @@ class InfoVC: UIViewController {
         ])
     }
 
+    /// Configures solution intro label properties, assigns text to be presented
+    /// Constrains solution intro label to the bottom of the requirements label
     func configureSolutionIntroLabel(){
         solutionIntroLabel = ITDescriptionLabel(textAlignment: .left, fontSize: 18)
         contentView.addSubview(solutionIntroLabel)
         solutionIntroLabel.textColor = Colors.calmBlue
         solutionIntroLabel.numberOfLines = 0
-        solutionIntroLabel.text = "To meet these requirements in a fun way, I built an app that:"
+        solutionIntroLabel.text = "To meet these requirements in a fun way, I built an app themed around the International Space Station that:"
         NSLayoutConstraint.activate([
             solutionIntroLabel.topAnchor.constraint(equalTo: requirementsLabel.bottomAnchor, constant: 10),
             solutionIntroLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
@@ -133,12 +144,14 @@ class InfoVC: UIViewController {
         ])
     }
 
+    /// Configures solution label properties, assigns text to be presented
+    /// Constrains solution label to the bottom of the solution intro label
     func configureSolutionLabel(){
-        solutionLabel = ITDescriptionLabel(textAlignment: .left, fontSize: 18)
+        solutionLabel = ITBodyLabel(textAlignment: .left)
         contentView.addSubview(solutionLabel)
         solutionLabel.textColor = Colors.darkGray
         solutionLabel.numberOfLines = 0
-        solutionLabel.text = "1. Displays an endless loop of images \ntaken from the ISS. \n2. Connects to the open-notify.org API and gets data such as the current location of the ISS, how many people are on board, etc, and presents it in various UIViews and even a MapView. \n3. Uses CLLocationManager to get the devices current GPS Coordinates, then connects with the API to predict when the ISS will pass over that inputted location, and finally presents all of this data in a modally-presented ViewController."
+        solutionLabel.text = "1. Displays an endless loop of 8 images taken from the ISS. \n2. Connects to the open-notify.org API, gets data in the form of JSON objects such as the current location of the ISS, and then presents it in various UIViews and even a MKMapView. \n3. Uses CLLocationManager to get the devices current GPS Coordinates, then connects with the API to predict when the ISS will pass over the user's current location, and finally presents all of this data in a modally-presented UIViewController."
         NSLayoutConstraint.activate([
             solutionLabel.topAnchor.constraint(equalTo: solutionIntroLabel.bottomAnchor, constant: 10),
             solutionLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
@@ -147,6 +160,7 @@ class InfoVC: UIViewController {
         ])
     }
 
+    /// Adds action to jump in button, constrains it to the bottom of the view
     func configureJumpInButton(){
         view.addSubview(jumpInButton)
         addActionToJumpInButton()
@@ -158,10 +172,12 @@ class InfoVC: UIViewController {
         ])
     }
 
+    /// Adds the dismissVC method to the jump in button, for the touchUpInside action
     func addActionToJumpInButton(){
         jumpInButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
     }
 
+    /// Dismisses the ViewController
     @objc func dismissVC(){
         dismiss(animated: true)
     }

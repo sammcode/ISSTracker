@@ -10,8 +10,8 @@ import UIKit
 class ITPredictedTimeCell: UITableViewCell {
 
     static let reuseID = "PredictedTimeCell"
-    let dayLabel = ITTitleLabel(textAlignment: .left, fontSize: 24)
-    let timeLabel = ITTitleLabel(textAlignment: .left, fontSize: 24)
+    let dayLabel = ITSecondaryTitleLabel(textAlignment: .left, fontSize: 24)
+    let timeLabel = ITSecondaryTitleLabel(textAlignment: .left, fontSize: 24)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -20,7 +20,7 @@ class ITPredictedTimeCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        let margins = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        let margins = UIEdgeInsets(top: 8, left: 10, bottom: 0, right: 10)
         contentView.frame = contentView.frame.inset(by: margins)
     }
 
@@ -37,8 +37,6 @@ class ITPredictedTimeCell: UITableViewCell {
         contentView.backgroundColor = Colors.midnightBlue
         contentView.layer.cornerRadius = 10
         contentView.addSubviews(dayLabel, timeLabel)
-        dayLabel.textColor = .white
-        timeLabel.textColor = .white
 
         let padding: CGFloat = 10
 

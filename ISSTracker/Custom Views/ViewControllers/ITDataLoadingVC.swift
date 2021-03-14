@@ -9,7 +9,7 @@ import UIKit
 
 class ITDataLoadingVC: UIViewController {
 
-    var containerView: UIView!
+    var containerView: UIView = UIView()
 
     func showLoadingView() {
 
@@ -37,7 +37,6 @@ class ITDataLoadingVC: UIViewController {
     func dismissLoadingView(){
         DispatchQueue.main.async {
             self.containerView.removeFromSuperview()
-            self.containerView = nil
         }
     }
 

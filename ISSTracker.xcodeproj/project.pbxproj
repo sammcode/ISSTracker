@@ -11,8 +11,6 @@
 		B21D0CFA25F55F5A00A87141 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0CF925F55F5A00A87141 /* SceneDelegate.swift */; };
 		B21D0D0125F55F6100A87141 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B21D0D0025F55F6100A87141 /* Assets.xcassets */; };
 		B21D0D0425F55F6100A87141 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B21D0D0225F55F6100A87141 /* LaunchScreen.storyboard */; };
-		B21D0D0F25F55F6100A87141 /* ISSTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D0E25F55F6100A87141 /* ISSTrackerTests.swift */; };
-		B21D0D1A25F55F6100A87141 /* ISSTrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D1925F55F6100A87141 /* ISSTrackerUITests.swift */; };
 		B21D0D3725F562B100A87141 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D3625F562B100A87141 /* MainVC.swift */; };
 		B21D0D4225F5711400A87141 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D4125F5711400A87141 /* Constants.swift */; };
 		B21D0D4825F5764800A87141 /* ITImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D4725F5764800A87141 /* ITImageCell.swift */; };
@@ -40,6 +38,7 @@
 		B21D0E1625FD550000A87141 /* Ext+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E1525FD54FF00A87141 /* Ext+Date.swift */; };
 		B21D0E1B25FD5E0F00A87141 /* Ext+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E1A25FD5E0E00A87141 /* Ext+UITableView.swift */; };
 		B21D0E2025FD648700A87141 /* InfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E1F25FD648700A87141 /* InfoVC.swift */; };
+		B21D0E2525FE5F0F00A87141 /* ITSecondaryTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E2425FE5F0E00A87141 /* ITSecondaryTitleLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,11 +66,7 @@
 		B21D0D0325F55F6100A87141 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B21D0D0525F55F6100A87141 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B21D0D0A25F55F6100A87141 /* ISSTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ISSTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B21D0D0E25F55F6100A87141 /* ISSTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSTrackerTests.swift; sourceTree = "<group>"; };
-		B21D0D1025F55F6100A87141 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B21D0D1525F55F6100A87141 /* ISSTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ISSTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B21D0D1925F55F6100A87141 /* ISSTrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSTrackerUITests.swift; sourceTree = "<group>"; };
-		B21D0D1B25F55F6100A87141 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B21D0D3625F562B100A87141 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		B21D0D4125F5711400A87141 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B21D0D4725F5764800A87141 /* ITImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITImageCell.swift; sourceTree = "<group>"; };
@@ -99,6 +94,7 @@
 		B21D0E1525FD54FF00A87141 /* Ext+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Date.swift"; sourceTree = "<group>"; };
 		B21D0E1A25FD5E0E00A87141 /* Ext+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+UITableView.swift"; sourceTree = "<group>"; };
 		B21D0E1F25FD648700A87141 /* InfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoVC.swift; sourceTree = "<group>"; };
+		B21D0E2425FE5F0E00A87141 /* ITSecondaryTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITSecondaryTitleLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,8 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				B21D0CF625F55F5A00A87141 /* ISSTracker */,
-				B21D0D0D25F55F6100A87141 /* ISSTrackerTests */,
-				B21D0D1825F55F6100A87141 /* ISSTrackerUITests */,
 				B21D0CF525F55F5A00A87141 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -161,31 +155,13 @@
 			path = ISSTracker;
 			sourceTree = "<group>";
 		};
-		B21D0D0D25F55F6100A87141 /* ISSTrackerTests */ = {
-			isa = PBXGroup;
-			children = (
-				B21D0D0E25F55F6100A87141 /* ISSTrackerTests.swift */,
-				B21D0D1025F55F6100A87141 /* Info.plist */,
-			);
-			path = ISSTrackerTests;
-			sourceTree = "<group>";
-		};
-		B21D0D1825F55F6100A87141 /* ISSTrackerUITests */ = {
-			isa = PBXGroup;
-			children = (
-				B21D0D1925F55F6100A87141 /* ISSTrackerUITests.swift */,
-				B21D0D1B25F55F6100A87141 /* Info.plist */,
-			);
-			path = ISSTrackerUITests;
-			sourceTree = "<group>";
-		};
 		B21D0D3025F561A400A87141 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				B21D0D3625F562B100A87141 /* MainVC.swift */,
-				B21D0D7525F69B2D00A87141 /* TrackISSVC.swift */,
-				B21D0D7A25F69B4C00A87141 /* PredictPassesVC.swift */,
 				B21D0E1F25FD648700A87141 /* InfoVC.swift */,
+				B21D0D3625F562B100A87141 /* MainVC.swift */,
+				B21D0D7A25F69B4C00A87141 /* PredictPassesVC.swift */,
+				B21D0D7525F69B2D00A87141 /* TrackISSVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -193,12 +169,12 @@
 		B21D0D3125F561AC00A87141 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
-				B21D0DB425F6C47600A87141 /* Views */,
-				B21D0DA125F6C2CC00A87141 /* ViewControllers */,
 				B21D0D6225F5906600A87141 /* Buttons */,
-				B21D0D5825F58C6300A87141 /* Labels */,
-				B21D0D4F25F5767C00A87141 /* ImageViews */,
 				B21D0D4625F5761300A87141 /* Cells */,
+				B21D0D4F25F5767C00A87141 /* ImageViews */,
+				B21D0D5825F58C6300A87141 /* Labels */,
+				B21D0DA125F6C2CC00A87141 /* ViewControllers */,
+				B21D0DB425F6C47600A87141 /* Views */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -226,8 +202,8 @@
 			isa = PBXGroup;
 			children = (
 				B21D0D4125F5711400A87141 /* Constants.swift */,
-				B21D0D8D25F6B19B00A87141 /* ITError.swift */,
 				B21D0DDA25F70DE900A87141 /* HelpfulFunctions.swift */,
+				B21D0D8D25F6B19B00A87141 /* ITError.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -235,12 +211,12 @@
 		B21D0D3525F5622200A87141 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				B21D0D6B25F593CC00A87141 /* Ext+UIView.swift */,
-				B21D0D7025F5DAE700A87141 /* Ext+UIStackView.swift */,
-				B21D0DBD25F6C53400A87141 /* Ext+UIViewController.swift */,
-				B21D0E0A25FD200900A87141 /* Ext+Int.swift */,
 				B21D0E1525FD54FF00A87141 /* Ext+Date.swift */,
+				B21D0E0A25FD200900A87141 /* Ext+Int.swift */,
+				B21D0D7025F5DAE700A87141 /* Ext+UIStackView.swift */,
 				B21D0E1A25FD5E0E00A87141 /* Ext+UITableView.swift */,
+				B21D0D6B25F593CC00A87141 /* Ext+UIView.swift */,
+				B21D0DBD25F6C53400A87141 /* Ext+UIViewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -265,9 +241,10 @@
 		B21D0D5825F58C6300A87141 /* Labels */ = {
 			isa = PBXGroup;
 			children = (
-				B21D0D5925F58C9B00A87141 /* ITDescriptionLabel.swift */,
-				B21D0DAA25F6C34700A87141 /* ITTitleLabel.swift */,
 				B21D0DAF25F6C35500A87141 /* ITBodyLabel.swift */,
+				B21D0D5925F58C9B00A87141 /* ITDescriptionLabel.swift */,
+				B21D0E2425FE5F0E00A87141 /* ITSecondaryTitleLabel.swift */,
+				B21D0DAA25F6C34700A87141 /* ITTitleLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -453,6 +430,7 @@
 				B21D0D6425F5908600A87141 /* ITButton.swift in Sources */,
 				B21D0DAB25F6C34700A87141 /* ITTitleLabel.swift in Sources */,
 				B21D0CF825F55F5A00A87141 /* AppDelegate.swift in Sources */,
+				B21D0E2525FE5F0F00A87141 /* ITSecondaryTitleLabel.swift in Sources */,
 				B21D0DBE25F6C53400A87141 /* Ext+UIViewController.swift in Sources */,
 				B21D0DB625F6C49900A87141 /* ITAlertContainerView.swift in Sources */,
 				B21D0DC325F6C6C000A87141 /* ITDataLoadingVC.swift in Sources */,
@@ -472,7 +450,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B21D0D0F25F55F6100A87141 /* ISSTrackerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,7 +457,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B21D0D1A25F55F6100A87141 /* ISSTrackerUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

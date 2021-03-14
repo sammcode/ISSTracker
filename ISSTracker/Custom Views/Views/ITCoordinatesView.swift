@@ -10,10 +10,10 @@ import UIKit
 class ITCoordinatesView: UIView {
 
     var container: UIView!
-    var titleLabel: ITTitleLabel!
-    var latitudeLabel: ITTitleLabel!
-    var longitudeLabel: ITTitleLabel!
-    var timestampLabel: ITTitleLabel!
+    var titleLabel = ITTitleLabel(textAlignment: .left, fontSize: 24)
+    var latitudeLabel = ITSecondaryTitleLabel(textAlignment: .left, fontSize: 24)
+    var longitudeLabel = ITSecondaryTitleLabel(textAlignment: .left, fontSize: 24)
+    var timestampLabel = ITSecondaryTitleLabel(textAlignment: .left, fontSize: 24)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,7 +48,6 @@ class ITCoordinatesView: UIView {
     }
 
     private func configureTitleLabel(){
-        titleLabel = ITTitleLabel(textAlignment: .left, fontSize: 24)
         titleLabel.textColor = Colors.deepYellow
         addSubview(titleLabel)
 
@@ -61,10 +60,6 @@ class ITCoordinatesView: UIView {
     }
 
     private func configureLatitudeLabel(){
-        latitudeLabel = ITTitleLabel()
-        latitudeLabel.font = UIFont.systemFont(ofSize: 24, weight: .medium)
-        latitudeLabel.textAlignment = .left
-        latitudeLabel.textColor = .white
         addSubview(latitudeLabel)
         NSLayoutConstraint.activate([
             latitudeLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
@@ -75,12 +70,7 @@ class ITCoordinatesView: UIView {
     }
 
     private func configureLongitudeLabel(){
-        longitudeLabel = ITTitleLabel()
-        longitudeLabel.font = UIFont.systemFont(ofSize: 24, weight: .medium)
-        longitudeLabel.textAlignment = .left
-        longitudeLabel.textColor = .white
         addSubview(longitudeLabel)
-
         NSLayoutConstraint.activate([
             longitudeLabel.topAnchor.constraint(equalTo: latitudeLabel.bottomAnchor, constant: 5),
             longitudeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
@@ -90,10 +80,6 @@ class ITCoordinatesView: UIView {
     }
 
     private func configureTimestampLabel(){
-        timestampLabel = ITTitleLabel()
-        timestampLabel.font = UIFont.systemFont(ofSize: 24, weight: .medium)
-        timestampLabel.textAlignment = .left
-        timestampLabel.textColor = .white
         addSubview(timestampLabel)
         NSLayoutConstraint.activate([
             timestampLabel.topAnchor.constraint(equalTo: longitudeLabel.bottomAnchor, constant: 5),

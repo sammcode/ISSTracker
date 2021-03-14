@@ -52,3 +52,12 @@ enum DeviceType {
         return isiPhoneX || isiPhoneXsMaxAndXr
     }
 }
+
+enum DF {
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = NSLocale.current
+        formatter.dateFormat = "MM/dd HH:mm"
+        return formatter
+    }()
+}

@@ -43,8 +43,8 @@ class ITAlertVC: UIViewController {
         view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
         configureContainerView()
         configureTitleLabel()
-        configureActionButton()
         configureMessageLabel()
+        configureActionButton()
         if settingsButtonNeeded ?? false {
             configureSettingsButton()
         }
@@ -52,7 +52,7 @@ class ITAlertVC: UIViewController {
 
     func configureContainerView(){
         view.addSubview(containerView)
-        let height: CGFloat = (settingsButtonNeeded ?? false ? 260 : 200)
+        let height: CGFloat = (settingsButtonNeeded ?? false ? 260 : 220)
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -80,7 +80,7 @@ class ITAlertVC: UIViewController {
             messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
             messageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
-            messageLabel.bottomAnchor.constraint(equalTo: actionButton.topAnchor, constant: -12)
+            messageLabel.heightAnchor.constraint(equalToConstant: 80)
         ])
     }
 
@@ -89,7 +89,7 @@ class ITAlertVC: UIViewController {
         actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         NSLayoutConstraint.activate([
-            actionButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: -padding),
+            actionButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: padding),
             actionButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
             actionButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
             actionButton.heightAnchor.constraint(equalToConstant: 44)

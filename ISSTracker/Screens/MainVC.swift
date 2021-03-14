@@ -16,6 +16,7 @@ class MainVC: ITDataLoadingVC {
     let imageData = [Images.iss8, Images.iss1, Images.iss2, Images.iss3, Images.iss4, Images.iss5, Images.iss6, Images.iss7, Images.iss8, Images.iss1]
 
     var initalScroll = false
+    let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
     var collectionView: UICollectionView!
     var locationManager = CLLocationManager()
     var userLocation = CLLocationCoordinate2D(latitude: 45.570195, longitude: -122.825434)
@@ -33,6 +34,7 @@ class MainVC: ITDataLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        checkIfFirstLaunch()
     }
 
     override func viewDidLayoutSubviews() {
@@ -40,6 +42,15 @@ class MainVC: ITDataLoadingVC {
         if !self.initalScroll {
             self.initalScroll = true
             self.collectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: .centeredHorizontally, animated: false)
+        }
+    }
+
+    /// Checks if the app has been launched before
+    /// If not, the InfoVC ViewController is presented to the user
+    func checkIfFirstLaunch(){
+        if !launchedBefore {
+            presentInfoVC()
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
     }
 
@@ -58,11 +69,9 @@ class MainVC: ITDataLoadingVC {
         title = "ISS Tracker"
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white
-
-        let infoButton = UIBarButtonItem(image: UIImage(systemName: "questionmark.circle"), style: .plain, target: self, action: #selector(infoButtonTapped))
+        let infoButton = UIBarButtonItem(image: UIImage(systemName: "questionmark.circle"), style: .plain, target: self, action: #selector(presentInfoVC))
         navigationItem.rightBarButtonItem = infoButton
     }
-
 
     /// Requests authorization for accessing users location; if granted access, sets properties for location manager, starts updating the users current location
     func configureLocationManager(){
@@ -169,7 +178,7 @@ class MainVC: ITDataLoadingVC {
         trackISSButton.addTarget(self, action: #selector(getISSLocation), for: .touchUpInside)
     }
 
-    /// Adds the getPassTimes method the the predictPassesButton, for the touchUpInside action
+    /// Adds the getPassTimes method to the predictPassesButton, for the touchUpInside action
     func addActionToPredictPassesButton(){
         predictPassesButton.addTarget(self, action: #selector(getPassTimes), for: .touchUpInside)
     }
@@ -178,13 +187,13 @@ class MainVC: ITDataLoadingVC {
     /// On success, an instance of the TrackISSVC ViewController is presented with the retrieved data
     /// On failure, a custom alert is presented stating the error in question
     @objc func getISSLocation() {
-        //showLoadingView()
+        showLoadingView()
 
         NetworkManager.shared.getISSLocation { [weak self] result in
 
             guard let self = self else { return }
 
-            //self.dismissLoadingView()
+            self.dismissLoadingView()
 
             switch result {
             case .success(let gpsLocation):
@@ -215,33 +224,32 @@ class MainVC: ITDataLoadingVC {
         }
 
         if locationManager.authorizationStatus == .authorizedWhenInUse {
-            //showLoadingView()
+            showLoadingView()
 
             NetworkManager.shared.getISSPasstimes(latitude: userLocation.latitude, longitude: userLocation.longitude) { [weak self] result in
 
-                    guard let self = self else { return }
+                guard let self = self else { return }
 
-                    //self.dismissLoadingView()
+                self.dismissLoadingView()
 
-                    switch result {
-                    case .success(let passes):
-                        DispatchQueue.main.async {
-                            let predictPassesVC = PredictPassesVC()
-                            predictPassesVC.userLocation = self.userLocation
-                            predictPassesVC.passTime = passes
-                            let navController = UINavigationController(rootViewController: predictPassesVC)
+                switch result {
+                case .success(let passes):
+                    DispatchQueue.main.async {
+                        let predictPassesVC = PredictPassesVC()
+                        predictPassesVC.userLocation = self.userLocation
+                        predictPassesVC.passTime = passes
+                        let navController = UINavigationController(rootViewController: predictPassesVC)
 
-                            self.present(navController, animated: true)
-                        }
-                    case .failure(let error):
-                        self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
+                        self.present(navController, animated: true)
                     }
-                #warning("Add coordinates view to custom alert")
+                case .failure(let error):
+                    self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
+                }
             }
         }
     }
 
-    @objc func infoButtonTapped(){
+    @objc func presentInfoVC(){
         let infoVC = InfoVC()
         let navController = UINavigationController(rootViewController: infoVC)
         self.present(navController, animated: true)

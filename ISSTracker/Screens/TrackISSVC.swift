@@ -68,7 +68,7 @@ class TrackISSVC: UIViewController {
         view.addSubview(descriptionLabel)
         NSLayoutConstraint.activate([
             descriptionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            descriptionLabel.topAnchor.constraint(equalTo: coordinatesView.bottomAnchor, constant: 10),
+            descriptionLabel.topAnchor.constraint(equalTo: coordinatesView.bottomAnchor, constant: 8),
             descriptionLabel.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
             descriptionLabel.heightAnchor.constraint(equalToConstant: 30)
         ])
@@ -92,7 +92,7 @@ class TrackISSVC: UIViewController {
         mapView.addAnnotation(anno)
 
         NSLayoutConstraint.activate([
-            mapView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 10),
+            mapView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
             mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
