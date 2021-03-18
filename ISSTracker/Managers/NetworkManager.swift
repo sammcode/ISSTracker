@@ -35,9 +35,7 @@ class NetworkManager {
             }
 
             guard let data = data else {
-                DispatchQueue.main.async {
-                    completed(.failure(.invalidData))
-                }
+                completed(.failure(.invalidData))
                 return
             }
 

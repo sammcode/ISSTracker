@@ -39,5 +39,4 @@ class ITDataLoadingVC: UIViewController {
             self.containerView.removeFromSuperview()
         }
     }
-
 }
