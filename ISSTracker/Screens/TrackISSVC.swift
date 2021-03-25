@@ -27,6 +27,8 @@ class TrackISSVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         timer.invalidate()
         Map.mapView.removeFromSuperview()
+        Map.mapView.delegate = nil
+        Map.mapView.removeAnnotation(anno)
         //mapView = nil
     }
 
