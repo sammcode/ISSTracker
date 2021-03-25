@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MapKit
 
 enum Images {
     static let issIcon = UIImage(named: "ISSIcon")
@@ -60,4 +61,8 @@ enum DF {
         formatter.dateFormat = "HH:mm MM/dd"
         return formatter
     }()
+}
+
+enum Map {
+    static let mapView = MKMapView()
 }

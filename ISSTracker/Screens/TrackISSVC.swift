@@ -13,7 +13,7 @@ class TrackISSVC: UIViewController {
     var gpsLocation: GPSLocation!
     var coordinatesView: ITCoordinatesView!
     var descriptionLabel: ITDescriptionLabel!
-    var mapView = MKMapView()
+    //var mapView: MKMapView? = MKMapView()
 
     var anno: MKPointAnnotation!
     var timer: Timer!
@@ -26,6 +26,8 @@ class TrackISSVC: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         timer.invalidate()
+        Map.mapView.removeFromSuperview()
+        //mapView = nil
     }
 
     /// Calls all configuration methods for the ViewController
@@ -79,23 +81,23 @@ class TrackISSVC: UIViewController {
     /// Sets the region to be centered around the added annotation
     /// Constraints it to the bottom of the description label
     func configureMapView(){
-        view.addSubview(mapView)
-        mapView.translatesAutoresizingMaskIntoConstraints = false
-        mapView.delegate = self
+        view.addSubview(Map.mapView)
+        Map.mapView.translatesAutoresizingMaskIntoConstraints = false
+        Map.mapView.delegate = self
 
         let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(Float(gpsLocation.issPosition.latitude)!), longitude: CLLocationDegrees(Float(gpsLocation.issPosition.longitude)!))
         let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
-        mapView.setRegion(region, animated: true)
+        Map.mapView.setRegion(region, animated: true)
 
         anno = MKPointAnnotation()
         anno.coordinate = coordinates
-        mapView.addAnnotation(anno)
+        Map.mapView.addAnnotation(anno)
 
         NSLayoutConstraint.activate([
-            mapView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
-            mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            Map.mapView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
+            Map.mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            Map.mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            Map.mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 
@@ -122,7 +124,7 @@ class TrackISSVC: UIViewController {
                 DispatchQueue.main.async {
                     self.gpsLocation = gps
 
-                    self.mapView.removeAnnotation(self.anno)
+                    Map.mapView.removeAnnotation(self.anno)
 
                     let coordinates = CLLocationCoordinate2D(latitude:  CLLocationDegrees(Float(self.gpsLocation.issPosition.latitude)!), longitude: CLLocationDegrees(Float(self.gpsLocation.issPosition.longitude)!))
                     self.anno = MKPointAnnotation()
@@ -132,7 +134,7 @@ class TrackISSVC: UIViewController {
                     self.coordinatesView.longitudeLabel.text = "Longitude: " + self.gpsLocation.issPosition.longitude
                     self.coordinatesView.timestampLabel.text = "Timestamp: " + self.gpsLocation.timestamp.convertTimestampToString()
 
-                    self.mapView.addAnnotation(self.anno)
+                    Map.mapView.addAnnotation(self.anno)
                 }
             case .failure(let error):
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")

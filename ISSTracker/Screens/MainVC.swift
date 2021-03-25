@@ -22,12 +22,9 @@ class MainVC: ITDataLoadingVC {
     var userLocation = CLLocationCoordinate2D(latitude: 45.570195, longitude: -122.825434)
 
     var imagesDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
-
     var buttonsStackView = UIStackView()
-
     var trackISSButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Track ISS")
     var trackISSDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
-
     var predictPassesButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Predict Pass Times")
     var predictPassesDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
 
