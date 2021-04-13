@@ -35,6 +35,8 @@ class PredictPassesVC: UIViewController {
         navigationItem.rightBarButtonItem = doneButton
         let infoButton = UIBarButtonItem(image: UIImage(systemName: "lightbulb"), style: .plain, target: self, action: #selector(presentInfoAlert))
         navigationItem.leftBarButtonItem = infoButton
+
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
     }
 
 

@@ -11,6 +11,8 @@ class ITImageCell: UICollectionViewCell {
 
     static let reuseID = "ImageCell"
     let imageView = ITImageView(frame: .zero)
+    let favoriteButton = UIButton()
+    var isFavorited = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,5 +41,33 @@ class ITImageCell: UICollectionViewCell {
             imageView.widthAnchor.constraint(equalTo: self.widthAnchor),
             imageView.heightAnchor.constraint(equalTo: self.heightAnchor)
         ])
+
+        //setUpButton()
     }
+
+    private func setUpButton(){
+        addSubview(favoriteButton)
+        favoriteButton.translatesAutoresizingMaskIntoConstraints = false
+        favoriteButton.backgroundColor = .white
+        favoriteButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+
+        NSLayoutConstraint.activate([
+            favoriteButton.widthAnchor.constraint(equalToConstant: 60),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 60),
+            favoriteButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            favoriteButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20)
+        ])
+    }
+
+    @objc func buttonTapped(){
+        isFavorited.toggle()
+        favoriteButton.backgroundColor = isFavorited ? .yellow : .white
+
+        if isFavorited {
+            Constants.favoritesCount += 1
+        } else {
+            Constants.favoritesCount -= 1
+        }
+    }
+
 }

@@ -8,7 +8,6 @@
 import UIKit
 
 enum HelpfulFunctions {
-
     /// Creates a horizontal UICollectionViewFlowLayout with a predetermined width and height, calculated based on the size of the device screen
     /// - Returns: UICollectionViewFlowLayout
     static func createHorizontalFlowLayout() -> UICollectionViewFlowLayout{

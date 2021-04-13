@@ -68,6 +68,15 @@ class MainVC: ITDataLoadingVC {
         view.backgroundColor = .white
         let infoButton = UIBarButtonItem(image: UIImage(systemName: "questionmark.circle"), style: .plain, target: self, action: #selector(presentInfoVC))
         navigationItem.rightBarButtonItem = infoButton
+
+        //TEMP
+        let button = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(getPeopleInSpace))
+        navigationItem.leftBarButtonItem = button
+    }
+
+    @objc func peopleInSpaceButtonTapped(){
+        print("button tapped")
+        getPeopleInSpace()
     }
 
     /// Requests authorization for accessing users location; if granted access, sets properties for location manager, starts updating the users current location
@@ -133,13 +142,13 @@ class MainVC: ITDataLoadingVC {
         addActionToTrackISSButton()
         NSLayoutConstraint.activate([
             trackISSButton.heightAnchor.constraint(equalToConstant: 60),
-            trackISSButton.widthAnchor.constraint(equalToConstant: 240)
+            trackISSButton.widthAnchor.constraint(equalToConstant: 260)
         ])
 
         addActionToPredictPassesButton()
         NSLayoutConstraint.activate([
             predictPassesButton.heightAnchor.constraint(equalToConstant: 60),
-            predictPassesButton.widthAnchor.constraint(equalToConstant: 240)
+            predictPassesButton.widthAnchor.constraint(equalToConstant: 260)
         ])
     }
 
@@ -232,6 +241,9 @@ class MainVC: ITDataLoadingVC {
                 switch result {
                 case .success(let passes):
                     DispatchQueue.main.async {
+
+                        print(passes.response)
+
                         let predictPassesVC = PredictPassesVC()
                         predictPassesVC.userLocation = self.userLocation
                         predictPassesVC.passTime = passes
@@ -242,6 +254,28 @@ class MainVC: ITDataLoadingVC {
                 case .failure(let error):
                     self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
                 }
+            }
+        }
+    }
+
+    @objc func getPeopleInSpace(){
+        showLoadingView()
+        NetworkManager.shared.getPeopleInSpace { [weak self] result in
+            guard let self = self else { return }
+
+            self.dismissLoadingView()
+            print("HELLOOOOOOOOOOOOO")
+            switch result {
+            case .success(let people):
+
+                print("GOT HERE")
+                people.people.forEach { (person) in
+                print("Person: \(person.name)")
+                print("Craft: \(person.craft)")
+
+            }
+            case .failure(let error):
+                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
             }
         }
     }

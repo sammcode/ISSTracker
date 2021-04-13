@@ -29,7 +29,6 @@ class TrackISSVC: UIViewController {
         Map.mapView.removeFromSuperview()
         Map.mapView.delegate = nil
         Map.mapView.removeAnnotation(anno)
-        //mapView = nil
     }
 
     /// Calls all configuration methods for the ViewController
@@ -46,6 +45,8 @@ class TrackISSVC: UIViewController {
         view.backgroundColor = .white
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = doneButton
+
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
     }
 
     /// Configures the coordinates view

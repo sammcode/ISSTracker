@@ -66,3 +66,7 @@ enum DF {
 enum Map {
     static let mapView = MKMapView()
 }
+
+enum Constants {
+    static var favoritesCount = 0
+}
