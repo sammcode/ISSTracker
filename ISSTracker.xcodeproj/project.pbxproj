@@ -41,6 +41,8 @@
 		B21D0E2525FE5F0F00A87141 /* ITSecondaryTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E2425FE5F0E00A87141 /* ITSecondaryTitleLabel.swift */; };
 		B2250CD42622015A0060DB42 /* PeopleInSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2250CD32622015A0060DB42 /* PeopleInSpace.swift */; };
 		B232461A2624E9D5000EF307 /* nasalization-rg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B23246162624D9F4000EF307 /* nasalization-rg.ttf */; };
+		B232462A2625E018000EF307 /* PeopleInSpaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246292625E018000EF307 /* PeopleInSpaceVC.swift */; };
+		B232462F2625EF4D000EF307 /* planetearth.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B232462E2625EF4D000EF307 /* planetearth.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +101,8 @@
 		B21D0E2425FE5F0E00A87141 /* ITSecondaryTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITSecondaryTitleLabel.swift; sourceTree = "<group>"; };
 		B2250CD32622015A0060DB42 /* PeopleInSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleInSpace.swift; sourceTree = "<group>"; };
 		B23246162624D9F4000EF307 /* nasalization-rg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "nasalization-rg.ttf"; sourceTree = "<group>"; };
+		B23246292625E018000EF307 /* PeopleInSpaceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleInSpaceVC.swift; sourceTree = "<group>"; };
+		B232462E2625EF4D000EF307 /* planetearth.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = planetearth.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +151,7 @@
 		B21D0CF625F55F5A00A87141 /* ISSTracker */ = {
 			isa = PBXGroup;
 			children = (
+				B232462E2625EF4D000EF307 /* planetearth.mp4 */,
 				B23246152624D9DE000EF307 /* Fonts */,
 				B21D0D8425F6AFE800A87141 /* Model */,
 				B21D0D3525F5622200A87141 /* Extensions */,
@@ -167,6 +172,7 @@
 				B21D0D3625F562B100A87141 /* MainVC.swift */,
 				B21D0D7A25F69B4C00A87141 /* PredictPassesVC.swift */,
 				B21D0D7525F69B2D00A87141 /* TrackISSVC.swift */,
+				B23246292625E018000EF307 /* PeopleInSpaceVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -403,6 +409,7 @@
 			files = (
 				B21D0D0425F55F6100A87141 /* LaunchScreen.storyboard in Resources */,
 				B21D0D0125F55F6100A87141 /* Assets.xcassets in Resources */,
+				B232462F2625EF4D000EF307 /* planetearth.mp4 in Resources */,
 				B232461A2624E9D5000EF307 /* nasalization-rg.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -445,6 +452,7 @@
 				B21D0DB025F6C35500A87141 /* ITBodyLabel.swift in Sources */,
 				B21D0D6425F5908600A87141 /* ITButton.swift in Sources */,
 				B21D0DAB25F6C34700A87141 /* ITTitleLabel.swift in Sources */,
+				B232462A2625E018000EF307 /* PeopleInSpaceVC.swift in Sources */,
 				B21D0CF825F55F5A00A87141 /* AppDelegate.swift in Sources */,
 				B21D0E2525FE5F0F00A87141 /* ITSecondaryTitleLabel.swift in Sources */,
 				B21D0DBE25F6C53400A87141 /* Ext+UIViewController.swift in Sources */,

@@ -7,6 +7,8 @@
 
 import UIKit
 import CoreLocation
+import AVKit
+import AVFoundation
 
 class MainVC: ITDataLoadingVC {
 
@@ -27,11 +29,55 @@ class MainVC: ITDataLoadingVC {
     var trackISSDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
     var predictPassesButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Predict Pass Times")
     var predictPassesDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
+    var peopleInSpaceButton = ITButton(backgroundColor: Colors.midnightBlue, title: "People In Space")
+    var titleLabel = ITTitleLabel(textAlignment: .center, fontSize: 48)
+
+    var playerLooper: AVPlayerLooper?
+    var playerLayer: AVPlayerLayer!
+    let player = AVQueuePlayer()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
         checkIfFirstLaunch()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        view.alpha = 0.0
+        playVideo()
+    }
+
+    func playVideo() {
+        guard let path = Bundle.main.path(forResource: "planetearth", ofType:"mp4") else {
+            debugPrint("planetearth.mp4 not found")
+            return
+        }
+
+        playerLayer = AVPlayerLayer(player: player)
+        let playerItem = AVPlayerItem(url: URL(fileURLWithPath: path))
+
+        // make the layer the same size as the container view
+        playerLayer.frame = view.bounds
+
+        // make the video fill the layer as much as possible while keeping its aspect size
+        playerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+
+        // add the layer to the container view
+
+        playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
+
+        player.automaticallyWaitsToMinimizeStalling = false
+
+        player.playImmediately(atRate: 1.0)
+
+        view.layer.insertSublayer(playerLayer, at: 0)
+
+        UIView.animate(withDuration: 1.0, delay: 1.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+            self.view.alpha = 1.0
+        }, completion: nil)
+
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -56,27 +102,18 @@ class MainVC: ITDataLoadingVC {
         configureViewController()
         configureLocationManager()
         configureCollectionView()
-        configureImagesDescriptionLabel()
+        configureTitleView()
         configureButtons()
         configureButtonsStackView()
     }
 
     /// Configures properties for the ViewController
     func configureViewController(){
-        title = "ISS Tracker"
+        //title = "ISS Tracker"
         navigationController?.navigationBar.prefersLargeTitles = true
-        view.backgroundColor = .white
-        let infoButton = UIBarButtonItem(image: UIImage(systemName: "questionmark.circle"), style: .plain, target: self, action: #selector(presentInfoVC))
+        view.backgroundColor = .black
+        let infoButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(presentInfoVC))
         navigationItem.rightBarButtonItem = infoButton
-
-        //TEMP
-        let button = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(getPeopleInSpace))
-        navigationItem.leftBarButtonItem = button
-    }
-
-    @objc func peopleInSpaceButtonTapped(){
-        print("button tapped")
-        getPeopleInSpace()
     }
 
     /// Requests authorization for accessing users location; if granted access, sets properties for location manager, starts updating the users current location
@@ -104,6 +141,24 @@ class MainVC: ITDataLoadingVC {
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collectionView.widthAnchor.constraint(equalToConstant: view.bounds.width),
             collectionView.heightAnchor.constraint(equalToConstant: view.bounds.height * 0.42)
+        ])
+
+        #warning("REMOVE")
+        collectionView.isHidden = true
+    }
+
+    /// Configures the title label, constains it to the top of the view
+    func configureTitleView() {
+        view.addSubview(titleLabel)
+        titleLabel.font = UIFont(name: "NasalizationRg-Regular", size: 48)
+        titleLabel.textColor = .white
+        titleLabel.text = "ISS Tracker"
+
+        NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.widthAnchor.constraint(equalToConstant: 280),
+            titleLabel.heightAnchor.constraint(equalToConstant: 50),
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 60)
         ])
     }
 
@@ -150,6 +205,12 @@ class MainVC: ITDataLoadingVC {
             predictPassesButton.heightAnchor.constraint(equalToConstant: 60),
             predictPassesButton.widthAnchor.constraint(equalToConstant: 260)
         ])
+
+        addActionToPeopleInSpaceButton()
+        NSLayoutConstraint.activate([
+            peopleInSpaceButton.heightAnchor.constraint(equalToConstant: 60),
+            peopleInSpaceButton.widthAnchor.constraint(equalToConstant: 260)
+        ])
     }
 
     /// Configures the stackview properties, constrains it to the bottom of the image description label
@@ -162,21 +223,23 @@ class MainVC: ITDataLoadingVC {
         buttonsStackView.axis = .vertical
         buttonsStackView.spacing = 10
 
-        let height: CGFloat = (DeviceType.isiPhoneSE ? 140 : 240)
+        let height: CGFloat = 240
 
         NSLayoutConstraint.activate([
-            buttonsStackView.topAnchor.constraint(equalTo: imagesDescriptionLabel.bottomAnchor, constant: view.bounds.height * 0.03),
+            buttonsStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
             buttonsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonsStackView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.8),
             buttonsStackView.heightAnchor.constraint(equalToConstant: height)
         ])
 
-        if DeviceType.isiPhoneSE {
-            buttonsStackView.addArrangedSubviews(trackISSButton, predictPassesButton)
-        }else{
-            configureButtonDescriptionLabels()
-            buttonsStackView.addArrangedSubviews(trackISSButton, trackISSDescriptionLabel, predictPassesButton, predictPassesDescriptionLabel)
-        }
+        buttonsStackView.addArrangedSubviews(trackISSButton, predictPassesButton, peopleInSpaceButton)
+
+//        if DeviceType.isiPhoneSE {
+//            buttonsStackView.addArrangedSubviews(trackISSButton, predictPassesButton)
+//        }else{
+//            configureButtonDescriptionLabels()
+//            buttonsStackView.addArrangedSubviews(trackISSButton, trackISSDescriptionLabel, predictPassesButton, predictPassesDescriptionLabel)
+//        }
     }
 
     /// Adds the getISSLocation method to the trackISSButton, for the touchUpInside action
@@ -187,6 +250,11 @@ class MainVC: ITDataLoadingVC {
     /// Adds the getPassTimes method to the predictPassesButton, for the touchUpInside action
     func addActionToPredictPassesButton(){
         predictPassesButton.addTarget(self, action: #selector(getPassTimes), for: .touchUpInside)
+    }
+
+    /// Adds the getPeopleInSpace method to the peopleInSpaceButton, for the touchUpInside action
+    func addActionToPeopleInSpaceButton(){
+        peopleInSpaceButton.addTarget(self, action: #selector(getPeopleInSpace), for: .touchUpInside)
     }
 
     /// Uses the NetworkManager class to get the current location of the ISS
