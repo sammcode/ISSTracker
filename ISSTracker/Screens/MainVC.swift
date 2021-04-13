@@ -30,6 +30,7 @@ class MainVC: ITDataLoadingVC {
     var predictPassesButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Predict Pass Times")
     var predictPassesDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
     var peopleInSpaceButton = ITButton(backgroundColor: Colors.midnightBlue, title: "People In Space")
+    var titleLabel = ITTitleLabel(textAlignment: .center, fontSize: 48)
 
     var playerLooper: AVPlayerLooper?
     var playerLayer: AVPlayerLayer!
@@ -101,6 +102,7 @@ class MainVC: ITDataLoadingVC {
         configureViewController()
         configureLocationManager()
         configureCollectionView()
+        configureTitleView()
         configureButtons()
         configureButtonsStackView()
     }
@@ -112,11 +114,6 @@ class MainVC: ITDataLoadingVC {
         view.backgroundColor = .black
         let infoButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(presentInfoVC))
         navigationItem.rightBarButtonItem = infoButton
-    }
-
-    @objc func peopleInSpaceButtonTapped(){
-        print("button tapped")
-        getPeopleInSpace()
     }
 
     /// Requests authorization for accessing users location; if granted access, sets properties for location manager, starts updating the users current location
@@ -148,6 +145,21 @@ class MainVC: ITDataLoadingVC {
 
         #warning("REMOVE")
         collectionView.isHidden = true
+    }
+
+    /// Configures the title label, constains it to the top of the view
+    func configureTitleView() {
+        view.addSubview(titleLabel)
+        titleLabel.font = UIFont(name: "NasalizationRg-Regular", size: 48)
+        titleLabel.textColor = .white
+        titleLabel.text = "ISS Tracker"
+
+        NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.widthAnchor.constraint(equalToConstant: 280),
+            titleLabel.heightAnchor.constraint(equalToConstant: 50),
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 60)
+        ])
     }
 
 
@@ -194,6 +206,7 @@ class MainVC: ITDataLoadingVC {
             predictPassesButton.widthAnchor.constraint(equalToConstant: 260)
         ])
 
+        addActionToPeopleInSpaceButton()
         NSLayoutConstraint.activate([
             peopleInSpaceButton.heightAnchor.constraint(equalToConstant: 60),
             peopleInSpaceButton.widthAnchor.constraint(equalToConstant: 260)
