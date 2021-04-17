@@ -19,6 +19,8 @@ enum Images {
     static let iss6 = UIImage(named: "ISS6")
     static let iss7 = UIImage(named: "ISS7")
     static let iss8 = UIImage(named: "ISS8")
+    static let soyuz = UIImage(named: "Soyuz")
+    static let crewDragon = UIImage(named: "CrewDragon")
 }
 
 enum Colors {
@@ -70,4 +72,56 @@ enum Map {
 
 enum Constants {
     static var favoritesCount = 0
+}
+
+enum Spacecraft {
+    static let names = [
+        "ISS" : "International Space Station",
+        "CrewDragon" : "Crew Dragon",
+        "Soyuz MS-17" : "Soyuz MS-17"
+    ]
+}
+
+enum Astronauts {
+    static let portraits = [
+        "Sergey Ryzhikov" : UIImage(named: "SergeyRyzhikov"),
+        "Kate Rubins" : UIImage(named: "KateRubins"),
+        "Sergey Kud-Sverchkov" : UIImage(named: "SergeyKudSverchkov"),
+        "Mike Hopkins" : UIImage(named: "MikeHopkins"),
+        "Victor Glover" : UIImage(named: "VictorGlover"),
+        "Shannon Walker" : UIImage(named: "ShannonWalker"),
+        "Soichi Noguchi" : UIImage(named: "SoichiNoguchi"),
+        "Mark Vande Hei" : UIImage(named: "MarkVandeHei"),
+        "Oleg Novitskiy" : UIImage(named: "OlegNovitskiy"),
+        "Pyotr Dubrov" : UIImage(named: "PyotrDubrov"),
+
+        //Crew-2
+        "Shane Kimbrough" : Images.iss1,
+        "Megan McArthur" : Images.iss1,
+        "Akihiko Hoshide" : Images.iss1,
+        "Thomas Pesquet" : Images.iss1,
+
+        //Inspiration4
+        "Jared Isaacman" : Images.iss1,
+        "Hayley Arceneaux" : Images.iss1,
+        "Chris Sembroski" : Images.iss1,
+        "Dr. Sian Proctor" : Images.iss1,
+
+        //Starliner
+        "Mike Fincke" : Images.iss1,
+        "Nicole Mann" : Images.iss1,
+        "Barry Wilmore" : Images.iss1,
+
+        //Soyuz mission
+        "Anton Shkaplerov" : Images.iss1,
+        "Klim Shipenko" : Images.iss1,
+        "unnamed" : Images.iss1,
+
+        //Crew-3
+        "Raja Chari" : Images.iss1,
+        "Thomas Marshburn" : Images.iss1,
+        "Matthias Maurer" : Images.iss1,
+        "unnamed2" : Images.iss1,
+
+    ]
 }

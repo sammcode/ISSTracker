@@ -57,13 +57,9 @@ class MainVC: ITDataLoadingVC {
         playerLayer = AVPlayerLayer(player: player)
         let playerItem = AVPlayerItem(url: URL(fileURLWithPath: path))
 
-        // make the layer the same size as the container view
         playerLayer.frame = view.bounds
 
-        // make the video fill the layer as much as possible while keeping its aspect size
         playerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-
-        // add the layer to the container view
 
         playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
 
@@ -76,8 +72,6 @@ class MainVC: ITDataLoadingVC {
         UIView.animate(withDuration: 1.0, delay: 1.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
             self.view.alpha = 1.0
         }, completion: nil)
-
-
     }
 
     override func viewDidLayoutSubviews() {
@@ -102,14 +96,13 @@ class MainVC: ITDataLoadingVC {
         configureViewController()
         configureLocationManager()
         configureCollectionView()
-        configureTitleView()
+        configureTitleLabel()
         configureButtons()
         configureButtonsStackView()
     }
 
     /// Configures properties for the ViewController
     func configureViewController(){
-        //title = "ISS Tracker"
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .black
         let infoButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(presentInfoVC))
@@ -148,7 +141,7 @@ class MainVC: ITDataLoadingVC {
     }
 
     /// Configures the title label, constains it to the top of the view
-    func configureTitleView() {
+    func configureTitleLabel() {
         view.addSubview(titleLabel)
         titleLabel.font = UIFont(name: "NasalizationRg-Regular", size: 48)
         titleLabel.textColor = .white
@@ -330,9 +323,7 @@ class MainVC: ITDataLoadingVC {
         showLoadingView()
         NetworkManager.shared.getPeopleInSpace { [weak self] result in
             guard let self = self else { return }
-
             self.dismissLoadingView()
-            print("HELLOOOOOOOOOOOOO")
             switch result {
             case .success(let people):
 
@@ -341,6 +332,13 @@ class MainVC: ITDataLoadingVC {
                 print("Person: \(person.name)")
                 print("Craft: \(person.craft)")
 
+                DispatchQueue.main.async {
+                    let peopleInSpaceVC = PeopleInSpaceVC()
+                    peopleInSpaceVC.peopleInSpace = people
+                    let navController = UINavigationController(rootViewController: peopleInSpaceVC)
+
+                    self.present(navController, animated: true)
+                }
             }
             case .failure(let error):
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")

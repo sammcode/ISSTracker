@@ -76,7 +76,7 @@ class PredictPassesVC: UIViewController {
 
         let titleLabel = ITTitleLabel(textAlignment: .left, fontSize: 24)
         titleLabel.textColor = Colors.darkGray
-        titleLabel.text = "Next 5 Predictions"
+        titleLabel.text = "Next Predictions"
         containerView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
@@ -114,7 +114,7 @@ extension PredictPassesVC: UITableViewDelegate, UITableViewDataSource {
 
     /// Returns the number of rows in the table view section, which is set to 5; the number of returned pass time predictions
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return passTime.response.count
     }
 
     /// Returns the number of sections in the table view
