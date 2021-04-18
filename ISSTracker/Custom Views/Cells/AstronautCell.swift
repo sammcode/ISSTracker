@@ -31,6 +31,7 @@ class AstronautCell: UICollectionViewCell {
         addSubviews(astronautImageView, nameLabel)
 
         nameLabel.numberOfLines = 2
+        nameLabel.textColor = Colors.mainBlueYellow
 
         let padding: CGFloat = 8
         NSLayoutConstraint.activate([

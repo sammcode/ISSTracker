@@ -25,7 +25,7 @@ class ITTitleLabel: UILabel {
     }
 
     func configure(){
-        textColor = Colors.midnightBlue
+        textColor = Colors.mainYellowBlue
         adjustsFontSizeToFitWidth = true
         minimumScaleFactor = 0.9
         lineBreakMode = .byTruncatingTail

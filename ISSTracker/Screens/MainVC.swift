@@ -25,11 +25,11 @@ class MainVC: ITDataLoadingVC {
 
     var imagesDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
     var buttonsStackView = UIStackView()
-    var trackISSButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Track ISS")
+    var trackISSButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Track ISS")
     var trackISSDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
-    var predictPassesButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Predict Pass Times")
+    var predictPassesButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Predict Pass Times")
     var predictPassesDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
-    var peopleInSpaceButton = ITButton(backgroundColor: Colors.midnightBlue, title: "People In Space")
+    var peopleInSpaceButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "People In Space")
     var titleLabel = ITTitleLabel(textAlignment: .center, fontSize: 48)
 
     var playerLooper: AVPlayerLooper?
@@ -40,12 +40,27 @@ class MainVC: ITDataLoadingVC {
         super.viewDidLoad()
         configure()
         checkIfFirstLaunch()
+        addBackgroundandForegroundObservers()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.alpha = 0.0
         playVideo()
+    }
+
+    func addBackgroundandForegroundObservers() {
+        // background event
+        NotificationCenter.default.addObserver(self, selector: #selector(setPlayerLayerToNil), name: UIApplication.didEnterBackgroundNotification, object: nil)
+
+        // foreground event
+        NotificationCenter.default.addObserver(self, selector: #selector(reinitializePlayerLayer), name: UIApplication.willEnterForegroundNotification, object: nil)
+
+        // add these 2 notifications to prevent freeze on long Home button press and back
+        NotificationCenter.default.addObserver(self, selector: #selector(setPlayerLayerToNil), name: UIApplication.willResignActiveNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(reinitializePlayerLayer), name: UIApplication.didBecomeActiveNotification, object: nil)
+
     }
 
     func playVideo() {
@@ -56,22 +71,30 @@ class MainVC: ITDataLoadingVC {
 
         playerLayer = AVPlayerLayer(player: player)
         let playerItem = AVPlayerItem(url: URL(fileURLWithPath: path))
-
         playerLayer.frame = view.bounds
-
         playerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-
         playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
-
         player.automaticallyWaitsToMinimizeStalling = false
 
-        player.playImmediately(atRate: 1.0)
+        if player.timeControlStatus == .paused {
+            player.playImmediately(atRate: 1.0)
+        }
 
         view.layer.insertSublayer(playerLayer, at: 0)
 
         UIView.animate(withDuration: 1.0, delay: 1.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
             self.view.alpha = 1.0
         }, completion: nil)
+    }
+
+    @objc fileprivate func setPlayerLayerToNil(){
+        player.pause()
+        playerLayer = nil
+    }
+
+    @objc fileprivate func reinitializePlayerLayer(){
+        playVideo()
+        print("GOT HERE")
     }
 
     override func viewDidLayoutSubviews() {
@@ -126,7 +149,7 @@ class MainVC: ITDataLoadingVC {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .systemBackground
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(ITImageCell.self, forCellWithReuseIdentifier: ITImageCell.reuseID)
         NSLayoutConstraint.activate([
@@ -151,7 +174,7 @@ class MainVC: ITDataLoadingVC {
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.widthAnchor.constraint(equalToConstant: 280),
             titleLabel.heightAnchor.constraint(equalToConstant: 50),
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 60)
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 100)
         ])
     }
 

@@ -11,6 +11,7 @@ import AVFoundation
 
 enum Images {
     static let issIcon = UIImage(named: "ISSIcon")
+    static let issIcon2 = UIImage(named: "ISSIcon2")
     static let iss1 = UIImage(named: "ISS1")
     static let iss2 = UIImage(named: "ISS2")
     static let iss3 = UIImage(named: "ISS3")
@@ -29,6 +30,9 @@ enum Colors {
     static let calmBlue = UIColor(red: 0, green: 0.247, blue: 0.533, alpha: 1)
     static let darkGray = UIColor(red: 0.338, green: 0.3, blue: 0.3, alpha: 1)
     static let deepYellow = UIColor(red: 1, green: 0.835, blue: 0, alpha: 1)
+
+    static let mainBlueYellow = UIColor(named: "MainBlueYellow") ?? Colors.midnightBlue
+    static let mainYellowBlue = UIColor(named: "MainYellowBlue") ?? Colors.deepYellow
 }
 
 enum ScreenSize {

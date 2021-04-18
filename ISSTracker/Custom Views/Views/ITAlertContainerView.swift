@@ -19,7 +19,7 @@ class ITAlertContainerView: UIView {
     }
 
     private func configure(){
-        backgroundColor = .white
+        backgroundColor = .systemBackground
         layer.cornerRadius = 12
         layer.borderWidth = 2
         layer.borderColor = Colors.calmBlue.cgColor

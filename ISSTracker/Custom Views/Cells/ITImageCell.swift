@@ -48,7 +48,7 @@ class ITImageCell: UICollectionViewCell {
     private func setUpButton(){
         addSubview(favoriteButton)
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
-        favoriteButton.backgroundColor = .white
+        favoriteButton.backgroundColor = .systemBackground
         favoriteButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 
         NSLayoutConstraint.activate([

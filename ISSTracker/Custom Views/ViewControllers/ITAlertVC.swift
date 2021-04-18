@@ -12,8 +12,8 @@ class ITAlertVC: UIViewController {
     let containerView = ITAlertContainerView()
     let titleLabel = ITTitleLabel(textAlignment: .center, fontSize: 20)
     let messageLabel = ITBodyLabel(textAlignment: .center)
-    let actionButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Ok")
-    let settingsButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Settings")
+    let actionButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Ok")
+    let settingsButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Settings")
 
     var alertTitle: String?
     var message: String?
@@ -64,6 +64,7 @@ class ITAlertVC: UIViewController {
     func configureTitleLabel() {
         view.addSubview(titleLabel)
         titleLabel.text = alertTitle ?? "Something went wrong"
+        titleLabel.textColor = Colors.mainYellowBlue
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),

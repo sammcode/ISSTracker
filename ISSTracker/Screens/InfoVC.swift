@@ -15,7 +15,7 @@ class InfoVC: UIViewController {
     var requirementsLabel: ITBodyLabel!
     var solutionIntroLabel: ITDescriptionLabel!
     var solutionLabel: ITBodyLabel!
-    var jumpInButton = ITButton(backgroundColor: Colors.midnightBlue, title: "Jump in!")
+    var jumpInButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Jump in!")
     var scrollView = UIScrollView()
     var contentView = UIView()
 
@@ -39,7 +39,7 @@ class InfoVC: UIViewController {
 
     /// Configures properties for the ViewController
     func configureViewController(){
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = doneButton
     }
@@ -69,7 +69,7 @@ class InfoVC: UIViewController {
     func configureTitleLabel(){
         titleLabel = ITTitleLabel(textAlignment: .left, fontSize: 36)
         contentView.addSubview(titleLabel)
-        titleLabel.textColor = Colors.midnightBlue
+        titleLabel.textColor = Colors.mainBlueYellow
         titleLabel.numberOfLines = 0
         titleLabel.text = "iOS Coding \nChallenge \ns23NYC"
         NSLayoutConstraint.activate([

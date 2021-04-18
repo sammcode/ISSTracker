@@ -25,7 +25,7 @@ class PeopleInSpaceVC: UIViewController {
 
     func configureViewController(){
         title = "People In Space"
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = doneButton
 
