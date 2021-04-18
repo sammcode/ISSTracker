@@ -30,7 +30,7 @@ class PredictPassesVC: UIViewController {
     /// Configures properties for the ViewController
     func configureViewController(){
         title = "Predict Pass Times"
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = doneButton
         let infoButton = UIBarButtonItem(image: UIImage(systemName: "lightbulb"), style: .plain, target: self, action: #selector(presentInfoAlert))
@@ -63,7 +63,7 @@ class PredictPassesVC: UIViewController {
     /// an ITLabel that acts a table view section title, and an ITDescriptionLabel that acts a section subtitle
     func createAndSetTableHeaderView(){
         let containerView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width * 0.9, height: 210))
-        containerView.backgroundColor = .white
+        containerView.backgroundColor = .systemBackground
 
         let coordinatesView = ITCoordinatesView(title: "Your GPS Coordinates", latitude: "\(Double(round(userLocation.latitude * 10000)/10000))", longitude: "\(Double(round(userLocation.longitude * 10000)/10000))", timestamp: Date().convertTimestampToString())
         containerView.addSubview(coordinatesView)
@@ -75,7 +75,7 @@ class PredictPassesVC: UIViewController {
         ])
 
         let titleLabel = ITTitleLabel(textAlignment: .left, fontSize: 24)
-        titleLabel.textColor = Colors.darkGray
+        titleLabel.textColor = .label
         titleLabel.text = "Next Predictions"
         containerView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
@@ -86,7 +86,7 @@ class PredictPassesVC: UIViewController {
         ])
 
         let bodyLabel = ITSecondaryTitleLabel(textAlignment: .left, fontSize: 18)
-        bodyLabel.textColor = Colors.calmBlue
+        bodyLabel.textColor = .label
         bodyLabel.text = "When the ISS will pass over your location"
         containerView.addSubview(bodyLabel)
         NSLayoutConstraint.activate([

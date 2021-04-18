@@ -13,7 +13,6 @@ class TrackISSVC: UIViewController {
     var gpsLocation: GPSLocation!
     var coordinatesView: ITCoordinatesView!
     var descriptionLabel: ITDescriptionLabel!
-    //var mapView: MKMapView? = MKMapView()
 
     var anno: MKPointAnnotation!
     var timer: Timer!
@@ -24,7 +23,7 @@ class TrackISSVC: UIViewController {
         startUpdating()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         timer.invalidate()
         Map.mapView.removeFromSuperview()
         Map.mapView.delegate = nil
@@ -42,7 +41,7 @@ class TrackISSVC: UIViewController {
     /// Configures properties for the ViewController
     func configureViewController(){
         title = "Track ISS"
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = doneButton
 
@@ -67,7 +66,7 @@ class TrackISSVC: UIViewController {
     /// Constrains it to the bottom of the coordinates view
     func configureDescriptionLabel(){
         descriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 18)
-        descriptionLabel.textColor = Colors.calmBlue
+        descriptionLabel.textColor = .label
         descriptionLabel.numberOfLines = 0
         descriptionLabel.text = "ISS location updated every 5 seconds."
         view.addSubview(descriptionLabel)
@@ -94,6 +93,7 @@ class TrackISSVC: UIViewController {
 
         anno = MKPointAnnotation()
         anno.coordinate = coordinates
+
         Map.mapView.addAnnotation(anno)
 
         NSLayoutConstraint.activate([
@@ -127,17 +127,16 @@ class TrackISSVC: UIViewController {
                 DispatchQueue.main.async {
                     self.gpsLocation = gps
 
-                    Map.mapView.removeAnnotation(self.anno)
-
                     let coordinates = CLLocationCoordinate2D(latitude:  CLLocationDegrees(Float(self.gpsLocation.issPosition.latitude)!), longitude: CLLocationDegrees(Float(self.gpsLocation.issPosition.longitude)!))
-                    self.anno = MKPointAnnotation()
-                    self.anno.coordinate = coordinates
+
+                    UIView.animate(withDuration: 0.3) {
+                        self.anno.coordinate = coordinates
+                    }
 
                     self.coordinatesView.latitudeLabel.text = "Latitude: " + self.gpsLocation.issPosition.latitude
                     self.coordinatesView.longitudeLabel.text = "Longitude: " + self.gpsLocation.issPosition.longitude
                     self.coordinatesView.timestampLabel.text = "Timestamp: " + self.gpsLocation.timestamp.convertTimestampToString()
 
-                    Map.mapView.addAnnotation(self.anno)
                 }
             case .failure(let error):
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
@@ -159,8 +158,10 @@ extension TrackISSVC: MKMapViewDelegate {
             pinView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             pinView!.canShowCallout = true
         }
-        pinView?.image = Images.issIcon
-        pinView!.frame.size = CGSize(width: 60, height: 60)
+
+        pinView?.set(image: Images.issIcon2!, with: .label)
+        pinView!.frame.size = CGSize(width: 75, height: 50)
+
         return pinView
     }
 }

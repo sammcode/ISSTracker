@@ -46,6 +46,7 @@
 		B232463426274343000EF307 /* Ext+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232463326274342000EF307 /* Ext+Array.swift */; };
 		B232463E2628BACB000EF307 /* AstronautCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232463D2628BACB000EF307 /* AstronautCell.swift */; };
 		B23246432629EED0000EF307 /* ITNumberOfPeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246422629EED0000EF307 /* ITNumberOfPeopleView.swift */; };
+		B2324653262CAC6F000EF307 /* Ext+MKAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2324652262CAC6F000EF307 /* Ext+MKAnnotationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,7 @@
 		B232463326274342000EF307 /* Ext+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Array.swift"; sourceTree = "<group>"; };
 		B232463D2628BACB000EF307 /* AstronautCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstronautCell.swift; sourceTree = "<group>"; };
 		B23246422629EED0000EF307 /* ITNumberOfPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITNumberOfPeopleView.swift; sourceTree = "<group>"; };
+		B2324652262CAC6F000EF307 /* Ext+MKAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+MKAnnotationView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +237,7 @@
 				B21D0D6B25F593CC00A87141 /* Ext+UIView.swift */,
 				B21D0DBD25F6C53400A87141 /* Ext+UIViewController.swift */,
 				B232463326274342000EF307 /* Ext+Array.swift */,
+				B2324652262CAC6F000EF307 /* Ext+MKAnnotationView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -479,6 +482,7 @@
 				B232463E2628BACB000EF307 /* AstronautCell.swift in Sources */,
 				B21D0D7B25F69B4C00A87141 /* PredictPassesVC.swift in Sources */,
 				B21D0D9825F6BD2500A87141 /* PassTime.swift in Sources */,
+				B2324653262CAC6F000EF307 /* Ext+MKAnnotationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
