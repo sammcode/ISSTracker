@@ -64,7 +64,7 @@ class ITAlertVC: UIViewController {
     func configureTitleLabel() {
         view.addSubview(titleLabel)
         titleLabel.text = alertTitle ?? "Something went wrong"
-        titleLabel.textColor = Colors.mainYellowBlue
+        titleLabel.textColor = Colors.mainBlueYellow
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
@@ -77,6 +77,7 @@ class ITAlertVC: UIViewController {
         view.addSubview(messageLabel)
         messageLabel.text = message ?? "Unable to complete request"
         messageLabel.numberOfLines = 4
+        messageLabel.textColor = .label
         NSLayoutConstraint.activate([
             messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),

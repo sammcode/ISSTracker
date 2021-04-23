@@ -1,13 +1,13 @@
 //
-//  ITButton.swift
+//  ITIconButton.swift
 //  ISSTracker
 //
-//  Created by Sam McGarry on 3/7/21.
+//  Created by Sam McGarry on 4/20/21.
 //
 
 import UIKit
 
-class ITButton: UIButton {
+class ITIconButton: UIButton {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,16 +18,14 @@ class ITButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
-    convenience init(backgroundColor: UIColor, title: String) {
+    convenience init(backgroundColor: UIColor, image: UIImage) {
         self.init(frame: .zero)
         self.backgroundColor = backgroundColor
-        self.setTitle(title, for: .normal)
+        setImage(image, for: .normal)
     }
 
     private func configure(){
         layer.cornerRadius = 10
-        titleLabel?.font = UIFont(name: "NasalizationRg-Regular", size: 24)
-        setTitleColor(.systemBackground, for: .normal)
         translatesAutoresizingMaskIntoConstraints = false
 
         layer.shadowColor = UIColor.black.cgColor
@@ -36,9 +34,9 @@ class ITButton: UIButton {
         layer.shadowRadius = 5
     }
 
-    func set(backgroundColor: UIColor, title: String){
+    func set(backgroundColor: UIColor, image: UIImage){
         self.backgroundColor = backgroundColor
-        setTitle(title, for: .normal)
+        setImage(image, for: .normal)
     }
 
     func pulsate() {
@@ -46,7 +44,7 @@ class ITButton: UIButton {
         let pulse = CASpringAnimation(keyPath: "transform.scale")
         pulse.duration = 0.2
         pulse.fromValue = 1.0
-        pulse.toValue = 0.9
+        pulse.toValue = 0.85
         pulse.repeatCount = 0
         pulse.initialVelocity = 0.5
         pulse.damping = 1.0

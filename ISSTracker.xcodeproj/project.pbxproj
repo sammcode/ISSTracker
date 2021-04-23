@@ -47,6 +47,10 @@
 		B232463E2628BACB000EF307 /* AstronautCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232463D2628BACB000EF307 /* AstronautCell.swift */; };
 		B23246432629EED0000EF307 /* ITNumberOfPeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246422629EED0000EF307 /* ITNumberOfPeopleView.swift */; };
 		B2324653262CAC6F000EF307 /* Ext+MKAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2324652262CAC6F000EF307 /* Ext+MKAnnotationView.swift */; };
+		B232465B262F6340000EF307 /* ITIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232465A262F6340000EF307 /* ITIconButton.swift */; };
+		B2324660262F6F82000EF307 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232465F262F6F82000EF307 /* SettingsVC.swift */; };
+		B232466D263090E5000EF307 /* AppIconSelectorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232466C263090E5000EF307 /* AppIconSelectorVC.swift */; };
+		B23246722630B9F6000EF307 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246712630B9F6000EF307 /* UserDefaultsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +115,10 @@
 		B232463D2628BACB000EF307 /* AstronautCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstronautCell.swift; sourceTree = "<group>"; };
 		B23246422629EED0000EF307 /* ITNumberOfPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITNumberOfPeopleView.swift; sourceTree = "<group>"; };
 		B2324652262CAC6F000EF307 /* Ext+MKAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+MKAnnotationView.swift"; sourceTree = "<group>"; };
+		B232465A262F6340000EF307 /* ITIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITIconButton.swift; sourceTree = "<group>"; };
+		B232465F262F6F82000EF307 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
+		B232466C263090E5000EF307 /* AppIconSelectorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconSelectorVC.swift; sourceTree = "<group>"; };
+		B23246712630B9F6000EF307 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +189,8 @@
 				B21D0D7A25F69B4C00A87141 /* PredictPassesVC.swift */,
 				B21D0D7525F69B2D00A87141 /* TrackISSVC.swift */,
 				B23246292625E018000EF307 /* PeopleInSpaceVC.swift */,
+				B232465F262F6F82000EF307 /* SettingsVC.swift */,
+				B232466C263090E5000EF307 /* AppIconSelectorVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -213,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				B21D0D9225F6B29700A87141 /* NetworkManager.swift */,
+				B23246712630B9F6000EF307 /* UserDefaultsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -275,6 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				B21D0D6325F5908600A87141 /* ITButton.swift */,
+				B232465A262F6340000EF307 /* ITIconButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -453,6 +465,7 @@
 				B21D0E1625FD550000A87141 /* Ext+Date.swift in Sources */,
 				B21D0D6C25F593CC00A87141 /* Ext+UIView.swift in Sources */,
 				B21D0E1B25FD5E0F00A87141 /* Ext+UITableView.swift in Sources */,
+				B23246722630B9F6000EF307 /* UserDefaultsManager.swift in Sources */,
 				B21D0D7125F5DAE800A87141 /* Ext+UIStackView.swift in Sources */,
 				B21D0D5A25F58C9C00A87141 /* ITDescriptionLabel.swift in Sources */,
 				B21D0DA325F6C2E300A87141 /* ITAlertVC.swift in Sources */,
@@ -466,12 +479,15 @@
 				B21D0D6425F5908600A87141 /* ITButton.swift in Sources */,
 				B21D0DAB25F6C34700A87141 /* ITTitleLabel.swift in Sources */,
 				B232462A2625E018000EF307 /* PeopleInSpaceVC.swift in Sources */,
+				B2324660262F6F82000EF307 /* SettingsVC.swift in Sources */,
 				B21D0CF825F55F5A00A87141 /* AppDelegate.swift in Sources */,
 				B21D0E2525FE5F0F00A87141 /* ITSecondaryTitleLabel.swift in Sources */,
+				B232465B262F6340000EF307 /* ITIconButton.swift in Sources */,
 				B21D0DBE25F6C53400A87141 /* Ext+UIViewController.swift in Sources */,
 				B21D0DB625F6C49900A87141 /* ITAlertContainerView.swift in Sources */,
 				B21D0DC325F6C6C000A87141 /* ITDataLoadingVC.swift in Sources */,
 				B21D0E0B25FD200900A87141 /* Ext+Int.swift in Sources */,
+				B232466D263090E5000EF307 /* AppIconSelectorVC.swift in Sources */,
 				B21D0D4825F5764800A87141 /* ITImageCell.swift in Sources */,
 				B21D0D5125F576CD00A87141 /* ITImageView.swift in Sources */,
 				B21D0D7625F69B2E00A87141 /* TrackISSVC.swift in Sources */,
