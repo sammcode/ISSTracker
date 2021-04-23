@@ -12,10 +12,23 @@ class TrackISSVC: UIViewController {
 
     var gpsLocation: GPSLocation!
     var coordinatesView: ITCoordinatesView!
-    var descriptionLabel: ITDescriptionLabel!
 
     var anno: MKPointAnnotation!
     var timer: Timer!
+
+    var viewOffset: CGFloat = 170
+    var coordinatesViewBottomConstraint = NSLayoutConstraint()
+
+    var iconView = MKAnnotationView()
+
+    var pulseLayer = CAShapeLayer()
+    var pulseIsActive = true
+
+    var mapTypeButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
+    var showCoordinatesButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "note.text", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
+    var pulseButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "target", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
+    var trackButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "binoculars", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
+    var zoomOutButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "arrow.up.left.and.arrow.down.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +46,42 @@ class TrackISSVC: UIViewController {
     /// Calls all configuration methods for the ViewController
     func configure(){
         configureViewController()
-        configureCoordinatesView()
-        configureDescriptionLabel()
         configureMapView()
+        configureCoordinatesView()
+        configurePulseButton()
+        configureMapTypeButton()
+        configureShowCoordinatesButton()
+        configureTrackButton()
+        configureZoomOutButton()
+        configureIconView()
+        addBackgroundandForegroundObservers()
+    }
+
+    func addBackgroundandForegroundObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(clearPulseLayer), name: UIApplication.didEnterBackgroundNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(createPulseLayer), name: UIApplication.willEnterForegroundNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(clearPulseLayer), name: UIApplication.willResignActiveNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(createPulseLayer), name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
+
+    @objc func clearPulseLayer(){
+        pulseLayer.removeAllAnimations()
+        pulseLayer.removeFromSuperlayer()
+    }
+
+    func configureIconView(){
+        let width = UserDefaultsManager.largeMapAnnotations ? 90 : 60
+        let height = UserDefaultsManager.largeMapAnnotations ? 60 : 40
+        iconView.set(image: Images.issIcon2!, with: .label)
+        iconView.frame.size = CGSize(width: width, height: height)
+        iconView.layer.shadowColor = UIColor.black.cgColor
+        iconView.layer.shadowOpacity = 0.5
+        iconView.layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
+        iconView.layer.shadowRadius = 5
+        createPulse(in: iconView)
     }
 
     /// Configures properties for the ViewController
@@ -46,6 +92,17 @@ class TrackISSVC: UIViewController {
         navigationItem.rightBarButtonItem = doneButton
 
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
+
+        if UserDefaultsManager.appearance == 0 {
+            overrideUserInterfaceStyle = .unspecified
+            navigationController?.overrideUserInterfaceStyle = .unspecified
+        } else if UserDefaultsManager.appearance == 1 {
+            overrideUserInterfaceStyle = .light
+            navigationController?.overrideUserInterfaceStyle = .light
+        } else if UserDefaultsManager.appearance == 2 {
+            overrideUserInterfaceStyle = .dark
+            navigationController?.overrideUserInterfaceStyle = .dark
+        }
     }
 
     /// Configures the coordinates view
@@ -53,28 +110,13 @@ class TrackISSVC: UIViewController {
     /// Constrains it to the top of the view
     func configureCoordinatesView(){
         coordinatesView = ITCoordinatesView(title: "ISS GPS Coordinates", latitude: gpsLocation.issPosition.latitude, longitude: gpsLocation.issPosition.longitude, timestamp: gpsLocation.timestamp.convertTimestampToString())
+        coordinatesViewBottomConstraint = coordinatesView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: viewOffset)
         view.addSubview(coordinatesView)
         NSLayoutConstraint.activate([
             coordinatesView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            coordinatesView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70),
-            coordinatesView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
-            coordinatesView.heightAnchor.constraint(equalToConstant: 150)
-        ])
-    }
-
-    /// Configures the properties for the description label for the coordinates view
-    /// Constrains it to the bottom of the coordinates view
-    func configureDescriptionLabel(){
-        descriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 18)
-        descriptionLabel.textColor = .label
-        descriptionLabel.numberOfLines = 0
-        descriptionLabel.text = "ISS location updated every 5 seconds."
-        view.addSubview(descriptionLabel)
-        NSLayoutConstraint.activate([
-            descriptionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            descriptionLabel.topAnchor.constraint(equalTo: coordinatesView.bottomAnchor, constant: 8),
-            descriptionLabel.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
-            descriptionLabel.heightAnchor.constraint(equalToConstant: 30)
+            coordinatesView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            coordinatesView.heightAnchor.constraint(equalToConstant: 170),
+            coordinatesViewBottomConstraint
         ])
     }
 
@@ -97,11 +139,149 @@ class TrackISSVC: UIViewController {
         Map.mapView.addAnnotation(anno)
 
         NSLayoutConstraint.activate([
-            Map.mapView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
+            Map.mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             Map.mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             Map.mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             Map.mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+
+    func configurePulseButton(){
+        view.addSubview(pulseButton)
+        addActionToPulseButton()
+        NSLayoutConstraint.activate([
+            pulseButton.widthAnchor.constraint(equalToConstant: 45),
+            pulseButton.heightAnchor.constraint(equalToConstant: 45),
+            pulseButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
+            pulseButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10)
+        ])
+    }
+
+    func addActionToPulseButton() {
+        pulseButton.addTarget(self, action: #selector(pulseButtonTapped), for: .touchUpInside)
+    }
+
+    @objc func pulseButtonTapped() {
+        pulseButton.pulsate()
+        switch pulseIsActive {
+        case true:
+            clearPulseLayer()
+            pulseIsActive.toggle()
+        case false:
+            createPulseLayer()
+            pulseIsActive.toggle()
+        }
+    }
+
+    func configureMapTypeButton(){
+        view.addSubview(mapTypeButton)
+        addActionToMapTypeButton()
+        NSLayoutConstraint.activate([
+            mapTypeButton.widthAnchor.constraint(equalToConstant: 45),
+            mapTypeButton.heightAnchor.constraint(equalToConstant: 45),
+            mapTypeButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
+            mapTypeButton.topAnchor.constraint(equalTo: pulseButton.bottomAnchor, constant: 10)
+        ])
+    }
+
+    func addActionToMapTypeButton() {
+        mapTypeButton.addTarget(self, action: #selector(mapTypeButtonTapped), for: .touchUpInside)
+    }
+
+    @objc func mapTypeButtonTapped() {
+        mapTypeButton.pulsate()
+        switch Map.mapView.mapType {
+        case .standard:
+            Map.mapView.mapType = .hybrid
+        case .hybrid:
+            Map.mapView.mapType = .standard
+        default:
+            Map.mapView.mapType = .standard
+        }
+    }
+
+    func configureShowCoordinatesButton(){
+        view.addSubview(showCoordinatesButton)
+        addActionToShowCoordinatesButton()
+        NSLayoutConstraint.activate([
+            showCoordinatesButton.widthAnchor.constraint(equalToConstant: 45),
+            showCoordinatesButton.heightAnchor.constraint(equalToConstant: 45),
+            showCoordinatesButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
+            showCoordinatesButton.topAnchor.constraint(equalTo: mapTypeButton.bottomAnchor, constant: 10)
+        ])
+    }
+
+    func addActionToShowCoordinatesButton() {
+        showCoordinatesButton.addTarget(self, action: #selector(showCoordinatesButtonTapped), for: .touchUpInside)
+    }
+
+    @objc func showCoordinatesButtonTapped() {
+        showCoordinatesButton.pulsate()
+        switch viewOffset {
+        case 20:
+            self.viewOffset = 170
+            coordinatesViewBottomConstraint.constant = viewOffset
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
+        case 170:
+            self.viewOffset = 20
+            coordinatesViewBottomConstraint.constant = viewOffset
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
+        default:
+            self.viewOffset = 170
+            coordinatesViewBottomConstraint.constant = viewOffset
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+
+    func configureTrackButton(){
+        view.addSubview(trackButton)
+        addActionToTrackButton()
+        NSLayoutConstraint.activate([
+            trackButton.widthAnchor.constraint(equalToConstant: 45),
+            trackButton.heightAnchor.constraint(equalToConstant: 45),
+            trackButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
+            trackButton.topAnchor.constraint(equalTo: showCoordinatesButton.bottomAnchor, constant: 10)
+        ])
+    }
+
+    func addActionToTrackButton() {
+        trackButton.addTarget(self, action: #selector(trackButtonTapped), for: .touchUpInside)
+    }
+
+    @objc func trackButtonTapped() {
+        trackButton.pulsate()
+        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(Float(gpsLocation.issPosition.latitude)!), longitude: CLLocationDegrees(Float(gpsLocation.issPosition.longitude)!))
+        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(1000000), longitudinalMeters: CLLocationDistance(1000000))
+        Map.mapView.setRegion(region, animated: true)
+    }
+
+    func configureZoomOutButton(){
+        view.addSubview(zoomOutButton)
+        addActionToZoomOutButton()
+
+        NSLayoutConstraint.activate([
+            zoomOutButton.widthAnchor.constraint(equalToConstant: 45),
+            zoomOutButton.heightAnchor.constraint(equalToConstant: 45),
+            zoomOutButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
+            zoomOutButton.topAnchor.constraint(equalTo: trackButton.bottomAnchor, constant: 10)
+        ])
+    }
+
+    func addActionToZoomOutButton() {
+        zoomOutButton.addTarget(self, action: #selector(zoomOutButtonTapped), for: .touchUpInside)
+    }
+
+    @objc func zoomOutButtonTapped() {
+        zoomOutButton.pulsate()
+        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(Float(gpsLocation.issPosition.latitude)!), longitude: CLLocationDegrees(Float(gpsLocation.issPosition.longitude)!))
+        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
+        Map.mapView.setRegion(region, animated: true)
     }
 
     /// Starts a timer that calls the updateMapView method every 5 seconds
@@ -143,25 +323,64 @@ class TrackISSVC: UIViewController {
             }
         }
     }
+
+    @objc func createPulseLayer(){
+        createPulse(in: iconView)
+    }
+
+    @objc func createPulse(in view: MKAnnotationView) {
+        let circularPath = UIBezierPath(arcCenter: .zero, radius: UIScreen.main.bounds.size.width/4.0, startAngle: 0, endAngle: 2 * .pi, clockwise: true)
+        pulseLayer.path = circularPath.cgPath
+        pulseLayer.lineWidth = 4.0
+        pulseLayer.fillColor = UIColor.clear.cgColor
+        pulseLayer.lineCap = CAShapeLayerLineCap.round
+        pulseLayer.position = CGPoint(x: view.frame.size.width/2.1, y: view.frame.size.width/2.1)
+        view.layer.addSublayer(pulseLayer)
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                self.animatePulse()
+            }
+
+        }
+
+        @objc func animatePulse() {
+            pulseLayer.strokeColor = Colors.mainBlueYellow.cgColor
+
+            let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
+            scaleAnimation.duration = 2.0
+            scaleAnimation.fromValue = 0.35
+            scaleAnimation.toValue = 0.9
+            scaleAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+            scaleAnimation.repeatCount = .greatestFiniteMagnitude
+            pulseLayer.add(scaleAnimation, forKey: "scale")
+
+            let opacityAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
+            opacityAnimation.duration = 2.0
+            opacityAnimation.fromValue = 0.9
+            opacityAnimation.toValue = 0.0
+            opacityAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+            opacityAnimation.repeatCount = .greatestFiniteMagnitude
+            pulseLayer.add(opacityAnimation, forKey: "opacity")
+        }
 }
 
 extension TrackISSVC: MKMapViewDelegate {
 
     /// Returns the custom MKAnnotationView for map view annotations, which is set to the ISS icon image
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if annotation is MKUserLocation {
-            return nil
-        }
-        let reuseID = "pin"
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID)
-        if(pinView == nil) {
-            pinView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
-            pinView!.canShowCallout = true
-        }
+        return iconView
+    }
 
-        pinView?.set(image: Images.issIcon2!, with: .label)
-        pinView!.frame.size = CGSize(width: 75, height: 50)
-
-        return pinView
+    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+        let visibleRect = Map.mapView.visibleMapRect
+        let annos = Map.mapView.annotations(in: visibleRect)
+        if annos.isEmpty {
+            clearPulseLayer()
+        }else {
+            if pulseLayer.animationKeys() == nil && pulseIsActive {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.createPulse(in: self.iconView)
+                }
+            }
+        }
     }
 }

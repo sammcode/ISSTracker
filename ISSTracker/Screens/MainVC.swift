@@ -22,6 +22,7 @@ class MainVC: ITDataLoadingVC {
     var collectionView: UICollectionView!
     var locationManager = CLLocationManager()
     var userLocation = CLLocationCoordinate2D(latitude: 45.570195, longitude: -122.825434)
+    let generator = UINotificationFeedbackGenerator()
 
     var imagesDescriptionLabel = ITDescriptionLabel(textAlignment: .center, fontSize: 14)
     var buttonsStackView = UIStackView()
@@ -60,7 +61,6 @@ class MainVC: ITDataLoadingVC {
         NotificationCenter.default.addObserver(self, selector: #selector(setPlayerLayerToNil), name: UIApplication.willResignActiveNotification, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(reinitializePlayerLayer), name: UIApplication.didBecomeActiveNotification, object: nil)
-
     }
 
     func playVideo() {
@@ -72,7 +72,7 @@ class MainVC: ITDataLoadingVC {
         playerLayer = AVPlayerLayer(player: player)
         let playerItem = AVPlayerItem(url: URL(fileURLWithPath: path))
         playerLayer.frame = view.bounds
-        playerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        playerLayer.videoGravity = .resizeAspectFill
         playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
         player.automaticallyWaitsToMinimizeStalling = false
 
@@ -94,7 +94,6 @@ class MainVC: ITDataLoadingVC {
 
     @objc fileprivate func reinitializePlayerLayer(){
         playVideo()
-        print("GOT HERE")
     }
 
     override func viewDidLayoutSubviews() {
@@ -130,6 +129,17 @@ class MainVC: ITDataLoadingVC {
         view.backgroundColor = .black
         let infoButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(presentInfoVC))
         navigationItem.rightBarButtonItem = infoButton
+
+        if UserDefaultsManager.appearance == 0 {
+            overrideUserInterfaceStyle = .unspecified
+            navigationController?.overrideUserInterfaceStyle = .unspecified
+        } else if UserDefaultsManager.appearance == 1 {
+            overrideUserInterfaceStyle = .light
+            navigationController?.overrideUserInterfaceStyle = .light
+        } else if UserDefaultsManager.appearance == 2 {
+            overrideUserInterfaceStyle = .dark
+            navigationController?.overrideUserInterfaceStyle = .dark
+        }
     }
 
     /// Requests authorization for accessing users location; if granted access, sets properties for location manager, starts updating the users current location
@@ -277,6 +287,7 @@ class MainVC: ITDataLoadingVC {
     /// On success, an instance of the TrackISSVC ViewController is presented with the retrieved data
     /// On failure, a custom alert is presented stating the error in question
     @objc func getISSLocation() {
+        trackISSButton.pulsate()
         showLoadingView()
 
         NetworkManager.shared.getISSLocation { [weak self] result in
@@ -287,6 +298,7 @@ class MainVC: ITDataLoadingVC {
 
             switch result {
             case .success(let gpsLocation):
+                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
                 DispatchQueue.main.async {
                     let trackISSVC = TrackISSVC()
                     trackISSVC.gpsLocation = gpsLocation
@@ -294,6 +306,7 @@ class MainVC: ITDataLoadingVC {
                     self.present(navController, animated: true)
                 }
             case .failure(let error):
+                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.error) }
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
             }
         }
@@ -306,6 +319,7 @@ class MainVC: ITDataLoadingVC {
     /// On success, an instance of PredictPassesVC ViewController is presented with the retrieved data
     /// On failure, a custom alert is presented stating the error in question
     @objc func getPassTimes(){
+        predictPassesButton.pulsate()
         if locationManager.authorizationStatus == .denied {
             self.presentITAlertOnMainThread(title: "Location Access Disabled", message: ITError.locationServicesTurnedOff.rawValue, buttonTitle: "Ok", settingsButtonNeeded: true)
             return
@@ -324,10 +338,8 @@ class MainVC: ITDataLoadingVC {
 
                 switch result {
                 case .success(let passes):
+                    if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
                     DispatchQueue.main.async {
-
-                        print(passes.response)
-
                         let predictPassesVC = PredictPassesVC()
                         predictPassesVC.userLocation = self.userLocation
                         predictPassesVC.passTime = passes
@@ -336,6 +348,7 @@ class MainVC: ITDataLoadingVC {
                         self.present(navController, animated: true)
                     }
                 case .failure(let error):
+                    if UserDefaultsManager.haptics { self.generator.notificationOccurred(.error) }
                     self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
                 }
             }
@@ -343,6 +356,7 @@ class MainVC: ITDataLoadingVC {
     }
 
     @objc func getPeopleInSpace(){
+        peopleInSpaceButton.pulsate()
         showLoadingView()
         NetworkManager.shared.getPeopleInSpace { [weak self] result in
             guard let self = self else { return }
@@ -354,7 +368,7 @@ class MainVC: ITDataLoadingVC {
                 people.people.forEach { (person) in
                 print("Person: \(person.name)")
                 print("Craft: \(person.craft)")
-
+                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
                 DispatchQueue.main.async {
                     let peopleInSpaceVC = PeopleInSpaceVC()
                     peopleInSpaceVC.peopleInSpace = people
@@ -364,14 +378,18 @@ class MainVC: ITDataLoadingVC {
                 }
             }
             case .failure(let error):
+                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.error) }
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
             }
         }
     }
 
     @objc func presentInfoVC(){
-        let infoVC = InfoVC()
-        let navController = UINavigationController(rootViewController: infoVC)
+//        let infoVC = InfoVC()
+//        let navController = UINavigationController(rootViewController: infoVC)
+//        self.present(navController, animated: true)
+        let settingsVC = SettingsVC()
+        let navController = UINavigationController(rootViewController: settingsVC)
         self.present(navController, animated: true)
     }
 }

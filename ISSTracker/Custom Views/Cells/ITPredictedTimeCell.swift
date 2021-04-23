@@ -37,7 +37,7 @@ class ITPredictedTimeCell: UITableViewCell {
         contentView.backgroundColor = Colors.mainBlueYellow
         contentView.layer.cornerRadius = 10
         contentView.addSubviews(risetimeLabel, durationLabel)
-        risetimeLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        risetimeLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         durationLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
 
         let padding: CGFloat = 10

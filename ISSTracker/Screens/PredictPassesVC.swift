@@ -37,6 +37,17 @@ class PredictPassesVC: UIViewController {
         navigationItem.leftBarButtonItem = infoButton
 
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
+
+        if UserDefaultsManager.appearance == 0 {
+            overrideUserInterfaceStyle = .unspecified
+            navigationController?.overrideUserInterfaceStyle = .unspecified
+        } else if UserDefaultsManager.appearance == 1 {
+            overrideUserInterfaceStyle = .light
+            navigationController?.overrideUserInterfaceStyle = .light
+        } else if UserDefaultsManager.appearance == 2 {
+            overrideUserInterfaceStyle = .dark
+            navigationController?.overrideUserInterfaceStyle = .dark
+        }
     }
 
 
