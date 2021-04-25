@@ -184,7 +184,7 @@ class MainVC: ITDataLoadingVC {
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.widthAnchor.constraint(equalToConstant: 280),
             titleLabel.heightAnchor.constraint(equalToConstant: 50),
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 100)
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 80)
         ])
     }
 
