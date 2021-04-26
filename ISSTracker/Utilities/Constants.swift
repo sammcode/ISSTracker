@@ -100,10 +100,10 @@ enum Astronauts {
         "Pyotr Dubrov" : UIImage(named: "PyotrDubrov"),
 
         //Crew-2
-        "Shane Kimbrough" : Images.iss1,
-        "Megan McArthur" : Images.iss1,
-        "Akihiko Hoshide" : Images.iss1,
-        "Thomas Pesquet" : Images.iss1,
+        "Shane Kimbrough" : UIImage(named: "ShaneKimbrough"),
+        "Megan McArthur" : UIImage(named: "MeganMcArthur"),
+        "Akihiko Hoshide" : UIImage(named: "AkihikoHoshide"),
+        "Thomas Pesquet" : UIImage(named: "ThomasPesquet"),
 
         //Inspiration4
         "Jared Isaacman" : Images.iss1,
