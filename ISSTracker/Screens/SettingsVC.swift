@@ -33,17 +33,6 @@ class SettingsVC: UIViewController {
         navigationItem.rightBarButtonItem = doneButton
 
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
-
-        if UserDefaultsManager.appearance == 0 {
-            overrideUserInterfaceStyle = .unspecified
-            navigationController?.overrideUserInterfaceStyle = .unspecified
-        } else if UserDefaultsManager.appearance == 1 {
-            overrideUserInterfaceStyle = .light
-            navigationController?.overrideUserInterfaceStyle = .light
-        } else if UserDefaultsManager.appearance == 2 {
-            overrideUserInterfaceStyle = .dark
-            navigationController?.overrideUserInterfaceStyle = .dark
-        }
     }
 
     func configureTableView(){
@@ -85,7 +74,7 @@ class SettingsVC: UIViewController {
             segmentedControl.heightAnchor.constraint(equalToConstant: cell0.contentView.bounds.height * 0.7),
         ])
 
-        cells[0].append(cell0)
+        //cells[0].append(cell0)
 
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = "Large Map Annotations"
@@ -97,7 +86,7 @@ class SettingsVC: UIViewController {
         switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell.accessoryView = switchView
 
-        cells[1].append(cell)
+        cells[0].append(cell)
 
         let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell1.textLabel?.text = "Reduce Animations"
@@ -109,7 +98,7 @@ class SettingsVC: UIViewController {
         switchView1.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell1.accessoryView = switchView1
 
-        cells[1].append(cell1)
+        cells[0].append(cell1)
 
         let cell2 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell2.textLabel?.text = "Haptics"
@@ -121,14 +110,14 @@ class SettingsVC: UIViewController {
         switchView2.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell2.accessoryView = switchView2
 
-        cells[1].append(cell2)
+        cells[0].append(cell2)
 
         let cell3 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell3.textLabel?.text = "App Icon"
         cell3.imageView?.image = UIImage(systemName: "square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
         cell3.accessoryType = .disclosureIndicator
 
-        cells[1].append(cell3)
+        cells[0].append(cell3)
     }
 
     @objc func switchChanged(_ sender : UISwitch!){
@@ -147,18 +136,11 @@ class SettingsVC: UIViewController {
 
 extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-        case 1:
-            return 4
-        default:
-            return 0
-        }
+        return 4
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        2
+        1
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

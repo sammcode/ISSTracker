@@ -169,6 +169,7 @@
 		B21D0CF625F55F5A00A87141 /* ISSTracker */ = {
 			isa = PBXGroup;
 			children = (
+				B232468326370148000EF307 /* AlternateIcons */,
 				B232462E2625EF4D000EF307 /* planetearth.mp4 */,
 				B232467B2635E5DC000EF307 /* planetearthCropped.mp4 */,
 				B23246152624D9DE000EF307 /* Fonts */,
@@ -329,6 +330,77 @@
 				B23246162624D9F4000EF307 /* nasalization-rg.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		B232468326370148000EF307 /* AlternateIcons */ = {
+			isa = PBXGroup;
+			children = (
+				B232468E26370532000EF307 /* Yellow */,
+				B232468D2637052C000EF307 /* White */,
+				B232468C26370525000EF307 /* DarkBlue */,
+				B232468B26370515000EF307 /* LightBlue */,
+				B232468726370180000EF307 /* Orange */,
+				B232468626370178000EF307 /* Black */,
+				B23246852637016C000EF307 /* Purple */,
+				B23246842637015E000EF307 /* Red */,
+			);
+			path = AlternateIcons;
+			sourceTree = "<group>";
+		};
+		B23246842637015E000EF307 /* Red */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Red;
+			sourceTree = "<group>";
+		};
+		B23246852637016C000EF307 /* Purple */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Purple;
+			sourceTree = "<group>";
+		};
+		B232468626370178000EF307 /* Black */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Black;
+			sourceTree = "<group>";
+		};
+		B232468726370180000EF307 /* Orange */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Orange;
+			sourceTree = "<group>";
+		};
+		B232468B26370515000EF307 /* LightBlue */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LightBlue;
+			sourceTree = "<group>";
+		};
+		B232468C26370525000EF307 /* DarkBlue */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DarkBlue;
+			sourceTree = "<group>";
+		};
+		B232468D2637052C000EF307 /* White */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = White;
+			sourceTree = "<group>";
+		};
+		B232468E26370532000EF307 /* Yellow */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Yellow;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

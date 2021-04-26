@@ -33,6 +33,7 @@ enum Colors {
 
     static let mainBlueYellow = UIColor(named: "MainBlueYellow") ?? Colors.midnightBlue
     static let mainYellowBlue = UIColor(named: "MainYellowBlue") ?? Colors.deepYellow
+    static let whiteBlack = UIColor(named: "WhiteBlack") ?? Colors.calmBlue
 }
 
 enum ScreenSize {

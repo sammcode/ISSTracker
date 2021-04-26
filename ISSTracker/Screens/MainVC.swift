@@ -50,6 +50,16 @@ class MainVC: ITDataLoadingVC {
         playVideo()
     }
 
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13, *), self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            trackISSButton.layer.shadowColor = UIColor.label.cgColor
+            predictPassesButton.layer.shadowColor = UIColor.label.cgColor
+            peopleInSpaceButton.layer.shadowColor = UIColor.label.cgColor
+        }
+    }
+
     func addBackgroundandForegroundObservers() {
         // background event
         NotificationCenter.default.addObserver(self, selector: #selector(setPlayerLayerToNil), name: UIApplication.didEnterBackgroundNotification, object: nil)
@@ -83,17 +93,7 @@ class MainVC: ITDataLoadingVC {
             player.playImmediately(atRate: 1.0)
         }
 
-        let shadowView = CALayer()
-        shadowView.backgroundColor = UIColor.systemBackground.cgColor
-        shadowView.frame = CGRect(x: view.center.x - 125, y: view.center.y - 200, width: 250, height: 250)
-        shadowView.cornerRadius = shadowView.bounds.width/2
-        shadowView.shadowColor = UIColor.label.cgColor
-        shadowView.shadowOpacity = 0.5
-        shadowView.shadowOffset = CGSize(width: 0.0, height: 6.0)
-        shadowView.shadowRadius = 5
-
-        view.layer.insertSublayer(shadowView, at: 0)
-        view.layer.insertSublayer(playerLayer, at: 1)
+        view.layer.insertSublayer(playerLayer, at: 0)
 
         UIView.animate(withDuration: 1.0, delay: 1.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
             self.view.alpha = 1.0
@@ -143,16 +143,6 @@ class MainVC: ITDataLoadingVC {
         let infoButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(presentInfoVC))
         navigationItem.rightBarButtonItem = infoButton
 
-        if UserDefaultsManager.appearance == 0 {
-            overrideUserInterfaceStyle = .unspecified
-            navigationController?.overrideUserInterfaceStyle = .unspecified
-        } else if UserDefaultsManager.appearance == 1 {
-            overrideUserInterfaceStyle = .light
-            navigationController?.overrideUserInterfaceStyle = .light
-        } else if UserDefaultsManager.appearance == 2 {
-            overrideUserInterfaceStyle = .dark
-            navigationController?.overrideUserInterfaceStyle = .dark
-        }
     }
 
     /// Requests authorization for accessing users location; if granted access, sets properties for location manager, starts updating the users current location
@@ -191,7 +181,7 @@ class MainVC: ITDataLoadingVC {
         view.addSubview(titleLabel)
         titleLabel.font = UIFont(name: "NasalizationRg-Regular", size: 48)
         titleLabel.textColor = .label
-        titleLabel.text = "ISS Tracker"
+        titleLabel.text = "TrackISS"
 
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -200,7 +190,6 @@ class MainVC: ITDataLoadingVC {
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 80)
         ])
     }
-
 
     /// Configures the image description label, constrains it to the bottom of the collection view
     func configureImagesDescriptionLabel(){
@@ -272,13 +261,6 @@ class MainVC: ITDataLoadingVC {
         ])
 
         buttonsStackView.addArrangedSubviews(trackISSButton, predictPassesButton, peopleInSpaceButton)
-
-//        if DeviceType.isiPhoneSE {
-//            buttonsStackView.addArrangedSubviews(trackISSButton, predictPassesButton)
-//        }else{
-//            configureButtonDescriptionLabels()
-//            buttonsStackView.addArrangedSubviews(trackISSButton, trackISSDescriptionLabel, predictPassesButton, predictPassesDescriptionLabel)
-//        }
     }
 
     /// Adds the getISSLocation method to the trackISSButton, for the touchUpInside action
