@@ -51,6 +51,7 @@
 		B2324660262F6F82000EF307 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232465F262F6F82000EF307 /* SettingsVC.swift */; };
 		B232466D263090E5000EF307 /* AppIconSelectorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232466C263090E5000EF307 /* AppIconSelectorVC.swift */; };
 		B23246722630B9F6000EF307 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246712630B9F6000EF307 /* UserDefaultsManager.swift */; };
+		B232467C2635E5DC000EF307 /* planetearthCropped.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B232467B2635E5DC000EF307 /* planetearthCropped.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +120,7 @@
 		B232465F262F6F82000EF307 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		B232466C263090E5000EF307 /* AppIconSelectorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconSelectorVC.swift; sourceTree = "<group>"; };
 		B23246712630B9F6000EF307 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		B232467B2635E5DC000EF307 /* planetearthCropped.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = planetearthCropped.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				B232462E2625EF4D000EF307 /* planetearth.mp4 */,
+				B232467B2635E5DC000EF307 /* planetearthCropped.mp4 */,
 				B23246152624D9DE000EF307 /* Fonts */,
 				B21D0D8425F6AFE800A87141 /* Model */,
 				B21D0D3525F5622200A87141 /* Extensions */,
@@ -434,6 +437,7 @@
 				B21D0D0425F55F6100A87141 /* LaunchScreen.storyboard in Resources */,
 				B21D0D0125F55F6100A87141 /* Assets.xcassets in Resources */,
 				B232462F2625EF4D000EF307 /* planetearth.mp4 in Resources */,
+				B232467C2635E5DC000EF307 /* planetearthCropped.mp4 in Resources */,
 				B232461A2624E9D5000EF307 /* nasalization-rg.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -30,7 +30,7 @@ class ITButton: UIButton {
         setTitleColor(.systemBackground, for: .normal)
         translatesAutoresizingMaskIntoConstraints = false
 
-        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowColor = UIColor.label.cgColor
         layer.shadowOpacity = 0.5
         layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
         layer.shadowRadius = 5
