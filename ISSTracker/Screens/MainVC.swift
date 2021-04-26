@@ -64,14 +64,17 @@ class MainVC: ITDataLoadingVC {
     }
 
     func playVideo() {
-        guard let path = Bundle.main.path(forResource: "planetearth", ofType:"mp4") else {
-            debugPrint("planetearth.mp4 not found")
+        guard let path = Bundle.main.path(forResource: "planetearthCropped", ofType:"mp4") else {
+            debugPrint("planetearthCropped.mov not found")
             return
         }
 
         playerLayer = AVPlayerLayer(player: player)
         let playerItem = AVPlayerItem(url: URL(fileURLWithPath: path))
-        playerLayer.frame = view.bounds
+
+        playerLayer.frame = CGRect(x: view.center.x - 125, y: view.center.y - 200, width: 250, height: 250)
+        playerLayer.cornerRadius = playerLayer.bounds.width/2
+        playerLayer.masksToBounds = true
         playerLayer.videoGravity = .resizeAspectFill
         playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
         player.automaticallyWaitsToMinimizeStalling = false
@@ -80,7 +83,17 @@ class MainVC: ITDataLoadingVC {
             player.playImmediately(atRate: 1.0)
         }
 
-        view.layer.insertSublayer(playerLayer, at: 0)
+        let shadowView = CALayer()
+        shadowView.backgroundColor = UIColor.systemBackground.cgColor
+        shadowView.frame = CGRect(x: view.center.x - 125, y: view.center.y - 200, width: 250, height: 250)
+        shadowView.cornerRadius = shadowView.bounds.width/2
+        shadowView.shadowColor = UIColor.label.cgColor
+        shadowView.shadowOpacity = 0.5
+        shadowView.shadowOffset = CGSize(width: 0.0, height: 6.0)
+        shadowView.shadowRadius = 5
+
+        view.layer.insertSublayer(shadowView, at: 0)
+        view.layer.insertSublayer(playerLayer, at: 1)
 
         UIView.animate(withDuration: 1.0, delay: 1.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
             self.view.alpha = 1.0
@@ -126,7 +139,7 @@ class MainVC: ITDataLoadingVC {
     /// Configures properties for the ViewController
     func configureViewController(){
         navigationController?.navigationBar.prefersLargeTitles = true
-        view.backgroundColor = .black
+        view.backgroundColor = .systemBackground
         let infoButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(presentInfoVC))
         navigationItem.rightBarButtonItem = infoButton
 
@@ -177,7 +190,7 @@ class MainVC: ITDataLoadingVC {
     func configureTitleLabel() {
         view.addSubview(titleLabel)
         titleLabel.font = UIFont(name: "NasalizationRg-Regular", size: 48)
-        titleLabel.textColor = .white
+        titleLabel.textColor = .label
         titleLabel.text = "ISS Tracker"
 
         NSLayoutConstraint.activate([
