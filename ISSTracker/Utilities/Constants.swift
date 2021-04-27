@@ -22,6 +22,16 @@ enum Images {
     static let iss8 = UIImage(named: "ISS8")
     static let soyuz = UIImage(named: "Soyuz")
     static let crewDragon = UIImage(named: "CrewDragon")
+
+    static let darkBlueIcon = UIImage(named: "darkBlueIcon")
+    static let blackIcon = UIImage(named: "blackIcon")
+    static let greenIcon = UIImage(named: "greenIcon")
+    static let yellowIcon = UIImage(named: "yellowIcon")
+    static let whiteIcon = UIImage(named: "whiteIcon")
+    static let lightBlueIcon = UIImage(named: "lightBlueIcon")
+    static let orangeIcon = UIImage(named: "orangeIcon")
+    static let purpleIcon = UIImage(named: "purpleIcon")
+    static let redIcon = UIImage(named: "redIcon")
 }
 
 enum Colors {

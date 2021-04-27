@@ -37,7 +37,7 @@ class PeopleInSpaceVC: UIViewController {
     }
 
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createThreeColumnFlowLayout(in: view))
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createThreeColumnFlowLayout(in: view, itemHeightConstant: 40, hasHeaderView: true))
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
