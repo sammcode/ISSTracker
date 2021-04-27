@@ -81,8 +81,9 @@ class MainVC: ITDataLoadingVC {
 
         playerLayer = AVPlayerLayer(player: player)
         let playerItem = AVPlayerItem(url: URL(fileURLWithPath: path))
-
-        playerLayer.frame = CGRect(x: view.center.x - 125, y: view.center.y - 200, width: 250, height: 250)
+        let width = view.bounds.width * 0.6
+        let yConstant: CGFloat = DeviceType.isiPhoneSE ? 150 : 200
+        playerLayer.frame = CGRect(x: view.center.x - width/2, y: view.center.y - yConstant, width: width, height: width)
         playerLayer.cornerRadius = playerLayer.bounds.width/2
         playerLayer.masksToBounds = true
         playerLayer.videoGravity = .resizeAspectFill
@@ -187,7 +188,7 @@ class MainVC: ITDataLoadingVC {
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.widthAnchor.constraint(equalToConstant: 280),
             titleLabel.heightAnchor.constraint(equalToConstant: 50),
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 80)
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * 0.1)
         ])
     }
 
@@ -222,21 +223,25 @@ class MainVC: ITDataLoadingVC {
 
     /// Adds actions to the buttons, sets the width and height for both of them
     func configureButtons(){
+
+        let height: CGFloat = DeviceType.isiPhoneSE ? 40 : 60
+        //let height = DeviceType.isiPhoneSE ?
+
         addActionToTrackISSButton()
         NSLayoutConstraint.activate([
-            trackISSButton.heightAnchor.constraint(equalToConstant: 60),
+            trackISSButton.heightAnchor.constraint(equalToConstant: height),
             trackISSButton.widthAnchor.constraint(equalToConstant: 260)
         ])
 
         addActionToPredictPassesButton()
         NSLayoutConstraint.activate([
-            predictPassesButton.heightAnchor.constraint(equalToConstant: 60),
+            predictPassesButton.heightAnchor.constraint(equalToConstant: height),
             predictPassesButton.widthAnchor.constraint(equalToConstant: 260)
         ])
 
         addActionToPeopleInSpaceButton()
         NSLayoutConstraint.activate([
-            peopleInSpaceButton.heightAnchor.constraint(equalToConstant: 60),
+            peopleInSpaceButton.heightAnchor.constraint(equalToConstant: height),
             peopleInSpaceButton.widthAnchor.constraint(equalToConstant: 260)
         ])
     }
@@ -251,10 +256,11 @@ class MainVC: ITDataLoadingVC {
         buttonsStackView.axis = .vertical
         buttonsStackView.spacing = 10
 
-        let height: CGFloat = 240
+        let height: CGFloat = DeviceType.isiPhoneSE ? 180 : 240
+        let bottomConstant : CGFloat = DeviceType.isiPhoneSE ? -40 : -60
 
         NSLayoutConstraint.activate([
-            buttonsStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
+            buttonsStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomConstant),
             buttonsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonsStackView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.8),
             buttonsStackView.heightAnchor.constraint(equalToConstant: height)
