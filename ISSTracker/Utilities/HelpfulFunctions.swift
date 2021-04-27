@@ -19,7 +19,7 @@ enum HelpfulFunctions {
         return layout
     }
 
-    static func createThreeColumnFlowLayout(in view: UIView) -> UICollectionViewFlowLayout {
+    static func createThreeColumnFlowLayout(in view: UIView, itemHeightConstant: CGFloat, hasHeaderView: Bool) -> UICollectionViewFlowLayout {
         let width                       = view.bounds.width
         let padding: CGFloat            = 12
         let minimumItemSpacing: CGFloat = 10
@@ -28,8 +28,9 @@ enum HelpfulFunctions {
 
         let flowLayout                  = UICollectionViewFlowLayout()
         flowLayout.sectionInset         = UIEdgeInsets(top: padding, left: padding, bottom: padding*4, right: padding)
-        flowLayout.itemSize             = CGSize(width: itemWidth, height: itemWidth + 40)
-        flowLayout.headerReferenceSize = CGSize(width: width, height: 160)
+        flowLayout.itemSize             = CGSize(width: itemWidth, height: itemWidth + itemHeightConstant)
+
+        if hasHeaderView { flowLayout.headerReferenceSize = CGSize(width: width, height: 160) }
 
         return flowLayout
     }
