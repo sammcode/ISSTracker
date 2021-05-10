@@ -18,3 +18,10 @@ struct PeopleInSpace: Codable {
 struct Person: Codable {
     let name, craft: String
 }
+
+struct Astronaut {
+    let name: String
+    let nationality: String
+    let mission: String
+    let timesInSpace: String
+}

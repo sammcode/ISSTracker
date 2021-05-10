@@ -37,7 +37,7 @@ class PeopleInSpaceVC: UIViewController {
     }
 
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createTwoColumnFlowLayout(in: view, itemHeightConstant: 40, hasHeaderView: true))
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createTwoColumnFlowLayout(in: view, itemHeightConstant: 40, hasHeaderView: false))
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -60,13 +60,13 @@ extension PeopleInSpaceVC: UICollectionViewDelegate, UICollectionViewDataSource 
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ITNumberOfPeopleView.reuseID, for: indexPath as IndexPath) as! ITNumberOfPeopleView
-
-        headerView.set(number: peopleInSpace.number)
-
-        headerView.frame.size.height = 160
-
-        return headerView
-    }
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ITNumberOfPeopleView.reuseID, for: indexPath as IndexPath) as! ITNumberOfPeopleView
+//
+//        headerView.set(number: peopleInSpace.number)
+//
+//        headerView.frame.size.height = 160
+//
+//        return headerView
+//    }
 }

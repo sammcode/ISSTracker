@@ -16,7 +16,7 @@ class TrackISSVC: UIViewController {
     var anno: MKPointAnnotation!
     var timer: Timer!
 
-    var viewOffset: CGFloat = 170
+    var viewOffset: CGFloat = 200
     var coordinatesViewBottomConstraint = NSLayoutConstraint()
 
     var iconView = MKAnnotationView()
@@ -98,13 +98,13 @@ class TrackISSVC: UIViewController {
     /// Sets the data based on the gpsLocation variable
     /// Constrains it to the top of the view
     func configureCoordinatesView(){
-        coordinatesView = ITCoordinatesView(title: "ISS GPS Coordinates", latitude: gpsLocation.issPosition.latitude, longitude: gpsLocation.issPosition.longitude, timestamp: gpsLocation.timestamp.convertTimestampToString())
+        coordinatesView = ITCoordinatesView(title: "ISS GPS Coordinates", latitude: gpsLocation.issPosition.latitude, longitude: gpsLocation.issPosition.longitude, timestamp: gpsLocation.timestamp.convertTimestampToStringDate() + ", " + gpsLocation.timestamp.convertTimestampToStringTime())
         coordinatesViewBottomConstraint = coordinatesView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: viewOffset)
         view.addSubview(coordinatesView)
         NSLayoutConstraint.activate([
             coordinatesView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             coordinatesView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            coordinatesView.heightAnchor.constraint(equalToConstant: 170),
+            coordinatesView.heightAnchor.constraint(equalToConstant: 200),
             coordinatesViewBottomConstraint
         ])
     }
@@ -208,12 +208,12 @@ class TrackISSVC: UIViewController {
         showCoordinatesButton.pulsate()
         switch viewOffset {
         case 20:
-            self.viewOffset = 170
+            self.viewOffset = 200
             coordinatesViewBottomConstraint.constant = viewOffset
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
             }
-        case 170:
+        case 200:
             self.viewOffset = 20
             coordinatesViewBottomConstraint.constant = viewOffset
             UIView.animate(withDuration: 0.5) {
@@ -304,7 +304,7 @@ class TrackISSVC: UIViewController {
 
                     self.coordinatesView.latitudeLabel.text = "Latitude: " + self.gpsLocation.issPosition.latitude
                     self.coordinatesView.longitudeLabel.text = "Longitude: " + self.gpsLocation.issPosition.longitude
-                    self.coordinatesView.timestampLabel.text = "Timestamp: " + self.gpsLocation.timestamp.convertTimestampToString()
+                    self.coordinatesView.timestampLabel.text = "Timestamp: " + self.gpsLocation.timestamp.convertTimestampToStringDate() + ", " + self.gpsLocation.timestamp.convertTimestampToStringTime()
 
                 }
             case .failure(let error):

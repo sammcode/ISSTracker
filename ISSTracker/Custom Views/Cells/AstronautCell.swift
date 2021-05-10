@@ -32,6 +32,17 @@ class AstronautCell: UICollectionViewCell {
 
         nameLabel.numberOfLines = 2
         nameLabel.textColor = Colors.mainBlueYellow
+        nameLabel.textAlignment = .left
+
+        astronautImageView.layer.cornerRadius = 20
+
+        layer.shadowColor = Colors.whiteBlack.cgColor
+        layer.shadowOpacity = 0.5
+        layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
+        layer.shadowRadius = 5
+
+        backgroundColor = .systemBackground
+        layer.cornerRadius = 20
 
         let padding: CGFloat = 8
         NSLayoutConstraint.activate([
@@ -40,7 +51,7 @@ class AstronautCell: UICollectionViewCell {
             astronautImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             astronautImageView.heightAnchor.constraint(equalTo: astronautImageView.widthAnchor),
 
-            nameLabel.topAnchor.constraint(equalTo: astronautImageView.bottomAnchor, constant: 12),
+            nameLabel.topAnchor.constraint(equalTo: astronautImageView.bottomAnchor, constant: 0),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             nameLabel.heightAnchor.constraint(equalToConstant: 40)

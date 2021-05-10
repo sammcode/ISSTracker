@@ -12,6 +12,7 @@ import AVFoundation
 enum Images {
     static let issIcon = UIImage(named: "ISSIcon")
     static let issIcon2 = UIImage(named: "ISSIcon2")
+    static let issIcon3 = UIImage(named: "ISSIcon3")
     static let iss1 = UIImage(named: "ISS1")
     static let iss2 = UIImage(named: "ISS2")
     static let iss3 = UIImage(named: "ISS3")
@@ -76,7 +77,7 @@ enum DF {
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = NSLocale.current
-        formatter.dateFormat = "HH:mm MM/dd"
+        formatter.dateFormat = "MMMMM d"
         return formatter
     }()
 }

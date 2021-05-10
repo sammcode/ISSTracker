@@ -130,7 +130,6 @@ class MainVC: ITDataLoadingVC {
     /// Calls all configuration methods for the ViewController
     func configure(){
         configureViewController()
-        configureLocationManager()
         configureCollectionView()
         configureTitleLabel()
         configureButtons()
@@ -233,12 +232,6 @@ class MainVC: ITDataLoadingVC {
             trackISSButton.widthAnchor.constraint(equalToConstant: 260)
         ])
 
-        addActionToPredictPassesButton()
-        NSLayoutConstraint.activate([
-            predictPassesButton.heightAnchor.constraint(equalToConstant: height),
-            predictPassesButton.widthAnchor.constraint(equalToConstant: 260)
-        ])
-
         addActionToPeopleInSpaceButton()
         NSLayoutConstraint.activate([
             peopleInSpaceButton.heightAnchor.constraint(equalToConstant: height),
@@ -256,7 +249,7 @@ class MainVC: ITDataLoadingVC {
         buttonsStackView.axis = .vertical
         buttonsStackView.spacing = 10
 
-        let height: CGFloat = DeviceType.isiPhoneSE ? 180 : 240
+        let height: CGFloat = DeviceType.isiPhoneSE ? 120 : 160
         let bottomConstant : CGFloat = DeviceType.isiPhoneSE ? -40 : -60
 
         NSLayoutConstraint.activate([
@@ -266,17 +259,12 @@ class MainVC: ITDataLoadingVC {
             buttonsStackView.heightAnchor.constraint(equalToConstant: height)
         ])
 
-        buttonsStackView.addArrangedSubviews(trackISSButton, predictPassesButton, peopleInSpaceButton)
+        buttonsStackView.addArrangedSubviews(trackISSButton, peopleInSpaceButton)
     }
 
     /// Adds the getISSLocation method to the trackISSButton, for the touchUpInside action
     func addActionToTrackISSButton(){
         trackISSButton.addTarget(self, action: #selector(getISSLocation), for: .touchUpInside)
-    }
-
-    /// Adds the getPassTimes method to the predictPassesButton, for the touchUpInside action
-    func addActionToPredictPassesButton(){
-        predictPassesButton.addTarget(self, action: #selector(getPassTimes), for: .touchUpInside)
     }
 
     /// Adds the getPeopleInSpace method to the peopleInSpaceButton, for the touchUpInside action
