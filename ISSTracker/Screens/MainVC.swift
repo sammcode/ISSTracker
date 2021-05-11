@@ -130,7 +130,6 @@ class MainVC: ITDataLoadingVC {
     /// Calls all configuration methods for the ViewController
     func configure(){
         configureViewController()
-        configureCollectionView()
         configureTitleLabel()
         configureButtons()
         configureButtonsStackView()
@@ -153,27 +152,6 @@ class MainVC: ITDataLoadingVC {
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
-    }
-
-    /// Configures the collection view, sets properties, registers the custom cell to be used, constrains the collection view to the top half of the view
-    func configureCollectionView() {
-        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: HelpfulFunctions.createHorizontalFlowLayout())
-        view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.backgroundColor = .systemBackground
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.register(ITImageCell.self, forCellWithReuseIdentifier: ITImageCell.reuseID)
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * 0.15),
-            collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            collectionView.widthAnchor.constraint(equalToConstant: view.bounds.width),
-            collectionView.heightAnchor.constraint(equalToConstant: view.bounds.height * 0.42)
-        ])
-
-        #warning("REMOVE")
-        collectionView.isHidden = true
     }
 
     /// Configures the title label, constains it to the top of the view

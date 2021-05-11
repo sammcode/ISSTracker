@@ -81,7 +81,6 @@
 		B23246F126376DDE000EF307 /* darkBlueIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23246EE26376DDE000EF307 /* darkBlueIcon@3x.png */; };
 		B23246FC26377105000EF307 /* IconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246FB26377105000EF307 /* IconManager.swift */; };
 		B23247162638E66E000EF307 /* ITPassTimeStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23247152638E66C000EF307 /* ITPassTimeStatusView.swift */; };
-		B232471B2638E887000EF307 /* ITPassTimeStatusVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232471A2638E887000EF307 /* ITPassTimeStatusVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -180,7 +179,6 @@
 		B23246EE26376DDE000EF307 /* darkBlueIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "darkBlueIcon@3x.png"; sourceTree = "<group>"; };
 		B23246FB26377105000EF307 /* IconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconManager.swift; sourceTree = "<group>"; };
 		B23247152638E66C000EF307 /* ITPassTimeStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITPassTimeStatusView.swift; sourceTree = "<group>"; };
-		B232471A2638E887000EF307 /* ITPassTimeStatusVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITPassTimeStatusVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -371,7 +369,6 @@
 			children = (
 				B21D0DA225F6C2E300A87141 /* ITAlertVC.swift */,
 				B21D0DC225F6C6C000A87141 /* ITDataLoadingVC.swift */,
-				B232471A2638E887000EF307 /* ITPassTimeStatusVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -678,7 +675,6 @@
 				B21D0D9325F6B29700A87141 /* NetworkManager.swift in Sources */,
 				B21D0D3725F562B100A87141 /* MainVC.swift in Sources */,
 				B21D0DB025F6C35500A87141 /* ITBodyLabel.swift in Sources */,
-				B232471B2638E887000EF307 /* ITPassTimeStatusVC.swift in Sources */,
 				B21D0D6425F5908600A87141 /* ITButton.swift in Sources */,
 				B21D0DAB25F6C34700A87141 /* ITTitleLabel.swift in Sources */,
 				B232462A2625E018000EF307 /* PeopleInSpaceVC.swift in Sources */,

@@ -5,7 +5,7 @@
 //  Created by Sam McGarry on 4/10/21.
 //
 
-import Foundation
+import UIKit
 
 // MARK: - People In Space
 struct PeopleInSpace: Codable {
@@ -21,7 +21,8 @@ struct Person: Codable {
 
 struct Astronaut {
     let name: String
+    let image: UIImage
     let nationality: String
-    let mission: String
-    let timesInSpace: String
+    let role: String
+    let biographyURL: String
 }
