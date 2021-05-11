@@ -37,13 +37,12 @@ class PeopleInSpaceVC: UIViewController {
     }
 
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createThreeColumnFlowLayout(in: view, itemHeightConstant: 40, hasHeaderView: true))
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createTwoColumnFlowLayout(in: view, itemHeightConstant: 80, hasHeaderView: false))
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
         collectionView.register(AstronautCell.self, forCellWithReuseIdentifier: AstronautCell.reuseID)
-        collectionView.register(ITNumberOfPeopleView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ITNumberOfPeopleView.reuseID)
     }
 }
 
@@ -55,18 +54,18 @@ extension PeopleInSpaceVC: UICollectionViewDelegate, UICollectionViewDataSource 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AstronautCell.reuseID, for: indexPath) as! AstronautCell
         let name = peopleInSpace.people[indexPath.row].name
-        let image = Astronauts.portraits[name] ?? Images.iss7
-        cell.set(name: name, image: image!)
+        let astronaut = AstronautData.astronauts[name]
+        cell.set(astronaut: astronaut!)
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ITNumberOfPeopleView.reuseID, for: indexPath as IndexPath) as! ITNumberOfPeopleView
-
-        headerView.set(number: peopleInSpace.number)
-
-        headerView.frame.size.height = 160
-
-        return headerView
-    }
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ITNumberOfPeopleView.reuseID, for: indexPath as IndexPath) as! ITNumberOfPeopleView
+//
+//        headerView.set(number: peopleInSpace.number)
+//
+//        headerView.frame.size.height = 160
+//
+//        return headerView
+//    }
 }

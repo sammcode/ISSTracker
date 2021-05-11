@@ -12,6 +12,7 @@ import AVFoundation
 enum Images {
     static let issIcon = UIImage(named: "ISSIcon")
     static let issIcon2 = UIImage(named: "ISSIcon2")
+    static let issIcon3 = UIImage(named: "ISSIcon3")
     static let iss1 = UIImage(named: "ISS1")
     static let iss2 = UIImage(named: "ISS2")
     static let iss3 = UIImage(named: "ISS3")
@@ -76,17 +77,13 @@ enum DF {
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = NSLocale.current
-        formatter.dateFormat = "HH:mm MM/dd"
+        formatter.dateFormat = "MMMMM d"
         return formatter
     }()
 }
 
 enum Map {
     static let mapView = MKMapView()
-}
-
-enum Constants {
-    static var favoritesCount = 0
 }
 
 enum Spacecraft {
@@ -97,46 +94,39 @@ enum Spacecraft {
     ]
 }
 
-enum Astronauts {
-    static let portraits = [
-        "Sergey Ryzhikov" : UIImage(named: "SergeyRyzhikov"),
-        "Kate Rubins" : UIImage(named: "KateRubins"),
-        "Sergey Kud-Sverchkov" : UIImage(named: "SergeyKudSverchkov"),
-        "Mike Hopkins" : UIImage(named: "MikeHopkins"),
-        "Victor Glover" : UIImage(named: "VictorGlover"),
-        "Shannon Walker" : UIImage(named: "ShannonWalker"),
-        "Soichi Noguchi" : UIImage(named: "SoichiNoguchi"),
-        "Mark Vande Hei" : UIImage(named: "MarkVandeHei"),
-        "Oleg Novitskiy" : UIImage(named: "OlegNovitskiy"),
-        "Pyotr Dubrov" : UIImage(named: "PyotrDubrov"),
+enum AstronautData {
+    static let astronauts = [
 
-        //Crew-2
-        "Shane Kimbrough" : UIImage(named: "ShaneKimbrough"),
-        "Megan McArthur" : UIImage(named: "MeganMcArthur"),
-        "Akihiko Hoshide" : UIImage(named: "AkihikoHoshide"),
-        "Thomas Pesquet" : UIImage(named: "ThomasPesquet"),
+        //Expedition 65/Crew 2
+        "Mark Vande Hei" : Astronaut(name: "Mark Vande Hei", image: (UIImage(named: "MarkVandeHei") ?? Images.iss1)!, nationality: "USA 🇺🇸", role: "Flight Engineer", biographyURL: "https://www.nasa.gov/astronauts/biographies/mark-t-vande-hei/biography"),
+        "Oleg Novitskiy" : Astronaut(name: "Oleg Novitskiy", image: (UIImage(named: "OlegNovitskiy") ?? Images.iss1)!, nationality: "Russia 🇷🇺", role: "Flight Engineer", biographyURL: "http://en.roscosmos.ru/1614/"),
+        "Pyotr Dubrov" : Astronaut(name: "Pyotr Dubrov", image: (UIImage(named: "PyotrDubrov") ?? Images.iss1)!, nationality: "Russia 🇷🇺", role: "Flight Engineer", biographyURL: "http://www.gctc.ru/main.php?id=1704"),
+
+        "Shane Kimbrough" : Astronaut(name: "Shane Kimbrough", image: (UIImage(named: "ShaneKimbrough") ?? Images.iss1)!, nationality: "USA 🇺🇸", role: "Flight Engineer", biographyURL: "https://www.nasa.gov/astronauts/biographies/robert-shane-kimbrough/biography"),
+        "Megan McArthur" : Astronaut(name: "Megan McArthur", image: (UIImage(named: "MeganMcArthur") ?? Images.iss1)!, nationality: "USA 🇺🇸", role: "Flight Engineer", biographyURL: "https://www.nasa.gov/astronauts/biographies/k-megan-mcarthur/biography"),
+        "Akihiko Hoshide" : Astronaut(name: "Akihiko Hoshide", image: (UIImage(named: "AkihikoHoshide") ?? Images.iss1)!, nationality: "Japan 🇯🇵", role: "Commander", biographyURL: "https://iss.jaxa.jp/en/astro/biographies/hoshide/index.html"),
+        "Thomas Pesquet" : Astronaut(name: "Thomas Pesquet", image: (UIImage(named: "ThomasPesquet") ?? Images.iss1)!, nationality: "France 🇫🇷", role: "Flight Engineer", biographyURL: "https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Astronauts/Thomas_Pesquet"),
 
         //Inspiration4
-        "Jared Isaacman" : Images.iss1,
-        "Hayley Arceneaux" : Images.iss1,
-        "Chris Sembroski" : Images.iss1,
-        "Dr. Sian Proctor" : Images.iss1,
+        "Jared Isaacman" : Astronaut(name: "Jared Isaacman", image: (UIImage(named: "JaredIsaacman") ?? Images.iss1)!, nationality: "USA 🇺🇸", role: "Commander", biographyURL: "https://inspiration4.com/crew"),
+        "Hayley Arceneaux" : Astronaut(name: "Hayley Arceneaux", image: (UIImage(named: "HayleyArceneaux") ?? Images.iss1)!, nationality: "USA 🇺🇸", role: "Civilian", biographyURL: "https://inspiration4.com/crew"),
+        "Chris Sembroski" : Astronaut(name: "Chris Sembroski", image: (UIImage(named: "ChrisSembroski") ?? Images.iss1)!, nationality: "USA 🇺🇸", role: "Civilian", biographyURL: "https://inspiration4.com/crew"),
+        "Dr. Sian Proctor" : Astronaut(name: "Dr. Sian Proctor", image: (UIImage(named: "Dr. Sian Proctor") ?? Images.iss1)!, nationality: "USA 🇺🇸", role: "Civilian", biographyURL: "https://inspiration4.com/crew"),
 
         //Starliner
-        "Mike Fincke" : Images.iss1,
-        "Nicole Mann" : Images.iss1,
-        "Barry Wilmore" : Images.iss1,
-
-        //Soyuz mission
-        "Anton Shkaplerov" : Images.iss1,
-        "Klim Shipenko" : Images.iss1,
-        "unnamed" : Images.iss1,
-
-        //Crew-3
-        "Raja Chari" : Images.iss1,
-        "Thomas Marshburn" : Images.iss1,
-        "Matthias Maurer" : Images.iss1,
-        "unnamed2" : Images.iss1,
-
+//        "Mike Fincke" : Images.iss1,
+//        "Nicole Mann" : Images.iss1,
+//        "Barry Wilmore" : Images.iss1,
+//
+//        //Soyuz mission
+//        "Anton Shkaplerov" : Images.iss1,
+//        "Klim Shipenko" : Images.iss1,
+//        "unnamed" : Images.iss1,
+//
+//        //Crew-3
+//        "Raja Chari" : Images.iss1,
+//        "Thomas Marshburn" : Images.iss1,
+//        "Matthias Maurer" : Images.iss1,
+//        "unnamed2" : Images.iss1,
     ]
 }

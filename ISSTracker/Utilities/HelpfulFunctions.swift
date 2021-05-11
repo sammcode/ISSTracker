@@ -34,4 +34,20 @@ enum HelpfulFunctions {
 
         return flowLayout
     }
+
+    static func createTwoColumnFlowLayout(in view: UIView, itemHeightConstant: CGFloat, hasHeaderView: Bool) -> UICollectionViewFlowLayout {
+        let width                       = view.bounds.width
+        let padding: CGFloat            = 12
+        let minimumItemSpacing: CGFloat = 10
+        let availableWidth              = width - (padding * 2) - (minimumItemSpacing * 2)
+        let itemWidth                   = availableWidth / 2
+
+        let flowLayout                  = UICollectionViewFlowLayout()
+        flowLayout.sectionInset         = UIEdgeInsets(top: padding, left: padding, bottom: padding*4, right: padding)
+        flowLayout.itemSize             = CGSize(width: itemWidth, height: itemWidth + itemHeightConstant)
+
+        if hasHeaderView { flowLayout.headerReferenceSize = CGSize(width: width, height: 160) }
+
+        return flowLayout
+    }
 }

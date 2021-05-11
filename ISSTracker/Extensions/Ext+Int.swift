@@ -8,10 +8,19 @@
 import Foundation
 
 extension Int {
-    /// Converts any timestamp (as an Int) to a MM/dd HH:mm format
+    /// Converts any timestamp (as an Int) to a MMMM d format
     /// - Returns: Formatted date as a String
-    func convertTimestampToString() -> String {
+    func convertTimestampToStringDate() -> String {
         let date = Date(timeIntervalSince1970: Double(self))
+        DF.dateFormatter.dateFormat = "MMMM d"
+        return DF.dateFormatter.string(from: date)
+    }
+
+    /// Converts any timestamp (as an Int) to a MMMM d format
+    /// - Returns: Formatted date as a String
+    func convertTimestampToStringTime() -> String {
+        let date = Date(timeIntervalSince1970: Double(self))
+        DF.dateFormatter.dateFormat = "h:mm a"
         return DF.dateFormatter.string(from: date)
     }
 }

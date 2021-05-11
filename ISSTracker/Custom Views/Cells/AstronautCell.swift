@@ -9,9 +9,12 @@ import UIKit
 
 class AstronautCell: UICollectionViewCell {
     static let reuseID = "AstronautCell"
+    var astro: Astronaut?
 
     let astronautImageView = ITImageView(frame: .zero)
-    let nameLabel = ITTitleLabel(textAlignment: .center, fontSize: 16)
+    let nameLabel = ITTitleLabel(textAlignment: .left, fontSize: 16)
+    let nationalityLabel = ITBodyLabel(textAlignment: .left)
+    let roleLabel = ITBodyLabel(textAlignment: .left)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,16 +25,30 @@ class AstronautCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func set(name: String, image: UIImage){
-        astronautImageView.image = image
-        nameLabel.text = name
+    func set(astronaut: Astronaut){
+        astro = astronaut
+        astronautImageView.image = astronaut.image
+        nameLabel.text = astronaut.name
+        nationalityLabel.text = astronaut.nationality
+        roleLabel.text = astronaut.role
     }
 
     private func configure() {
-        addSubviews(astronautImageView, nameLabel)
+        addSubviews(astronautImageView, nameLabel, nationalityLabel, roleLabel)
 
         nameLabel.numberOfLines = 2
         nameLabel.textColor = Colors.mainBlueYellow
+        nameLabel.adjustsFontSizeToFitWidth = true
+
+        astronautImageView.layer.cornerRadius = 20
+
+        layer.shadowColor = Colors.whiteBlack.cgColor
+        layer.shadowOpacity = 0.5
+        layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
+        layer.shadowRadius = 5
+
+        backgroundColor = .systemBackground
+        layer.cornerRadius = 20
 
         let padding: CGFloat = 8
         NSLayoutConstraint.activate([
@@ -40,10 +57,20 @@ class AstronautCell: UICollectionViewCell {
             astronautImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             astronautImageView.heightAnchor.constraint(equalTo: astronautImageView.widthAnchor),
 
-            nameLabel.topAnchor.constraint(equalTo: astronautImageView.bottomAnchor, constant: 12),
+            nameLabel.topAnchor.constraint(equalTo: astronautImageView.bottomAnchor, constant: 0),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            nameLabel.heightAnchor.constraint(equalToConstant: 40)
+            nameLabel.heightAnchor.constraint(equalToConstant: 35),
+
+            nationalityLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 0),
+            nationalityLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            nationalityLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            nationalityLabel.heightAnchor.constraint(equalToConstant: 20),
+
+            roleLabel.topAnchor.constraint(equalTo: nationalityLabel.bottomAnchor, constant: 0),
+            roleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            roleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            roleLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
 }

@@ -16,15 +16,22 @@ class PredictPassesVC: UIViewController {
     var tableView = UITableView()
     var dataHasBeenSet = false
 
+    var passTimeStatusView: ITPassTimeStatusView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        passTimeStatusView.timer.invalidate()
     }
 
     /// Calls all configuration methods for the ViewController
     func configure(){
         configureViewController()
         configureTableView()
+        //configurePassTimeStatusVC()
     }
 
     /// Configures properties for the ViewController
@@ -38,7 +45,6 @@ class PredictPassesVC: UIViewController {
 
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
     }
-
 
     /// Configures table view properties
     /// Registers the ITPredictedTimeCell for use in the table view
@@ -55,7 +61,7 @@ class PredictPassesVC: UIViewController {
         tableView.removeExcessCells()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.pinToEdges(of: view)
-        createAndSetTableHeaderView()
+        createAndSetTestTableHeaderView()
     }
 
     /// Creates and sets a custom header view for the table view section
@@ -99,6 +105,24 @@ class PredictPassesVC: UIViewController {
         tableView.tableHeaderView = containerView
     }
 
+    func createAndSetTestTableHeaderView(){
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width * 0.95, height: 180))
+        containerView.backgroundColor = .systemBackground
+
+        passTimeStatusView = ITPassTimeStatusView(passtime: passTime)
+
+        containerView.addSubview(passTimeStatusView)
+        NSLayoutConstraint.activate([
+            passTimeStatusView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            passTimeStatusView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            passTimeStatusView.widthAnchor.constraint(equalToConstant: containerView.bounds.width),
+            passTimeStatusView.heightAnchor.constraint(equalToConstant: 160)
+        ])
+
+        tableView.tableHeaderView = containerView
+
+    }
+
     /// Dismisses the ViewController
     @objc func dismissVC(){
         dismiss(animated: true)
@@ -133,6 +157,6 @@ extension PredictPassesVC: UITableViewDelegate, UITableViewDataSource {
 
     ///Returns the height for the table view header, which is set to a pre-determined constant
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 225
+        return 180
     }
 }
