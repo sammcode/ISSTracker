@@ -40,6 +40,9 @@ class AstronautCell: UICollectionViewCell {
         nameLabel.textColor = Colors.mainBlueYellow
         nameLabel.adjustsFontSizeToFitWidth = true
 
+        nationalityLabel.textColor = .label
+        roleLabel.textColor = .label
+
         astronautImageView.layer.cornerRadius = 20
 
         layer.shadowColor = Colors.whiteBlack.cgColor

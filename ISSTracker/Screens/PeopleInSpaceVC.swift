@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class PeopleInSpaceVC: UIViewController {
 
@@ -59,13 +60,11 @@ extension PeopleInSpaceVC: UICollectionViewDelegate, UICollectionViewDataSource 
         return cell
     }
 
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ITNumberOfPeopleView.reuseID, for: indexPath as IndexPath) as! ITNumberOfPeopleView
-//
-//        headerView.set(number: peopleInSpace.number)
-//
-//        headerView.frame.size.height = 160
-//
-//        return headerView
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let name = peopleInSpace.people[indexPath.row].name
+        let astronaut = AstronautData.astronauts[name]
+        let safariVC = SFSafariViewController(url: URL(string: astronaut!.biographyURL)!)
+        safariVC.preferredControlTintColor = Colors.mainBlueYellow
+        present(safariVC, animated: true)
+    }
 }

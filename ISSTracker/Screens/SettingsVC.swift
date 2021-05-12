@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import SafariServices
 
 class SettingsVC: UIViewController {
 
     var tableView = UITableView(frame: .zero, style: .insetGrouped)
-    var cells = [[UITableViewCell](), [UITableViewCell]()]
+    var cells = [[UITableViewCell](), [UITableViewCell](), [UITableViewCell](), [UITableViewCell]()]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +42,33 @@ class SettingsVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         configureCells()
+
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
+        let label = ITTitleLabel(textAlignment: .center, fontSize: 24)
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        label.text = "TrackISS v\(appVersion!)\nMade with ❤️ by Sam."
+        label.textColor = .label
+        label.font = UIFont(name: "NasalizationRg-Regular", size: 18)
+        label.numberOfLines = 2
+        footerView.addSubview(label)
+        NSLayoutConstraint.activate([
+            label.heightAnchor.constraint(equalToConstant: 50),
+            label.widthAnchor.constraint(equalToConstant: 200),
+            label.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: footerView.centerYAnchor)
+        ])
+
+        let logoImageView = ITImageView(frame: .zero)
+        footerView.addSubview(logoImageView)
+        logoImageView.image = Images.issIcon3?.withTintColor(Colors.mainBlueYellow)
+        NSLayoutConstraint.activate([
+            logoImageView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+            logoImageView.widthAnchor.constraint(equalToConstant: 80),
+            logoImageView.heightAnchor.constraint(equalToConstant: 50),
+            logoImageView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10)
+        ])
+
+        tableView.tableFooterView = footerView
     }
 
     @objc func segmentedControlValueChanged(_ sender: UISegmentedControl) {
@@ -60,21 +88,12 @@ class SettingsVC: UIViewController {
     }
 
     func configureCells(){
-        let cell0 = UITableViewCell()
-        let items = ["Automatic", "Light", "Dark"]
-        let segmentedControl = UISegmentedControl(items: items)
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        segmentedControl.selectedSegmentIndex = UserDefaultsManager.appearance
-        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
-        cell0.contentView.addSubview(segmentedControl)
-        NSLayoutConstraint.activate([
-            segmentedControl.centerYAnchor.constraint(equalTo: cell0.contentView.centerYAnchor),
-            segmentedControl.centerXAnchor.constraint(equalTo: cell0.contentView.centerXAnchor),
-            segmentedControl.widthAnchor.constraint(equalToConstant: tableView.bounds.width * 0.85),
-            segmentedControl.heightAnchor.constraint(equalToConstant: cell0.contentView.bounds.height * 0.7),
-        ])
+        let cell0 = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell0.textLabel?.text = "App Icon"
+        cell0.imageView?.image = UIImage(systemName: "square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell0.accessoryType = .disclosureIndicator
 
-        //cells[0].append(cell0)
+        cells[0].append(cell0)
 
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = "Large Map Annotations"
@@ -86,7 +105,7 @@ class SettingsVC: UIViewController {
         switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell.accessoryView = switchView
 
-        cells[0].append(cell)
+        cells[1].append(cell)
 
         let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell1.textLabel?.text = "Reduce Animations"
@@ -98,7 +117,7 @@ class SettingsVC: UIViewController {
         switchView1.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell1.accessoryView = switchView1
 
-        cells[0].append(cell1)
+        cells[1].append(cell1)
 
         let cell2 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell2.textLabel?.text = "Haptics"
@@ -110,14 +129,31 @@ class SettingsVC: UIViewController {
         switchView2.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell2.accessoryView = switchView2
 
-        cells[0].append(cell2)
+        cells[1].append(cell2)
 
+        //RESOURCES
         let cell3 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell3.textLabel?.text = "App Icon"
-        cell3.imageView?.image = UIImage(systemName: "square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell3.textLabel?.text = "TrackISS Github repo"
         cell3.accessoryType = .disclosureIndicator
+        cells[2].append(cell3)
 
-        cells[0].append(cell3)
+        let cell4 = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell4.textLabel?.text = "Open-Notify API"
+        cell4.accessoryType = .disclosureIndicator
+        cells[2].append(cell4)
+
+        let cell5 = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell5.textLabel?.text = "Where the ISS at? API"
+        cell5.accessoryType = .disclosureIndicator
+        cells[2].append(cell5)
+
+        //OTHER
+
+        let cell6 = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell6.textLabel?.text = "Developer"
+        cell6.imageView?.image = UIImage(systemName: "person", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell6.accessoryType = .disclosureIndicator
+        cells[3].append(cell6)
     }
 
     @objc func switchChanged(_ sender : UISwitch!){
@@ -136,11 +172,11 @@ class SettingsVC: UIViewController {
 
 extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return cells[section].count
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        1
+        4
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -149,6 +185,8 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
             return "Appearance"
         case 1:
             return "General"
+        case 2:
+            return "Resources"
         default:
             return ""
         }
@@ -159,9 +197,27 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 3 {
+        switch indexPath.section {
+        case 0:
             let appIconSelectorVC = AppIconSelectorVC()
             self.navigationController?.pushViewController(appIconSelectorVC, animated: true)
+        case 2:
+            var url = URL(string: "")
+            switch indexPath.row {
+            case 0:
+                url = URL(string: "https://github.com/sammcode/ISSTracker")
+            case 1:
+                url = URL(string: "http://open-notify.org/")
+            case 2:
+                url = URL(string: "https://wheretheiss.at/")
+            default:
+                break
+            }
+            let safariVC = SFSafariViewController(url: url!)
+            safariVC.preferredControlTintColor = Colors.mainBlueYellow
+            present(safariVC, animated: true)
+        default:
+            break
         }
     }
 }
