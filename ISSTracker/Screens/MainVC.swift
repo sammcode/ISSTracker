@@ -40,8 +40,11 @@ class MainVC: ITDataLoadingVC {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        view.alpha = 0.0
         playVideo()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        view.alpha = 0.0
     }
 
     override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -117,7 +120,7 @@ class MainVC: ITDataLoadingVC {
     func configure(){
         configureViewController()
         configureTitleLabel()
-        configureLogoImageView()
+        //configureLogoImageView()
         configureButtons()
         configureButtonsStackView()
     }

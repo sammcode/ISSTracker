@@ -22,7 +22,9 @@ class TrackISSVC: UIViewController {
     var iconView = MKAnnotationView()
 
     var pulseLayer = CAShapeLayer()
-    var pulseIsActive = true
+    var isPulseActive = true
+
+    var isTrackingModeEnabled = false
 
     let iconWidth = UserDefaultsManager.largeMapAnnotations ? 90 : 60
     let iconHeight = UserDefaultsManager.largeMapAnnotations ? 60 : 40
@@ -32,6 +34,11 @@ class TrackISSVC: UIViewController {
     var pulseButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "target", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
     var zoomInButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "plus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
     var zoomOutButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "minus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
+    var trackingModeButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "binoculars", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
+
+    var trackingModeLabel = ITPaddingLabel(withInsets: 2, 2, 2, 2)
+    var trackingModeLabelTopConstraint = NSLayoutConstraint()
+    var trackingModeLabelOffset: CGFloat = -100
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,9 +61,13 @@ class TrackISSVC: UIViewController {
         configurePulseButton()
         configureMapTypeButton()
         configureShowCoordinatesButton()
-        configureTrackButton()
+        configureZoomInButton()
         configureZoomOutButton()
+        configureTrackingModeButton()
         configureIconView()
+
+        configureTrackingModeLabel()
+
         addBackgroundandForegroundObservers()
     }
 
@@ -151,15 +162,16 @@ class TrackISSVC: UIViewController {
         pulseButton.addTarget(self, action: #selector(pulseButtonTapped), for: .touchUpInside)
     }
 
-    @objc func pulseButtonTapped() {
+    @objc
+    func pulseButtonTapped() {
         pulseButton.pulsate()
-        switch pulseIsActive {
+        switch isPulseActive {
         case true:
             clearPulseLayer()
-            pulseIsActive.toggle()
+            isPulseActive.toggle()
         case false:
             createPulseLayer()
-            pulseIsActive.toggle()
+            isPulseActive.toggle()
         }
     }
 
@@ -178,7 +190,8 @@ class TrackISSVC: UIViewController {
         mapTypeButton.addTarget(self, action: #selector(mapTypeButtonTapped), for: .touchUpInside)
     }
 
-    @objc func mapTypeButtonTapped() {
+    @objc
+    func mapTypeButtonTapped() {
         mapTypeButton.pulsate()
         switch Map.mapView.mapType {
         case .standard:
@@ -209,7 +222,8 @@ class TrackISSVC: UIViewController {
         showCoordinatesButton.addTarget(self, action: #selector(showCoordinatesButtonTapped), for: .touchUpInside)
     }
 
-    @objc func showCoordinatesButtonTapped() {
+    @objc
+    func showCoordinatesButtonTapped() {
         showCoordinatesButton.pulsate()
         switch viewOffset {
         case 20:
@@ -233,25 +247,26 @@ class TrackISSVC: UIViewController {
         }
     }
 
-    func configureTrackButton(){
+    func configureZoomInButton(){
         view.addSubview(zoomInButton)
-        addActionToTrackButton()
+        addActionToZoomInButton()
         NSLayoutConstraint.activate([
             zoomInButton.widthAnchor.constraint(equalToConstant: 45),
             zoomInButton.heightAnchor.constraint(equalToConstant: 45),
-            zoomInButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
-            zoomInButton.topAnchor.constraint(equalTo: showCoordinatesButton.bottomAnchor, constant: 10)
+            zoomInButton.trailingAnchor.constraint(equalTo: Map.mapView.trailingAnchor, constant: -10),
+            zoomInButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10)
         ])
     }
 
-    func addActionToTrackButton() {
-        zoomInButton.addTarget(self, action: #selector(trackButtonTapped), for: .touchUpInside)
+    func addActionToZoomInButton() {
+        zoomInButton.addTarget(self, action: #selector(zoomInButtonTapped), for: .touchUpInside)
     }
 
-    @objc func trackButtonTapped() {
+    @objc
+    func zoomInButtonTapped() {
         zoomInButton.pulsate()
         let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(issLocation.latitude), longitude: CLLocationDegrees(issLocation.longitude))
-        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(1000000), longitudinalMeters: CLLocationDistance(1000000))
+        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(800000), longitudinalMeters: CLLocationDistance(800000))
         Map.mapView.setRegion(region, animated: true)
     }
 
@@ -262,7 +277,7 @@ class TrackISSVC: UIViewController {
         NSLayoutConstraint.activate([
             zoomOutButton.widthAnchor.constraint(equalToConstant: 45),
             zoomOutButton.heightAnchor.constraint(equalToConstant: 45),
-            zoomOutButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
+            zoomOutButton.trailingAnchor.constraint(equalTo: Map.mapView.trailingAnchor, constant: -10),
             zoomOutButton.topAnchor.constraint(equalTo: zoomInButton.bottomAnchor, constant: 10)
         ])
     }
@@ -271,16 +286,84 @@ class TrackISSVC: UIViewController {
         zoomOutButton.addTarget(self, action: #selector(zoomOutButtonTapped), for: .touchUpInside)
     }
 
-    @objc func zoomOutButtonTapped() {
+    @objc
+    func zoomOutButtonTapped() {
         zoomOutButton.pulsate()
         let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(issLocation.latitude), longitude: CLLocationDegrees(issLocation.longitude))
         let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
         Map.mapView.setRegion(region, animated: true)
     }
 
+    func configureTrackingModeButton(){
+        view.addSubview(trackingModeButton)
+        addActionToTrackingModeButton()
+
+        NSLayoutConstraint.activate([
+            trackingModeButton.widthAnchor.constraint(equalToConstant: 45),
+            trackingModeButton.heightAnchor.constraint(equalToConstant: 45),
+            trackingModeButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
+            trackingModeButton.topAnchor.constraint(equalTo: showCoordinatesButton.bottomAnchor, constant: 10)
+        ])
+    }
+
+    func addActionToTrackingModeButton() {
+        trackingModeButton.addTarget(self, action: #selector(trackingModeButtonTapped), for: .touchUpInside)
+    }
+
+    @objc
+    func trackingModeButtonTapped(){
+        trackingModeButton.pulsate()
+        isTrackingModeEnabled.toggle()
+
+        switch trackingModeLabelOffset {
+        case 10:
+            self.trackingModeLabelOffset = -100
+            trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
+        case -100:
+            self.trackingModeLabelOffset = 10
+            trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
+        default:
+            self.viewOffset = -100
+            trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
+        }
+
+        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
+        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(60000), longitudinalMeters: CLLocationDistance(60000))
+        Map.mapView.setRegion(region, animated: true)
+    }
+
+    func configureTrackingModeLabel(){
+        view.addSubview(trackingModeLabel)
+        trackingModeLabel.translatesAutoresizingMaskIntoConstraints = false
+        trackingModeLabel.backgroundColor = .systemGreen
+        trackingModeLabel.textColor = Colors.whiteBlack
+        trackingModeLabel.textAlignment = .center
+        trackingModeLabel.font = UIFont(name: "NasalizationRg-Regular", size: 18)
+        trackingModeLabel.text = "Tracking Mode: ON"
+        trackingModeLabel.layer.cornerRadius = 10
+        trackingModeLabel.layer.masksToBounds = true
+
+        trackingModeLabelTopConstraint = trackingModeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: trackingModeLabelOffset)
+        NSLayoutConstraint.activate([
+            trackingModeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            trackingModeLabel.widthAnchor.constraint(equalToConstant: 200),
+            trackingModeLabel.heightAnchor.constraint(equalToConstant: 35),
+            trackingModeLabelTopConstraint
+        ])
+    }
+
     /// Starts a timer that calls the updateMapView method every 5 seconds
     func startUpdating(){
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
     }
 
     /// Dismisses the ViewController
@@ -303,8 +386,15 @@ class TrackISSVC: UIViewController {
 
                     let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
 
-                    UIView.animate(withDuration: 0.3) {
+
+
+                    UIView.animate(withDuration: 10, delay: 0, options: .curveLinear) {
                         self.anno.coordinate = coordinates
+                    }
+
+                    if self.isTrackingModeEnabled {
+                        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(60000), longitudinalMeters: CLLocationDistance(60000))
+                        Map.mapView.animatedZoom(zoomRegion: region, duration: 10)
                     }
 
                     self.coordinatesView.issLocation = self.issLocation
@@ -367,11 +457,19 @@ extension TrackISSVC: MKMapViewDelegate {
         if annos.isEmpty {
             clearPulseLayer()
         }else {
-            if pulseLayer.animationKeys() == nil && pulseIsActive {
+            if pulseLayer.animationKeys() == nil && isPulseActive {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.createPulse(in: self.iconView)
                 }
             }
         }
+    }
+}
+
+extension MKMapView {
+    func animatedZoom(zoomRegion:MKCoordinateRegion, duration:TimeInterval) {
+        MKMapView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 10, options: UIView.AnimationOptions.curveEaseIn, animations: {
+            self.setRegion(zoomRegion, animated: true)
+            }, completion: nil)
     }
 }
