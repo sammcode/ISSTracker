@@ -38,6 +38,7 @@
 		B21D0E1B25FD5E0F00A87141 /* Ext+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E1A25FD5E0E00A87141 /* Ext+UITableView.swift */; };
 		B21D0E2025FD648700A87141 /* InfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E1F25FD648700A87141 /* InfoVC.swift */; };
 		B21D0E2525FE5F0F00A87141 /* ITSecondaryTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E2425FE5F0E00A87141 /* ITSecondaryTitleLabel.swift */; };
+		B2247625264CED730031BD39 /* ITPaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2247624264CED730031BD39 /* ITPaddingLabel.swift */; };
 		B2250CD42622015A0060DB42 /* PeopleInSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2250CD32622015A0060DB42 /* PeopleInSpace.swift */; };
 		B232461A2624E9D5000EF307 /* nasalization-rg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B23246162624D9F4000EF307 /* nasalization-rg.ttf */; };
 		B232462A2625E018000EF307 /* PeopleInSpaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246292625E018000EF307 /* PeopleInSpaceVC.swift */; };
@@ -81,6 +82,7 @@
 		B23246FC26377105000EF307 /* IconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246FB26377105000EF307 /* IconManager.swift */; };
 		B23247162638E66E000EF307 /* ITPassTimeStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23247152638E66C000EF307 /* ITPassTimeStatusView.swift */; };
 		B2798283264C92D70002EA1F /* ISSLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2798282264C92D70002EA1F /* ISSLocation.swift */; };
+		B2798285264CB65E0002EA1F /* NasaAstronaut.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2798284264CB65E0002EA1F /* NasaAstronaut.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +138,7 @@
 		B21D0E1A25FD5E0E00A87141 /* Ext+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+UITableView.swift"; sourceTree = "<group>"; };
 		B21D0E1F25FD648700A87141 /* InfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoVC.swift; sourceTree = "<group>"; };
 		B21D0E2425FE5F0E00A87141 /* ITSecondaryTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITSecondaryTitleLabel.swift; sourceTree = "<group>"; };
+		B2247624264CED730031BD39 /* ITPaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITPaddingLabel.swift; sourceTree = "<group>"; };
 		B2250CD32622015A0060DB42 /* PeopleInSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleInSpace.swift; sourceTree = "<group>"; };
 		B23246162624D9F4000EF307 /* nasalization-rg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "nasalization-rg.ttf"; sourceTree = "<group>"; };
 		B23246292625E018000EF307 /* PeopleInSpaceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleInSpaceVC.swift; sourceTree = "<group>"; };
@@ -179,6 +182,7 @@
 		B23246FB26377105000EF307 /* IconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconManager.swift; sourceTree = "<group>"; };
 		B23247152638E66C000EF307 /* ITPassTimeStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITPassTimeStatusView.swift; sourceTree = "<group>"; };
 		B2798282264C92D70002EA1F /* ISSLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSLocation.swift; sourceTree = "<group>"; };
+		B2798284264CB65E0002EA1F /* NasaAstronaut.jpg */ = {isa = PBXFileReference; explicitFileType = image.jpeg; path = NasaAstronaut.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -271,6 +275,7 @@
 			isa = PBXGroup;
 			children = (
 				B232467B2635E5DC000EF307 /* planetearthCropped.mp4 */,
+				B2798284264CB65E0002EA1F /* NasaAstronaut.jpg */,
 				B21D0D0025F55F6100A87141 /* Assets.xcassets */,
 				B21D0CF725F55F5A00A87141 /* AppDelegate.swift */,
 				B21D0CF925F55F5A00A87141 /* SceneDelegate.swift */,
@@ -340,6 +345,7 @@
 				B21D0D5925F58C9B00A87141 /* ITDescriptionLabel.swift */,
 				B21D0E2425FE5F0E00A87141 /* ITSecondaryTitleLabel.swift */,
 				B21D0DAA25F6C34700A87141 /* ITTitleLabel.swift */,
+				B2247624264CED730031BD39 /* ITPaddingLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -605,6 +611,7 @@
 				B23246F026376DDE000EF307 /* darkBlueIcon@2x.png in Resources */,
 				B23246BC26374E5B000EF307 /* orangeIcon.png in Resources */,
 				B23246B526374E23000EF307 /* purpleIcon.png in Resources */,
+				B2798285264CB65E0002EA1F /* NasaAstronaut.jpg in Resources */,
 				B23246B426374E23000EF307 /* purpleIcon@3x.png in Resources */,
 				B23246AA26374E0F000EF307 /* redIcon.png in Resources */,
 				B23246D126374EA0000EF307 /* greenIcon@3x.png in Resources */,
@@ -683,6 +690,7 @@
 				B21D0CF825F55F5A00A87141 /* AppDelegate.swift in Sources */,
 				B21D0E2525FE5F0F00A87141 /* ITSecondaryTitleLabel.swift in Sources */,
 				B232465B262F6340000EF307 /* ITIconButton.swift in Sources */,
+				B2247625264CED730031BD39 /* ITPaddingLabel.swift in Sources */,
 				B21D0DBE25F6C53400A87141 /* Ext+UIViewController.swift in Sources */,
 				B21D0DB625F6C49900A87141 /* ITAlertContainerView.swift in Sources */,
 				B21D0DC325F6C6C000A87141 /* ITDataLoadingVC.swift in Sources */,
