@@ -33,6 +33,8 @@ enum Images {
     static let orangeIcon = UIImage(named: "orangeIcon")
     static let purpleIcon = UIImage(named: "purpleIcon")
     static let redIcon = UIImage(named: "redIcon")
+
+    static let profilePic = UIImage(named: "ProfilePic")
 }
 
 enum Colors {

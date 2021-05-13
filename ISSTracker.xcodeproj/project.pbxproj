@@ -39,6 +39,7 @@
 		B21D0E2025FD648700A87141 /* InfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E1F25FD648700A87141 /* InfoVC.swift */; };
 		B21D0E2525FE5F0F00A87141 /* ITSecondaryTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0E2425FE5F0E00A87141 /* ITSecondaryTitleLabel.swift */; };
 		B2247625264CED730031BD39 /* ITPaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2247624264CED730031BD39 /* ITPaddingLabel.swift */; };
+		B2247627264D8E1E0031BD39 /* DeveloperVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2247626264D8E1D0031BD39 /* DeveloperVC.swift */; };
 		B2250CD42622015A0060DB42 /* PeopleInSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2250CD32622015A0060DB42 /* PeopleInSpace.swift */; };
 		B232461A2624E9D5000EF307 /* nasalization-rg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B23246162624D9F4000EF307 /* nasalization-rg.ttf */; };
 		B232462A2625E018000EF307 /* PeopleInSpaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246292625E018000EF307 /* PeopleInSpaceVC.swift */; };
@@ -139,6 +140,7 @@
 		B21D0E1F25FD648700A87141 /* InfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoVC.swift; sourceTree = "<group>"; };
 		B21D0E2425FE5F0E00A87141 /* ITSecondaryTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITSecondaryTitleLabel.swift; sourceTree = "<group>"; };
 		B2247624264CED730031BD39 /* ITPaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITPaddingLabel.swift; sourceTree = "<group>"; };
+		B2247626264D8E1D0031BD39 /* DeveloperVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperVC.swift; sourceTree = "<group>"; };
 		B2250CD32622015A0060DB42 /* PeopleInSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleInSpace.swift; sourceTree = "<group>"; };
 		B23246162624D9F4000EF307 /* nasalization-rg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "nasalization-rg.ttf"; sourceTree = "<group>"; };
 		B23246292625E018000EF307 /* PeopleInSpaceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleInSpaceVC.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				B23246292625E018000EF307 /* PeopleInSpaceVC.swift */,
 				B232465F262F6F82000EF307 /* SettingsVC.swift */,
 				B232466C263090E5000EF307 /* AppIconSelectorVC.swift */,
+				B2247626264D8E1D0031BD39 /* DeveloperVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -685,6 +688,7 @@
 				B21D0D6425F5908600A87141 /* ITButton.swift in Sources */,
 				B2798283264C92D70002EA1F /* ISSLocation.swift in Sources */,
 				B21D0DAB25F6C34700A87141 /* ITTitleLabel.swift in Sources */,
+				B2247627264D8E1E0031BD39 /* DeveloperVC.swift in Sources */,
 				B232462A2625E018000EF307 /* PeopleInSpaceVC.swift in Sources */,
 				B2324660262F6F82000EF307 /* SettingsVC.swift in Sources */,
 				B21D0CF825F55F5A00A87141 /* AppDelegate.swift in Sources */,

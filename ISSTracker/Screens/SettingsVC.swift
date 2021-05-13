@@ -38,9 +38,11 @@ class SettingsVC: UIViewController {
 
     func configureTableView(){
         view.addSubview(tableView)
-        tableView.frame = view.bounds
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.frame = view.frame
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
+        
         configureCells()
 
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
@@ -216,6 +218,9 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
             let safariVC = SFSafariViewController(url: url!)
             safariVC.preferredControlTintColor = Colors.mainBlueYellow
             present(safariVC, animated: true)
+        case 3:
+            let developerVC = DeveloperVC()
+            self.navigationController?.pushViewController(developerVC, animated: true)
         default:
             break
         }
