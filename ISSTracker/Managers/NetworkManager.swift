@@ -10,7 +10,8 @@ import Foundation
 class NetworkManager {
 
     static let shared = NetworkManager()
-    private let baseURL = "http://api.open-notify.org/"
+    private let openNotifyBaseURL = "http://api.open-notify.org/"
+    private let whereTheISSatBaseURL = "https://api.wheretheiss.at/v1/satellites/"
     private let nasaAPIkey = "uzjQMRyhBNgDAVQ2Oqu9hceDbIrSfbMcS45HfXna"
 
     private init() {}
@@ -18,9 +19,9 @@ class NetworkManager {
 
     /// Retrieves the current location of the ISS from the API
     /// - Parameter completed: On completion, returns a Result type that can either be a GPSLocation struct or an ITError
-    func getISSLocation(completed: @escaping (Result<GPSLocation, ITError>) -> Void){
+    func getISSLocation(completed: @escaping (Result<IssLocation, ITError>) -> Void){
 
-        let endpoint = baseURL + "iss-now.json"
+        let endpoint = whereTheISSatBaseURL + "25544"
 
         let url = URL(string: endpoint)
 
@@ -42,9 +43,11 @@ class NetworkManager {
 
             do{
                 let decoder = JSONDecoder()
-                let gpsLocation = try decoder.decode(GPSLocation.self, from: data)
-                completed(.success(gpsLocation))
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let issLocation = try decoder.decode(IssLocation.self, from: data)
+                completed(.success(issLocation))
             }catch {
+                print(error.localizedDescription)
                 completed(.failure(.invalidData))
             }
         }
@@ -59,7 +62,7 @@ class NetworkManager {
     ///   - completed: On completion, returns a Result type that can either be a PassTime struct or an ITError
     func getISSPasstimes(latitude: Double, longitude: Double, completed: @escaping (Result<PassTime, ITError>) -> Void){
 
-        let endpoint = baseURL + "iss-pass.json?lat=\(latitude)&lon=\(longitude)&n=5"
+        let endpoint = openNotifyBaseURL + "iss-pass.json?lat=\(latitude)&lon=\(longitude)&n=5"
 
         let url = URL(string: endpoint)
 
@@ -95,7 +98,7 @@ class NetworkManager {
     }
 
     func getPeopleInSpace(completed: @escaping(Result<PeopleInSpace, ITError>) -> Void){
-        let endpoint = baseURL + "astros.json"
+        let endpoint = openNotifyBaseURL + "astros.json"
 
         let url = URL(string: endpoint)
 

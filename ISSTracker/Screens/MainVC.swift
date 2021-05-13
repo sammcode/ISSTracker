@@ -25,6 +25,7 @@ class MainVC: ITDataLoadingVC {
     var predictPassesButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Predict Pass Times")
     var peopleInSpaceButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "People In Space")
     var titleLabel = ITTitleLabel(textAlignment: .center, fontSize: 48)
+    var logoImageView = ITImageView(frame: .zero)
 
     var playerLooper: AVPlayerLooper?
     var playerLayer: AVPlayerLayer!
@@ -116,6 +117,7 @@ class MainVC: ITDataLoadingVC {
     func configure(){
         configureViewController()
         configureTitleLabel()
+        configureLogoImageView()
         configureButtons()
         configureButtonsStackView()
     }
@@ -123,10 +125,11 @@ class MainVC: ITDataLoadingVC {
     /// Configures properties for the ViewController
     func configureViewController(){
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.barTintColor = Colors.mainBlueYellow
         view.backgroundColor = .systemBackground
-        let infoButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(presentSettingsVC))
+        let infoButton = UIBarButtonItem(image: UIImage(systemName: "gear", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .medium, scale: .medium)), style: .plain, target: self, action: #selector(presentSettingsVC))
+        infoButton.tintColor = Colors.mainBlueYellow
         navigationItem.rightBarButtonItem = infoButton
-
     }
 
     /// Configures the title label, constains it to the top of the view
@@ -138,9 +141,21 @@ class MainVC: ITDataLoadingVC {
 
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.widthAnchor.constraint(equalToConstant: 280),
+            titleLabel.widthAnchor.constraint(equalToConstant: 260),
             titleLabel.heightAnchor.constraint(equalToConstant: 50),
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * 0.1)
+        ])
+    }
+
+    func configureLogoImageView(){
+        view.addSubview(logoImageView)
+        logoImageView.image = Images.issIcon3?.withTintColor(.label)
+
+        NSLayoutConstraint.activate([
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.widthAnchor.constraint(equalToConstant: 80),
+            logoImageView.heightAnchor.constraint(equalToConstant: 50),
+            logoImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10)
         ])
     }
 
@@ -210,11 +225,11 @@ class MainVC: ITDataLoadingVC {
             self.dismissLoadingView()
 
             switch result {
-            case .success(let gpsLocation):
+            case .success(let issLocation):
                 if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
                 DispatchQueue.main.async {
                     let trackISSVC = TrackISSVC()
-                    trackISSVC.gpsLocation = gpsLocation
+                    trackISSVC.issLocation = issLocation
                     let navController = UINavigationController(rootViewController: trackISSVC)
                     self.present(navController, animated: true)
                 }

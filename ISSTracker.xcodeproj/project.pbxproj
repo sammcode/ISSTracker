@@ -20,7 +20,6 @@
 		B21D0D6C25F593CC00A87141 /* Ext+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D6B25F593CC00A87141 /* Ext+UIView.swift */; };
 		B21D0D7125F5DAE800A87141 /* Ext+UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D7025F5DAE700A87141 /* Ext+UIStackView.swift */; };
 		B21D0D7625F69B2E00A87141 /* TrackISSVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D7525F69B2D00A87141 /* TrackISSVC.swift */; };
-		B21D0D7B25F69B4C00A87141 /* PredictPassesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D7A25F69B4C00A87141 /* PredictPassesVC.swift */; };
 		B21D0D8625F6B05C00A87141 /* GPSLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D8525F6B05C00A87141 /* GPSLocation.swift */; };
 		B21D0D8E25F6B19B00A87141 /* ITError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D8D25F6B19B00A87141 /* ITError.swift */; };
 		B21D0D9325F6B29700A87141 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0D9225F6B29700A87141 /* NetworkManager.swift */; };
@@ -81,6 +80,7 @@
 		B23246F126376DDE000EF307 /* darkBlueIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23246EE26376DDE000EF307 /* darkBlueIcon@3x.png */; };
 		B23246FC26377105000EF307 /* IconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246FB26377105000EF307 /* IconManager.swift */; };
 		B23247162638E66E000EF307 /* ITPassTimeStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23247152638E66C000EF307 /* ITPassTimeStatusView.swift */; };
+		B2798283264C92D70002EA1F /* ISSLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2798282264C92D70002EA1F /* ISSLocation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,7 +118,6 @@
 		B21D0D6B25F593CC00A87141 /* Ext+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+UIView.swift"; sourceTree = "<group>"; };
 		B21D0D7025F5DAE700A87141 /* Ext+UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+UIStackView.swift"; sourceTree = "<group>"; };
 		B21D0D7525F69B2D00A87141 /* TrackISSVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackISSVC.swift; sourceTree = "<group>"; };
-		B21D0D7A25F69B4C00A87141 /* PredictPassesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictPassesVC.swift; sourceTree = "<group>"; };
 		B21D0D8525F6B05C00A87141 /* GPSLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSLocation.swift; sourceTree = "<group>"; };
 		B21D0D8D25F6B19B00A87141 /* ITError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITError.swift; sourceTree = "<group>"; };
 		B21D0D9225F6B29700A87141 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -179,6 +178,7 @@
 		B23246EE26376DDE000EF307 /* darkBlueIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "darkBlueIcon@3x.png"; sourceTree = "<group>"; };
 		B23246FB26377105000EF307 /* IconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconManager.swift; sourceTree = "<group>"; };
 		B23247152638E66C000EF307 /* ITPassTimeStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITPassTimeStatusView.swift; sourceTree = "<group>"; };
+		B2798282264C92D70002EA1F /* ISSLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSLocation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,7 +246,6 @@
 			children = (
 				B21D0E1F25FD648700A87141 /* InfoVC.swift */,
 				B21D0D3625F562B100A87141 /* MainVC.swift */,
-				B21D0D7A25F69B4C00A87141 /* PredictPassesVC.swift */,
 				B21D0D7525F69B2D00A87141 /* TrackISSVC.swift */,
 				B23246292625E018000EF307 /* PeopleInSpaceVC.swift */,
 				B232465F262F6F82000EF307 /* SettingsVC.swift */,
@@ -360,6 +359,7 @@
 				B21D0D8525F6B05C00A87141 /* GPSLocation.swift */,
 				B21D0D9725F6BD2500A87141 /* PassTime.swift */,
 				B2250CD32622015A0060DB42 /* PeopleInSpace.swift */,
+				B2798282264C92D70002EA1F /* ISSLocation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -676,6 +676,7 @@
 				B21D0D3725F562B100A87141 /* MainVC.swift in Sources */,
 				B21D0DB025F6C35500A87141 /* ITBodyLabel.swift in Sources */,
 				B21D0D6425F5908600A87141 /* ITButton.swift in Sources */,
+				B2798283264C92D70002EA1F /* ISSLocation.swift in Sources */,
 				B21D0DAB25F6C34700A87141 /* ITTitleLabel.swift in Sources */,
 				B232462A2625E018000EF307 /* PeopleInSpaceVC.swift in Sources */,
 				B2324660262F6F82000EF307 /* SettingsVC.swift in Sources */,
@@ -696,7 +697,6 @@
 				B23246E726375120000EF307 /* ITAppIconCell.swift in Sources */,
 				B23246432629EED0000EF307 /* ITNumberOfPeopleView.swift in Sources */,
 				B232463E2628BACB000EF307 /* AstronautCell.swift in Sources */,
-				B21D0D7B25F69B4C00A87141 /* PredictPassesVC.swift in Sources */,
 				B21D0D9825F6BD2500A87141 /* PassTime.swift in Sources */,
 				B2324653262CAC6F000EF307 /* Ext+MKAnnotationView.swift in Sources */,
 			);

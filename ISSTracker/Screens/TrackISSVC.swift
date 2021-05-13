@@ -10,13 +10,13 @@ import MapKit
 
 class TrackISSVC: UIViewController {
 
-    var gpsLocation: GPSLocation!
+    var issLocation: IssLocation!
     var coordinatesView: ITCoordinatesView!
 
     var anno: MKPointAnnotation!
     var timer: Timer!
 
-    var viewOffset: CGFloat = 200
+    var viewOffset: CGFloat = 260
     var coordinatesViewBottomConstraint = NSLayoutConstraint()
 
     var iconView = MKAnnotationView()
@@ -24,11 +24,14 @@ class TrackISSVC: UIViewController {
     var pulseLayer = CAShapeLayer()
     var pulseIsActive = true
 
+    let iconWidth = UserDefaultsManager.largeMapAnnotations ? 90 : 60
+    let iconHeight = UserDefaultsManager.largeMapAnnotations ? 60 : 40
+
     var mapTypeButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
     var showCoordinatesButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "note.text", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
     var pulseButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "target", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
-    var trackButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "arrow.down.right.and.arrow.up.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
-    var zoomOutButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "arrow.up.left.and.arrow.down.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
+    var zoomInButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "plus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
+    var zoomOutButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "minus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,10 +76,8 @@ class TrackISSVC: UIViewController {
     }
 
     func configureIconView(){
-        let width = UserDefaultsManager.largeMapAnnotations ? 90 : 60
-        let height = UserDefaultsManager.largeMapAnnotations ? 60 : 40
         iconView.set(image: Images.issIcon2!, with: .label)
-        iconView.frame.size = CGSize(width: width, height: height)
+        iconView.frame.size = CGSize(width: iconWidth, height: iconHeight)
         iconView.layer.shadowColor = UIColor.black.cgColor
         iconView.layer.shadowOpacity = 0.5
         iconView.layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
@@ -98,13 +99,13 @@ class TrackISSVC: UIViewController {
     /// Sets the data based on the gpsLocation variable
     /// Constrains it to the top of the view
     func configureCoordinatesView(){
-        coordinatesView = ITCoordinatesView(title: "ISS GPS Coordinates", latitude: gpsLocation.issPosition.latitude, longitude: gpsLocation.issPosition.longitude, timestamp: gpsLocation.timestamp.convertTimestampToStringDate() + ", " + gpsLocation.timestamp.convertTimestampToStringTime())
+        coordinatesView = ITCoordinatesView(title: "ISS Data", issLocationData: issLocation)
         coordinatesViewBottomConstraint = coordinatesView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: viewOffset)
         view.addSubview(coordinatesView)
         NSLayoutConstraint.activate([
             coordinatesView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             coordinatesView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            coordinatesView.heightAnchor.constraint(equalToConstant: 200),
+            coordinatesView.heightAnchor.constraint(equalToConstant: 260),
             coordinatesViewBottomConstraint
         ])
     }
@@ -118,7 +119,7 @@ class TrackISSVC: UIViewController {
         Map.mapView.translatesAutoresizingMaskIntoConstraints = false
         Map.mapView.delegate = self
 
-        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(Float(gpsLocation.issPosition.latitude)!), longitude: CLLocationDegrees(Float(gpsLocation.issPosition.longitude)!))
+        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(issLocation.latitude), longitude: CLLocationDegrees(issLocation.longitude))
         let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
         Map.mapView.setRegion(region, animated: true)
 
@@ -182,8 +183,12 @@ class TrackISSVC: UIViewController {
         switch Map.mapView.mapType {
         case .standard:
             Map.mapView.mapType = .hybrid
+            iconView.set(image: Images.issIcon2!, with: .white)
+            iconView.frame.size = CGSize(width: iconWidth, height: iconHeight)
         case .hybrid:
             Map.mapView.mapType = .standard
+            iconView.set(image: Images.issIcon2!, with: .label)
+            iconView.frame.size = CGSize(width: iconWidth, height: iconHeight)
         default:
             Map.mapView.mapType = .standard
         }
@@ -208,19 +213,19 @@ class TrackISSVC: UIViewController {
         showCoordinatesButton.pulsate()
         switch viewOffset {
         case 20:
-            self.viewOffset = 200
+            self.viewOffset = 260
             coordinatesViewBottomConstraint.constant = viewOffset
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
             }
-        case 200:
+        case 260:
             self.viewOffset = 20
             coordinatesViewBottomConstraint.constant = viewOffset
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
             }
         default:
-            self.viewOffset = 170
+            self.viewOffset = 260
             coordinatesViewBottomConstraint.constant = viewOffset
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
@@ -229,23 +234,23 @@ class TrackISSVC: UIViewController {
     }
 
     func configureTrackButton(){
-        view.addSubview(trackButton)
+        view.addSubview(zoomInButton)
         addActionToTrackButton()
         NSLayoutConstraint.activate([
-            trackButton.widthAnchor.constraint(equalToConstant: 45),
-            trackButton.heightAnchor.constraint(equalToConstant: 45),
-            trackButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
-            trackButton.topAnchor.constraint(equalTo: showCoordinatesButton.bottomAnchor, constant: 10)
+            zoomInButton.widthAnchor.constraint(equalToConstant: 45),
+            zoomInButton.heightAnchor.constraint(equalToConstant: 45),
+            zoomInButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
+            zoomInButton.topAnchor.constraint(equalTo: showCoordinatesButton.bottomAnchor, constant: 10)
         ])
     }
 
     func addActionToTrackButton() {
-        trackButton.addTarget(self, action: #selector(trackButtonTapped), for: .touchUpInside)
+        zoomInButton.addTarget(self, action: #selector(trackButtonTapped), for: .touchUpInside)
     }
 
     @objc func trackButtonTapped() {
-        trackButton.pulsate()
-        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(Float(gpsLocation.issPosition.latitude)!), longitude: CLLocationDegrees(Float(gpsLocation.issPosition.longitude)!))
+        zoomInButton.pulsate()
+        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(issLocation.latitude), longitude: CLLocationDegrees(issLocation.longitude))
         let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(1000000), longitudinalMeters: CLLocationDistance(1000000))
         Map.mapView.setRegion(region, animated: true)
     }
@@ -258,7 +263,7 @@ class TrackISSVC: UIViewController {
             zoomOutButton.widthAnchor.constraint(equalToConstant: 45),
             zoomOutButton.heightAnchor.constraint(equalToConstant: 45),
             zoomOutButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
-            zoomOutButton.topAnchor.constraint(equalTo: trackButton.bottomAnchor, constant: 10)
+            zoomOutButton.topAnchor.constraint(equalTo: zoomInButton.bottomAnchor, constant: 10)
         ])
     }
 
@@ -268,14 +273,14 @@ class TrackISSVC: UIViewController {
 
     @objc func zoomOutButtonTapped() {
         zoomOutButton.pulsate()
-        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(Float(gpsLocation.issPosition.latitude)!), longitude: CLLocationDegrees(Float(gpsLocation.issPosition.longitude)!))
+        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(issLocation.latitude), longitude: CLLocationDegrees(issLocation.longitude))
         let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
         Map.mapView.setRegion(region, animated: true)
     }
 
     /// Starts a timer that calls the updateMapView method every 5 seconds
     func startUpdating(){
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
     }
 
     /// Dismisses the ViewController
@@ -292,20 +297,17 @@ class TrackISSVC: UIViewController {
             guard let self = self else { return }
 
             switch result {
-            case .success(let gps):
+            case .success(let iss):
                 DispatchQueue.main.async {
-                    self.gpsLocation = gps
+                    self.issLocation = iss
 
-                    let coordinates = CLLocationCoordinate2D(latitude:  CLLocationDegrees(Float(self.gpsLocation.issPosition.latitude)!), longitude: CLLocationDegrees(Float(self.gpsLocation.issPosition.longitude)!))
+                    let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
 
                     UIView.animate(withDuration: 0.3) {
                         self.anno.coordinate = coordinates
                     }
 
-                    self.coordinatesView.latitudeLabel.text = "Latitude: " + self.gpsLocation.issPosition.latitude
-                    self.coordinatesView.longitudeLabel.text = "Longitude: " + self.gpsLocation.issPosition.longitude
-                    self.coordinatesView.timestampLabel.text = "Timestamp: " + self.gpsLocation.timestamp.convertTimestampToStringDate() + ", " + self.gpsLocation.timestamp.convertTimestampToStringTime()
-
+                    self.coordinatesView.issLocation = self.issLocation
                 }
             case .failure(let error):
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
@@ -335,15 +337,15 @@ class TrackISSVC: UIViewController {
             pulseLayer.strokeColor = Colors.mainBlueYellow.cgColor
 
             let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
-            scaleAnimation.duration = 2.0
-            scaleAnimation.fromValue = 0.35
+            scaleAnimation.duration = 3.0
+            scaleAnimation.fromValue = 0.0
             scaleAnimation.toValue = 0.9
-            scaleAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+            scaleAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
             scaleAnimation.repeatCount = .greatestFiniteMagnitude
             pulseLayer.add(scaleAnimation, forKey: "scale")
 
             let opacityAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
-            opacityAnimation.duration = 2.0
+            opacityAnimation.duration = 3.0
             opacityAnimation.fromValue = 0.9
             opacityAnimation.toValue = 0.0
             opacityAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
