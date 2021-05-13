@@ -225,11 +225,11 @@ class MainVC: ITDataLoadingVC {
             self.dismissLoadingView()
 
             switch result {
-            case .success(let gpsLocation):
+            case .success(let issLocation):
                 if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
                 DispatchQueue.main.async {
                     let trackISSVC = TrackISSVC()
-                    trackISSVC.gpsLocation = gpsLocation
+                    trackISSVC.issLocation = issLocation
                     let navController = UINavigationController(rootViewController: trackISSVC)
                     self.present(navController, animated: true)
                 }
