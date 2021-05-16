@@ -35,6 +35,15 @@ class MainVC: ITDataLoadingVC {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         playVideo()
+
+        let session = AVAudioSession.sharedInstance()
+
+        do {
+            try session.setCategory(.ambient, mode: .default, options: [])
+            try session.setActive(true)
+        } catch let error {
+            print("Error, unable to continue music: \(error)")
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
