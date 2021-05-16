@@ -8,10 +8,16 @@
 import UIKit
 import SafariServices
 
+protocol SettingsVCDelegate: AnyObject{
+    func didChangeAnimationPreferences()
+}
+
 class SettingsVC: UIViewController {
 
     var tableView = UITableView(frame: .zero, style: .insetGrouped)
     var cells = [[UITableViewCell](), [UITableViewCell](), [UITableViewCell](), [UITableViewCell]()]
+
+    weak var delegate: SettingsVCDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -176,6 +182,7 @@ class SettingsVC: UIViewController {
             UserDefaultsManager.largeMapAnnotations.toggle()
         case 1:
             UserDefaultsManager.reduceAnimations.toggle()
+            delegate.didChangeAnimationPreferences()
         case 2:
             UserDefaultsManager.haptics.toggle()
         default:

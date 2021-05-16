@@ -22,7 +22,6 @@ class TrackISSVC: UIViewController {
     var iconView = MKAnnotationView()
 
     var pulseLayer = CAShapeLayer()
-    var isPulseActive = true
 
     var isTrackingModeEnabled = false
 
@@ -305,38 +304,42 @@ class TrackISSVC: UIViewController {
     @objc
     func trackingModeButtonTapped(){
         trackingModeButton.pulsate()
-        isTrackingModeEnabled.toggle()
-        isPulseActive.toggle()
+        if !UserDefaults.standard.bool(forKey: "trackingModeEnabledBefore") {
+            presentITAlertOnMainThread(title: "Tracking Mode", message: "This awesome feature will follow the ISS autonomously 🤯. As the map is continuously animating while in Tracking Mode, be weary that CPU usage can be as high as 50%. When exiting Tracking Mode, the ISS may take a few seconds to animate to it's updated location.\n\n -Sam 👨‍💻", buttonTitle: "Ok", isLongMessage: true)
+            UserDefaults.standard.set(true, forKey: "trackingModeEnabledBefore")
+        } else {
+            isTrackingModeEnabled.toggle()
 
-        let coordinates: CLLocationCoordinate2D!
-        let region: MKCoordinateRegion!
-        switch trackingModeLabelOffset {
-        case 10:
-            self.trackingModeLabelOffset = -100
-            trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
-            zoomInButtonLeadingConstraint.constant = 10
-            zoomOutButtonLeadingConstraint.constant = 10
-            UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
+            let coordinates: CLLocationCoordinate2D!
+            let region: MKCoordinateRegion!
+            switch trackingModeLabelOffset {
+            case 10:
+                self.trackingModeLabelOffset = -100
+                trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
+                zoomInButtonLeadingConstraint.constant = 10
+                zoomOutButtonLeadingConstraint.constant = 10
+                UIView.animate(withDuration: 0.5) {
+                    self.view.layoutIfNeeded()
+                }
+                createPulseLayer()
+                coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
+                region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
+                Map.mapView.setRegion(region, animated: true)
+            case -100:
+                self.trackingModeLabelOffset = 10
+                trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
+                zoomInButtonLeadingConstraint.constant = -80
+                zoomOutButtonLeadingConstraint.constant = -80
+                UIView.animate(withDuration: 0.5) {
+                    self.view.layoutIfNeeded()
+                }
+                clearPulseLayer()
+                coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
+                region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(60000), longitudinalMeters: CLLocationDistance(60000))
+                Map.mapView.setRegion(region, animated: true)
+            default:
+                break
             }
-            createPulseLayer()
-            coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
-            region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
-            Map.mapView.setRegion(region, animated: true)
-        case -100:
-            self.trackingModeLabelOffset = 10
-            trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
-            zoomInButtonLeadingConstraint.constant = -80
-            zoomOutButtonLeadingConstraint.constant = -80
-            UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
-            clearPulseLayer()
-            coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
-            region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(60000), longitudinalMeters: CLLocationDistance(60000))
-            Map.mapView.setRegion(region, animated: true)
-        default:
-            break
         }
     }
 
@@ -454,17 +457,12 @@ extension TrackISSVC: MKMapViewDelegate {
         if annos.isEmpty {
             clearPulseLayer()
         }else {
-            if pulseLayer.animationKeys() == nil && !UserDefaultsManager.reduceAnimations {
-                print("here")
+            if pulseLayer.animationKeys() == nil && !UserDefaultsManager.reduceAnimations && !isTrackingModeEnabled{
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.createPulse(in: self.iconView)
                 }
             }
         }
-    }
-
-    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-        print("CHANGED")
     }
 }
 

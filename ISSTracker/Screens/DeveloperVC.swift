@@ -61,7 +61,7 @@ class DeveloperVC: UIViewController {
 
         NSLayoutConstraint.activate([
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint(equalToConstant: 880)
+            contentView.heightAnchor.constraint(equalToConstant: 900)
         ])
     }
 
