@@ -171,7 +171,7 @@ class DeveloperVC: UIViewController {
         whyIMadeTrackISSLabel.numberOfLines = 0
         whyIMadeTrackISSLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         whyIMadeTrackISSLabel.textColor = .label
-        whyIMadeTrackISSLabel.text = "I've been an avid fan of the International Space Station for as long as I can remember, as it is a symbol of human co-operation and a technological marvel (and it's just straight up cool). As it moves at over 27,000 km/h, and orbits the 🌎 every 90 minutes, it can be very difficult for an everyday person to track it's location. \n\nTo address this I created a native iOS experience that allows those who are curious like me, to witness where it is in the world at any given time. Hope you enjoy 😃"
+        whyIMadeTrackISSLabel.text = "I've been an avid fan of the International Space Station for as long as I can remember, as it is a symbol of human co-operation and a technological marvel (and it's just straight up cool). As it moves at over 27,000 km/h, and orbits the 🌎 every 90 minutes, it can be difficult to keep track of it's location. \n\nTo address this I created a native iOS experience that allows those who are curious like me, to witness where the ISS is in the world at any given time. Hope you enjoy 😃"
 
         let inset: CGFloat = 8
         NSLayoutConstraint.activate([

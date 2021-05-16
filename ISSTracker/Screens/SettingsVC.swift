@@ -18,6 +18,15 @@ class SettingsVC: UIViewController {
         configure()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let selectedRow: IndexPath? = tableView.indexPathForSelectedRow
+        if let selectedRowNotNill = selectedRow {
+            tableView.deselectRow(at: selectedRowNotNill, animated: false)
+        }
+    }
+
     func configure(){
         configureViewController()
         configureTableView()

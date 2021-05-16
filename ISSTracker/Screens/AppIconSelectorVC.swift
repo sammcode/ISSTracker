@@ -22,15 +22,13 @@ class AppIconSelectorVC: UIViewController {
 
     func configureViewController(){
         title = "App Icon"
-        view.backgroundColor = .systemBackground
-
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
     }
 
     func configureCollectionView(){
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createThreeColumnFlowLayout(in: view, itemHeightConstant: 0, hasHeaderView: false))
         view.addSubview(collectionView)
-        collectionView.backgroundColor = .systemBackground
+        collectionView.backgroundColor = .systemGray6
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(ITAppIconCell.self, forCellWithReuseIdentifier: ITAppIconCell.reuseID)
