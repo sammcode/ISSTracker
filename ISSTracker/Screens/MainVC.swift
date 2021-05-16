@@ -100,11 +100,10 @@ class MainVC: ITDataLoadingVC {
 
     @objc fileprivate func setPlayerLayerToNil(){
         player.pause()
-        playerLayer = nil
     }
 
     @objc fileprivate func reinitializePlayerLayer(){
-        playVideo()
+        player.play()
     }
 
     /// Checks if the app has been launched before
@@ -228,11 +227,11 @@ class MainVC: ITDataLoadingVC {
             self.dismissLoadingView()
 
             switch result {
-            case .success(let issLocation):
+            case .success(let issLocationData):
                 if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
                 DispatchQueue.main.async {
                     let trackISSVC = TrackISSVC()
-                    trackISSVC.issLocation = issLocation
+                    trackISSVC.issLocation = issLocationData
                     let navController = UINavigationController(rootViewController: trackISSVC)
                     self.present(navController, animated: true)
                 }

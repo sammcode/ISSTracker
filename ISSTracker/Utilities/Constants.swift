@@ -34,7 +34,7 @@ enum Images {
     static let purpleIcon = UIImage(named: "purpleIcon")
     static let redIcon = UIImage(named: "redIcon")
 
-    static let profilePic = UIImage(named: "ProfilePic")
+    static let portrait = UIImage(named: "portrait")
 }
 
 enum Colors {

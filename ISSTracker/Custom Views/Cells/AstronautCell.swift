@@ -76,4 +76,14 @@ class AstronautCell: UICollectionViewCell {
             roleLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
+
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13, *), self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            DispatchQueue.main.async {
+                self.layer.shadowColor = Colors.whiteBlack.cgColor
+            }
+        }
+    }
 }

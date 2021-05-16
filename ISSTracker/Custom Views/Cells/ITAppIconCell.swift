@@ -26,10 +26,9 @@ class ITAppIconCell: UICollectionViewCell {
     }
 
     private func configure() {
-        backgroundColor = .systemBackground
+        backgroundColor = .clear
         addSubview(appIconImageView)
-        appIconImageView.backgroundColor = .systemBackground
-        appIconImageView.layer.cornerRadius = 26
+        appIconImageView.layer.cornerRadius = 32
         let padding: CGFloat = 8
         NSLayoutConstraint.activate([
             appIconImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),

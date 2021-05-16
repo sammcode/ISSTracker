@@ -24,6 +24,18 @@ class PeopleInSpaceVC: UIViewController {
         configureCollectionView()
     }
 
+    func addBackgroundandForegroundObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
+
+    @objc func willEnterForeground(){
+
+    }
+
+    
+
     func configureViewController(){
         title = "People In Space"
         view.backgroundColor = .systemBackground

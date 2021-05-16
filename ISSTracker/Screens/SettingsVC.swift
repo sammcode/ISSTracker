@@ -18,6 +18,15 @@ class SettingsVC: UIViewController {
         configure()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let selectedRow: IndexPath? = tableView.indexPathForSelectedRow
+        if let selectedRowNotNill = selectedRow {
+            tableView.deselectRow(at: selectedRowNotNill, animated: false)
+        }
+    }
+
     func configure(){
         configureViewController()
         configureTableView()
@@ -100,6 +109,7 @@ class SettingsVC: UIViewController {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = "Large Map Annotations"
         cell.imageView?.image = UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell.selectionStyle = .none
 
         let switchView = UISwitch(frame: .zero)
         switchView.setOn(UserDefaultsManager.largeMapAnnotations, animated: true)
@@ -112,6 +122,7 @@ class SettingsVC: UIViewController {
         let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell1.textLabel?.text = "Reduce Animations"
         cell1.imageView?.image = UIImage(systemName: "bolt.slash.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell1.selectionStyle = .none
 
         let switchView1 = UISwitch(frame: .zero)
         switchView1.setOn(UserDefaultsManager.reduceAnimations, animated: true)
@@ -124,6 +135,7 @@ class SettingsVC: UIViewController {
         let cell2 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell2.textLabel?.text = "Haptics"
         cell2.imageView?.image = UIImage(systemName: "iphone.radiowaves.left.and.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell2.selectionStyle = .none
 
         let switchView2 = UISwitch(frame: .zero)
         switchView2.setOn(UserDefaultsManager.haptics, animated: true)
