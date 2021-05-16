@@ -23,9 +23,9 @@ class DeveloperVC: UIViewController {
     var whyIMadeTrackISSTitleLabel = ITTitleLabel(textAlignment: .left, fontSize: 24)
     var whyImadeTrackISSContainerView = UIView()
 
-    var twitterButton = ITButton(backgroundColor: .systemBlue, title: "Twitter")
-    var githubButton = ITButton(backgroundColor: .black, title: "Github")
-    var websiteButton = ITButton(backgroundColor: .systemPurple, title: "Website")
+    var twitterButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Twitter")
+    var githubButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Github")
+    var websiteButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Website")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,13 +61,13 @@ class DeveloperVC: UIViewController {
 
         NSLayoutConstraint.activate([
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint(equalToConstant: 980)
+            contentView.heightAnchor.constraint(equalToConstant: 880)
         ])
     }
 
     func configureProfileImageView(){
         contentView.addSubview(profileImageView)
-        profileImageView.image = Images.profilePic
+        profileImageView.image = Images.portrait
 
         profileImageView.layer.shadowColor = Colors.whiteBlack.cgColor
         profileImageView.layer.shadowOpacity = 0.5
@@ -77,8 +77,8 @@ class DeveloperVC: UIViewController {
         NSLayoutConstraint.activate([
             profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            profileImageView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
-            profileImageView.heightAnchor.constraint(equalToConstant: 300)
+            profileImageView.widthAnchor.constraint(equalToConstant: 200),
+            profileImageView.heightAnchor.constraint(equalToConstant: 200)
         ])
     }
 
@@ -90,8 +90,8 @@ class DeveloperVC: UIViewController {
 
         aboutMeLabelContainerView.layer.shadowColor = Colors.whiteBlack.cgColor
         aboutMeLabelContainerView.layer.shadowOpacity = 0.5
-        aboutMeLabelContainerView.layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
-        aboutMeLabelContainerView.layer.shadowRadius = 5
+        aboutMeLabelContainerView.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        aboutMeLabelContainerView.layer.shadowRadius = 3
 
         NSLayoutConstraint.activate([
             aboutMeLabelContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -139,13 +139,13 @@ class DeveloperVC: UIViewController {
 
         whyImadeTrackISSContainerView.layer.shadowColor = Colors.whiteBlack.cgColor
         whyImadeTrackISSContainerView.layer.shadowOpacity = 0.5
-        whyImadeTrackISSContainerView.layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
-        whyImadeTrackISSContainerView.layer.shadowRadius = 5
+        whyImadeTrackISSContainerView.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        whyImadeTrackISSContainerView.layer.shadowRadius = 3
 
         NSLayoutConstraint.activate([
             whyImadeTrackISSContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             whyImadeTrackISSContainerView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
-            whyImadeTrackISSContainerView.heightAnchor.constraint(equalToConstant: 290),
+            whyImadeTrackISSContainerView.heightAnchor.constraint(equalToConstant: 300),
             whyImadeTrackISSContainerView.topAnchor.constraint(equalTo: aboutMeLabelContainerView.bottomAnchor, constant: 10)
         ])
     }
@@ -175,7 +175,7 @@ class DeveloperVC: UIViewController {
 
         let inset: CGFloat = 8
         NSLayoutConstraint.activate([
-            whyIMadeTrackISSLabel.topAnchor.constraint(equalTo: whyIMadeTrackISSTitleLabel.bottomAnchor),
+            whyIMadeTrackISSLabel.topAnchor.constraint(equalTo: whyIMadeTrackISSTitleLabel.bottomAnchor, constant: 4),
             whyIMadeTrackISSLabel.leadingAnchor.constraint(equalTo: whyImadeTrackISSContainerView.leadingAnchor, constant: inset),
             whyIMadeTrackISSLabel.trailingAnchor.constraint(equalTo: whyImadeTrackISSContainerView.trailingAnchor, constant: -inset),
             whyIMadeTrackISSLabel.bottomAnchor.constraint(equalTo: whyImadeTrackISSContainerView.bottomAnchor, constant: -inset)
@@ -185,9 +185,15 @@ class DeveloperVC: UIViewController {
     func configureTwitterButton(){
         contentView.addSubview(twitterButton)
         twitterButton.addTarget(self, action: #selector(twitterButtonTapped), for: .touchUpInside)
+        twitterButton.setImage(UIImage(named: "twitterIcon")?.withTintColor(.systemBackground), for: .normal)
+        twitterButton.imageView?.contentMode = .scaleAspectFit
+        twitterButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 20)
+        twitterButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 60)
+        twitterButton.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        twitterButton.layer.shadowRadius = 3
 
         NSLayoutConstraint.activate([
-            twitterButton.topAnchor.constraint(equalTo: whyImadeTrackISSContainerView.bottomAnchor, constant: 10),
+            twitterButton.topAnchor.constraint(equalTo: whyImadeTrackISSContainerView.bottomAnchor, constant: 20),
             twitterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             twitterButton.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
             twitterButton.heightAnchor.constraint(equalToConstant: 50)
@@ -197,6 +203,12 @@ class DeveloperVC: UIViewController {
     func configureGithubButton(){
         contentView.addSubview(githubButton)
         githubButton.addTarget(self, action: #selector(githubButtonTapped), for: .touchUpInside)
+        githubButton.setImage(UIImage(named: "githubIcon")?.withTintColor(.systemBackground), for: .normal)
+        githubButton.imageView?.contentMode = .scaleAspectFit
+        githubButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 20)
+        githubButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 60)
+        githubButton.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        githubButton.layer.shadowRadius = 3
 
         NSLayoutConstraint.activate([
             githubButton.topAnchor.constraint(equalTo: twitterButton.bottomAnchor, constant: 10),
@@ -209,6 +221,12 @@ class DeveloperVC: UIViewController {
     func configureWebsiteButton(){
         contentView.addSubview(websiteButton)
         websiteButton.addTarget(self, action: #selector(websiteButtonTapped), for: .touchUpInside)
+        websiteButton.setImage(UIImage(named: "websiteIcon")?.withTintColor(.systemBackground), for: .normal)
+        websiteButton.imageView?.contentMode = .scaleAspectFit
+        websiteButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 20)
+        websiteButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 60)
+        websiteButton.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        websiteButton.layer.shadowRadius = 3
 
         NSLayoutConstraint.activate([
             websiteButton.topAnchor.constraint(equalTo: githubButton.bottomAnchor, constant: 10),

@@ -50,7 +50,7 @@ class ITCoordinatesView: UIView {
     }
 
     private func configureView(){
-        backgroundColor = UIColor.systemBackground.withAlphaComponent(0.7)
+        backgroundColor = .systemBackground
         layer.cornerRadius = 20
         layer.borderWidth = 2
         layer.borderColor = Colors.mainBlueYellow.cgColor
@@ -127,7 +127,7 @@ class ITCoordinatesView: UIView {
         latitudeLabel.text =  "Latitude: \(round(issLocation.latitude * 1000)/1000)°"
         longitudeLabel.text = "Longitude: \(round(issLocation.longitude * 1000)/1000)°"
         timestampLabel.text = "Timestamp: \(issLocation.timestamp.convertTimestampToStringTime())"
-        altitudeLabel.text = "Altitude: \(round(issLocation.altitude * 100)/100) \(issLocation.units)"
-        velocityLabel.text = "Velocity: \(round(issLocation.velocity * 100)/100) \(issLocation.units)/hour"
+        altitudeLabel.text = "Altitude: \(round(issLocation.altitude * 100)/100) km"
+        velocityLabel.text = "Velocity: \(round(issLocation.velocity * 100)/100) km/h"
     }
 }
