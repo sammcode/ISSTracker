@@ -88,22 +88,6 @@ class SettingsVC: UIViewController {
         tableView.tableFooterView = footerView
     }
 
-    @objc func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0 {
-            overrideUserInterfaceStyle = .unspecified
-            navigationController?.overrideUserInterfaceStyle = .unspecified
-            UserDefaultsManager.appearance = 0
-        } else if sender.selectedSegmentIndex == 1 {
-            overrideUserInterfaceStyle = .light
-            navigationController?.overrideUserInterfaceStyle = .light
-            UserDefaultsManager.appearance = 1
-        } else if sender.selectedSegmentIndex == 2 {
-            overrideUserInterfaceStyle = .dark
-            navigationController?.overrideUserInterfaceStyle = .dark
-            UserDefaultsManager.appearance = 2
-        }
-    }
-
     func configureCells(){
         let cell0 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell0.textLabel?.text = "App Icon"
@@ -119,7 +103,7 @@ class SettingsVC: UIViewController {
 
         let switchView = UISwitch(frame: .zero)
         switchView.setOn(UserDefaultsManager.largeMapAnnotations, animated: true)
-        switchView.tag = 0 // for detect which row switch Changed
+        switchView.tag = 0
         switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell.accessoryView = switchView
 
@@ -145,7 +129,7 @@ class SettingsVC: UIViewController {
 
         let switchView2 = UISwitch(frame: .zero)
         switchView2.setOn(UserDefaultsManager.haptics, animated: true)
-        switchView2.tag = 2 // for detect which row switch Changed
+        switchView2.tag = 2
         switchView2.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell2.accessoryView = switchView2
 
@@ -167,13 +151,18 @@ class SettingsVC: UIViewController {
         cell5.accessoryType = .disclosureIndicator
         cells[2].append(cell5)
 
-        //OTHER
-
         let cell6 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell6.textLabel?.text = "Developer"
-        cell6.imageView?.image = UIImage(systemName: "person", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell6.textLabel?.text = "NASA Image and Video Library API"
         cell6.accessoryType = .disclosureIndicator
-        cells[3].append(cell6)
+        cells[2].append(cell6)
+
+        //DEVELOPER
+
+        let cell7 = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell7.textLabel?.text = "Developer"
+        cell7.imageView?.image = UIImage(systemName: "person", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell7.accessoryType = .disclosureIndicator
+        cells[3].append(cell7)
     }
 
     @objc func switchChanged(_ sender : UISwitch!){
@@ -193,6 +182,7 @@ class SettingsVC: UIViewController {
 
 extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(cells[section].count)
         return cells[section].count
     }
 
@@ -231,6 +221,8 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
                 url = URL(string: "http://open-notify.org/")
             case 2:
                 url = URL(string: "https://wheretheiss.at/")
+            case 3:
+                url = URL(string: "https://images.nasa.gov/")
             default:
                 break
             }

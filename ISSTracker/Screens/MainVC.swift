@@ -245,7 +245,9 @@ class MainVC: ITDataLoadingVC {
         searchImagesButton.pulsate()
         self.showLoadingView()
 
-        NetworkManager.shared.conductNASAImageSearch(for: "international%20space%20station%20\(Date().monthYear)", page: 1) { [weak self] result in
+        let q = "international%20space%20station%20\(Date().monthYear)"
+
+        NetworkManager.shared.conductNASAImageSearch(for: q, page: 1) { [weak self] result in
             guard let self = self else { return }
 
             self.dismissLoadingView()
@@ -257,6 +259,7 @@ class MainVC: ITDataLoadingVC {
                     let searchImagesVC = SearchImagesVC()
                     searchImagesVC.imageData = searchResults.collection.items
                     searchImagesVC.updateData(on: searchResults.collection.items)
+                    searchImagesVC.currentQ = q
                     let navController = UINavigationController(rootViewController: searchImagesVC)
                     self.present(navController, animated: true)
                 }

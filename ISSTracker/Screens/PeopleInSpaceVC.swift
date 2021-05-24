@@ -24,18 +24,6 @@ class PeopleInSpaceVC: UIViewController {
         configureCollectionView()
     }
 
-    func addBackgroundandForegroundObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.didBecomeActiveNotification, object: nil)
-    }
-
-    @objc func willEnterForeground(){
-
-    }
-
-    
-
     func configureViewController(){
         title = "People In Space"
         view.backgroundColor = .systemBackground
@@ -50,16 +38,25 @@ class PeopleInSpaceVC: UIViewController {
     }
 
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createTwoColumnFlowLayout(in: view, itemHeightConstant: 80, hasHeaderView: false))
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createColumnFlowLayout(in: view, itemHeightConstant: 135, hasHeaderView: false, columns: 2))
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
         collectionView.register(ITAstronautCell.self, forCellWithReuseIdentifier: ITAstronautCell.reuseID)
     }
+
+    @objc func openAstronautBio(){
+        let name = peopleInSpace.people[0].name
+        let astronaut = AstronautData.astronauts[name]
+        let safariVC = SFSafariViewController(url: URL(string: astronaut!.biographyURL)!)
+        safariVC.preferredControlTintColor = Colors.mainBlueYellow
+        present(safariVC, animated: true)
+    }
 }
 
 extension PeopleInSpaceVC: UICollectionViewDelegate, UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return peopleInSpace.people.count
     }
@@ -69,11 +66,15 @@ extension PeopleInSpaceVC: UICollectionViewDelegate, UICollectionViewDataSource 
         let name = peopleInSpace.people[indexPath.row].name
         let astronaut = AstronautData.astronauts[name]
         cell.set(astronaut: astronaut!)
+        cell.delegate = self
         return cell
     }
+}
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let name = peopleInSpace.people[indexPath.row].name
+extension PeopleInSpaceVC: ITAstronautCellDelegate {
+    func bioButtonTapped(_ cell: ITAstronautCell) {
+        guard let index = collectionView.indexPath(for: cell)?.row else { return }
+        let name = peopleInSpace.people[index].name
         let astronaut = AstronautData.astronauts[name]
         let safariVC = SFSafariViewController(url: URL(string: astronaut!.biographyURL)!)
         safariVC.preferredControlTintColor = Colors.mainBlueYellow

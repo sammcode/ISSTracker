@@ -71,56 +71,8 @@ class SearchImagesVC: ITDataLoadingVC {
         navigationItem.searchController = searchController
     }
 
-    func createTwoColumnFlowLayout(in view: UIView, itemHeightConstant: CGFloat, hasHeaderView: Bool) -> UICollectionViewFlowLayout {
-        let width                       = view.bounds.width
-        let padding: CGFloat            = 12
-        let minimumItemSpacing: CGFloat = 10
-        let availableWidth              = width - (padding * 2) - (minimumItemSpacing)
-        let itemWidth                   = availableWidth / 2
-
-        let flowLayout                  = UICollectionViewFlowLayout()
-        flowLayout.sectionInset         = UIEdgeInsets(top: padding*2, left: padding, bottom: padding*4, right: padding)
-        flowLayout.itemSize             = CGSize(width: itemWidth, height: itemWidth + itemHeightConstant)
-
-        if hasHeaderView { flowLayout.headerReferenceSize = CGSize(width: width, height: 160) }
-
-        return flowLayout
-    }
-
-    func createThreeColumnFlowLayout(in view: UIView, itemHeightConstant: CGFloat, hasHeaderView: Bool) -> UICollectionViewFlowLayout {
-        let width                       = view.bounds.width
-        let padding: CGFloat            = 12
-        let minimumItemSpacing: CGFloat = 10
-        let availableWidth              = width - (padding * 2) - (minimumItemSpacing * 2)
-        let itemWidth                   = availableWidth / 3
-
-        let flowLayout                  = UICollectionViewFlowLayout()
-        flowLayout.sectionInset         = UIEdgeInsets(top: padding*2, left: padding, bottom: padding*4, right: padding)
-        flowLayout.itemSize             = CGSize(width: itemWidth, height: itemWidth + itemHeightConstant)
-
-        if hasHeaderView { flowLayout.headerReferenceSize = CGSize(width: width, height: 160) }
-
-        return flowLayout
-    }
-
-    func createFourColumnFlowLayout(in view: UIView, itemHeightConstant: CGFloat, hasHeaderView: Bool) -> UICollectionViewFlowLayout {
-        let width                       = view.bounds.width
-        let padding: CGFloat            = 12
-        let minimumItemSpacing: CGFloat = 10
-        let availableWidth              = width - (padding * 2) - (minimumItemSpacing * 3)
-        let itemWidth                   = availableWidth / 4
-
-        let flowLayout                  = UICollectionViewFlowLayout()
-        flowLayout.sectionInset         = UIEdgeInsets(top: padding*2, left: padding, bottom: padding*4, right: padding)
-        flowLayout.itemSize             = CGSize(width: itemWidth, height: itemWidth + itemHeightConstant)
-
-        if hasHeaderView { flowLayout.headerReferenceSize = CGSize(width: width, height: 160) }
-
-        return flowLayout
-    }
-
     func configureCollectionView(){
-        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: createTwoColumnFlowLayout(in: view, itemHeightConstant: 0, hasHeaderView: false))
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: HelpfulFunctions.createColumnFlowLayout(in: view, itemHeightConstant: 0, hasHeaderView: false, columns: 2))
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
@@ -165,11 +117,11 @@ class SearchImagesVC: ITDataLoadingVC {
 
             switch self.currentLayoutScale {
             case .twoColumn:
-                self.collectionView.setCollectionViewLayout(self.createTwoColumnFlowLayout(in: self.view, itemHeightConstant: 0, hasHeaderView: false), animated: true)
+                self.collectionView.setCollectionViewLayout(HelpfulFunctions.createColumnFlowLayout(in: self.view, itemHeightConstant: 0, hasHeaderView: false, columns: 2), animated: true)
             case .threeColumn:
-                self.collectionView.setCollectionViewLayout(self.createThreeColumnFlowLayout(in: self.view, itemHeightConstant: 0, hasHeaderView: false), animated: true)
+                self.collectionView.setCollectionViewLayout(HelpfulFunctions.createColumnFlowLayout(in: self.view, itemHeightConstant: 0, hasHeaderView: false, columns: 3), animated: true)
             case .fourColumn:
-                self.collectionView.setCollectionViewLayout(self.createFourColumnFlowLayout(in: self.view, itemHeightConstant: 0, hasHeaderView: false), animated: true)
+                self.collectionView.setCollectionViewLayout(HelpfulFunctions.createColumnFlowLayout(in: self.view, itemHeightConstant: 0, hasHeaderView: false, columns: 4), animated: true)
             }
         }
     }
@@ -193,11 +145,12 @@ class SearchImagesVC: ITDataLoadingVC {
             self.isLoadingMoreImages = false
             switch result {
             case .success(let searchResults):
-                print(searchResults)
                 self.updateUI(with: searchResults.collection.items)
-
+                DispatchQueue.main.async {
+                    self.collectionView.scrollToItem(at: IndexPath(index: 0), at: .top, animated: false)
+                }
             case .failure(let error):
-                print(error.rawValue)
+                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
             }
         }
     }
@@ -244,8 +197,6 @@ extension SearchImagesVC: UICollectionViewDelegate, UICollectionViewDelegateFlow
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.size.height
 
-        print("HERE")
-
         if offsetY > contentHeight - height {
             guard hasMoreImages, !isLoadingMoreImages else { return }
             page += 1
@@ -256,7 +207,6 @@ extension SearchImagesVC: UICollectionViewDelegate, UICollectionViewDelegateFlow
 
 extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
     func updateSearchResults(for searchController: UISearchController) {
-
         guard let filter = searchController.searchBar.text, !filter.isEmpty, isSetToFilter else {
             filteredImageData.removeAll()
             updateData(on: imageData)
@@ -272,14 +222,12 @@ extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
                 if $0.data[0].description != nil {
                     if $0.data[0].description!.lowercased().contains(word.lowercased()){
                         result = true
-                        print("contains \(word)")
                     }else {
                         result = false
                     }
                 }else{
                     if $0.data[0].title.lowercased().contains(word.lowercased()){
                         result = true
-                        print("contains \(word)")
                     }else {
                         result = false
                     }
@@ -291,7 +239,6 @@ extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print("HELLOOOOOO")
         guard let filter = searchBar.text, !filter.isEmpty, !isSetToFilter else {
             return
         }
@@ -299,7 +246,6 @@ extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
 
         imageData.removeAll()
         currentQ = q + "%20" + filter.replacingOccurrences(of: " ", with: "%20")
-        print(currentQ)
         resetSearch()
         getIssImages(text: currentQ, page: page)
     }
@@ -307,7 +253,6 @@ extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
         isSetToFilter.toggle()
         searchController.searchBar.placeholder = isSetToFilter ? "Filter \(imageData.count) results" : "Search ISS Images"
-
         let img = !isSetToFilter ? UIImage(systemName: "line.horizontal.3.decrease") : UIImage(systemName: "line.horizontal.3.decrease.circle.fill")
         searchController.searchBar.setImage(img, for: .bookmark, state: .normal)
     }
