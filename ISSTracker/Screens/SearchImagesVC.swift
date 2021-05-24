@@ -145,11 +145,12 @@ class SearchImagesVC: ITDataLoadingVC {
             self.isLoadingMoreImages = false
             switch result {
             case .success(let searchResults):
-                print(searchResults)
                 self.updateUI(with: searchResults.collection.items)
-
+                DispatchQueue.main.async {
+                    self.collectionView.scrollToItem(at: IndexPath(index: 0), at: .top, animated: false)
+                }
             case .failure(let error):
-                print(error.rawValue)
+                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
             }
         }
     }
