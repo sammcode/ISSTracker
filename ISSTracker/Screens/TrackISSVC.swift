@@ -54,6 +54,17 @@ class TrackISSVC: UIViewController {
         Map.mapView.removeAnnotation(anno)
     }
 
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13, *), self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.configureIconView()
+            }
+        }
+    }
+
     /// Calls all configuration methods for the ViewController
     func configure(){
         configureViewController()
