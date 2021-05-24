@@ -50,7 +50,7 @@ class PeopleInSpaceVC: UIViewController {
     }
 
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createTwoColumnFlowLayout(in: view, itemHeightConstant: 80, hasHeaderView: false))
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createColumnFlowLayout(in: view, itemHeightConstant: 80, hasHeaderView: false, columns: 2))
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self

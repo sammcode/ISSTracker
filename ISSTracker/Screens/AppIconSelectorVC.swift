@@ -26,7 +26,7 @@ class AppIconSelectorVC: UIViewController {
     }
 
     func configureCollectionView(){
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createThreeColumnFlowLayout(in: view, itemHeightConstant: 0, hasHeaderView: false))
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: HelpfulFunctions.createColumnFlowLayout(in: view, itemHeightConstant: 0, hasHeaderView: false, columns: 3))
         view.addSubview(collectionView)
         collectionView.backgroundColor = .systemGray6
         collectionView.delegate = self
