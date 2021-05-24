@@ -115,7 +115,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Accesses user's GPS coordinates for use in API call</string>
+	<string>Accesses user&apos;s GPS coordinates for use in API call</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>nasalization-rg.ttf</string>
@@ -153,8 +153,6 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 </dict>
 </plist>
