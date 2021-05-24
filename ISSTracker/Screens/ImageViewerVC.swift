@@ -47,6 +47,8 @@ class ImageViewerVC: UIViewController {
         scrollView.decelerationRate = .fast
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.alwaysBounceHorizontal = false
+        scrollView.alwaysBounceVertical = false
 
         scrollView.delegate = self
 
@@ -115,7 +117,6 @@ extension ImageViewerVC: UIScrollViewDelegate {
     }
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        print("ZOOOM")
         if scrollView.zoomScale > scrollView.maximumZoomScale {
             scrollView.zoomScale = scrollView.maximumZoomScale
         } else if scrollView.zoomScale < scrollView.minimumZoomScale {

@@ -106,7 +106,7 @@ class MainVC: ITDataLoadingVC {
     }
 
     @objc fileprivate func reinitializePlayerLayer(){
-        player.play()
+        if !UserDefaultsManager.reduceAnimations { player.play() }
     }
 
     /// Checks if the app has been launched before

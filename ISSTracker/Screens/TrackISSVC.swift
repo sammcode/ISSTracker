@@ -54,6 +54,17 @@ class TrackISSVC: UIViewController {
         Map.mapView.removeAnnotation(anno)
     }
 
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13, *), self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.configureIconView()
+            }
+        }
+    }
+
     /// Calls all configuration methods for the ViewController
     func configure(){
         configureViewController()
@@ -305,7 +316,7 @@ class TrackISSVC: UIViewController {
     func trackingModeButtonTapped(){
         trackingModeButton.pulsate()
         if !UserDefaults.standard.bool(forKey: "trackingModeEnabledBefore") {
-            presentITAlertOnMainThread(title: "Tracking Mode", message: "This awesome feature will follow the ISS autonomously 🤯. As the map is continuously animating while in Tracking Mode, be weary that CPU usage can be as high as 50%. When exiting Tracking Mode, the ISS may take a few seconds to animate to it's updated location.\n\n -Sam 👨‍💻", buttonTitle: "Ok", isLongMessage: true)
+            presentITAlertOnMainThread(title: "Tracking Mode", message: "This awesome feature will follow the ISS autonomously 🤯. As the map is continuously animating while in Tracking Mode, be weary that CPU usage can be as high as 50%. \n\n -Sam 👨‍💻", buttonTitle: "Ok", isLongMessage: true)
             UserDefaults.standard.set(true, forKey: "trackingModeEnabledBefore")
         } else {
             isTrackingModeEnabled.toggle()

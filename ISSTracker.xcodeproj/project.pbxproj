@@ -81,7 +81,6 @@
 		B23246F026376DDE000EF307 /* darkBlueIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23246ED26376DDE000EF307 /* darkBlueIcon@2x.png */; };
 		B23246F126376DDE000EF307 /* darkBlueIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23246EE26376DDE000EF307 /* darkBlueIcon@3x.png */; };
 		B23246FC26377105000EF307 /* IconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246FB26377105000EF307 /* IconManager.swift */; };
-		B23247162638E66E000EF307 /* ITPassTimeStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23247152638E66C000EF307 /* ITPassTimeStatusView.swift */; };
 		B26A21B8265893BA00488DE8 /* SearchImagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21B7265893BA00488DE8 /* SearchImagesVC.swift */; };
 		B26A21BA2658945F00488DE8 /* NASAImageSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21B92658945F00488DE8 /* NASAImageSearchResults.swift */; };
 		B26A21BC265895D100488DE8 /* ITNasaImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21BB265895D100488DE8 /* ITNasaImageView.swift */; };
@@ -89,6 +88,7 @@
 		B2798283264C92D70002EA1F /* ISSLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2798282264C92D70002EA1F /* ISSLocation.swift */; };
 		B2798285264CB65E0002EA1F /* NasaAstronaut.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2798284264CB65E0002EA1F /* NasaAstronaut.jpg */; };
 		B2D7D4502658B49E008FAB15 /* ImageViewerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D7D44F2658B49E008FAB15 /* ImageViewerVC.swift */; };
+		B2D7D452265B677D008FAB15 /* ITEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D7D451265B677D008FAB15 /* ITEmptyStateView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,7 +187,6 @@
 		B23246ED26376DDE000EF307 /* darkBlueIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "darkBlueIcon@2x.png"; sourceTree = "<group>"; };
 		B23246EE26376DDE000EF307 /* darkBlueIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "darkBlueIcon@3x.png"; sourceTree = "<group>"; };
 		B23246FB26377105000EF307 /* IconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconManager.swift; sourceTree = "<group>"; };
-		B23247152638E66C000EF307 /* ITPassTimeStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITPassTimeStatusView.swift; sourceTree = "<group>"; };
 		B26A21B7265893BA00488DE8 /* SearchImagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchImagesVC.swift; sourceTree = "<group>"; };
 		B26A21B92658945F00488DE8 /* NASAImageSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NASAImageSearchResults.swift; sourceTree = "<group>"; };
 		B26A21BB265895D100488DE8 /* ITNasaImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITNasaImageView.swift; sourceTree = "<group>"; };
@@ -195,6 +194,7 @@
 		B2798282264C92D70002EA1F /* ISSLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSLocation.swift; sourceTree = "<group>"; };
 		B2798284264CB65E0002EA1F /* NasaAstronaut.jpg */ = {isa = PBXFileReference; explicitFileType = image.jpeg; path = NasaAstronaut.jpg; sourceTree = "<group>"; };
 		B2D7D44F2658B49E008FAB15 /* ImageViewerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerVC.swift; sourceTree = "<group>"; };
+		B2D7D451265B677D008FAB15 /* ITEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITEmptyStateView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -403,7 +403,7 @@
 				B21D0DB525F6C49900A87141 /* ITAlertContainerView.swift */,
 				B21D0DD525F6EB0400A87141 /* ITCoordinatesView.swift */,
 				B23246422629EED0000EF307 /* ITNumberOfPeopleView.swift */,
-				B23247152638E66C000EF307 /* ITPassTimeStatusView.swift */,
+				B2D7D451265B677D008FAB15 /* ITEmptyStateView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -684,6 +684,7 @@
 				B21D0DF025FA7DDF00A87141 /* ITPredictedTimeCell.swift in Sources */,
 				B21D0DDB25F70DE900A87141 /* HelpfulFunctions.swift in Sources */,
 				B21D0DD625F6EB0400A87141 /* ITCoordinatesView.swift in Sources */,
+				B2D7D452265B677D008FAB15 /* ITEmptyStateView.swift in Sources */,
 				B21D0E1625FD550000A87141 /* Ext+Date.swift in Sources */,
 				B26A21B8265893BA00488DE8 /* SearchImagesVC.swift in Sources */,
 				B21D0D6C25F593CC00A87141 /* Ext+UIView.swift in Sources */,
@@ -693,7 +694,6 @@
 				B23246FC26377105000EF307 /* IconManager.swift in Sources */,
 				B21D0D5A25F58C9C00A87141 /* ITDescriptionLabel.swift in Sources */,
 				B21D0DA325F6C2E300A87141 /* ITAlertVC.swift in Sources */,
-				B23247162638E66E000EF307 /* ITPassTimeStatusView.swift in Sources */,
 				B21D0D8625F6B05C00A87141 /* GPSLocation.swift in Sources */,
 				B26A21BE2658962B00488DE8 /* ITNasaImageCell.swift in Sources */,
 				B2250CD42622015A0060DB42 /* PeopleInSpace.swift in Sources */,
@@ -897,7 +897,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 46TV4HNLFF;
 				INFOPLIST_FILE = ISSTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -918,7 +918,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 46TV4HNLFF;
 				INFOPLIST_FILE = ISSTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
