@@ -55,7 +55,7 @@ class PeopleInSpaceVC: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
-        collectionView.register(AstronautCell.self, forCellWithReuseIdentifier: AstronautCell.reuseID)
+        collectionView.register(ITAstronautCell.self, forCellWithReuseIdentifier: ITAstronautCell.reuseID)
     }
 }
 
@@ -65,7 +65,7 @@ extension PeopleInSpaceVC: UICollectionViewDelegate, UICollectionViewDataSource 
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AstronautCell.reuseID, for: indexPath) as! AstronautCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ITAstronautCell.reuseID, for: indexPath) as! ITAstronautCell
         let name = peopleInSpace.people[indexPath.row].name
         let astronaut = AstronautData.astronauts[name]
         cell.set(astronaut: astronaut!)

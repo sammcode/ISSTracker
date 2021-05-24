@@ -17,7 +17,7 @@ class MainVC: ITDataLoadingVC {
 
     var buttonsStackView = UIStackView()
     var trackISSButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Track ISS")
-    var predictPassesButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Predict Pass Times")
+    var searchImagesButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Search Images")
     var peopleInSpaceButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "People In Space")
     var titleLabel = ITTitleLabel(textAlignment: .center, fontSize: 48)
 
@@ -55,7 +55,7 @@ class MainVC: ITDataLoadingVC {
 
         if #available(iOS 13, *), self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             trackISSButton.layer.shadowColor = UIColor.label.cgColor
-            predictPassesButton.layer.shadowColor = UIColor.label.cgColor
+            searchImagesButton.layer.shadowColor = UIColor.label.cgColor
             peopleInSpaceButton.layer.shadowColor = UIColor.label.cgColor
         }
     }
@@ -155,12 +155,17 @@ class MainVC: ITDataLoadingVC {
     func configureButtons(){
 
         let height: CGFloat = DeviceType.isiPhoneSE ? 40 : 60
-        //let height = DeviceType.isiPhoneSE ?
 
         addActionToTrackISSButton()
         NSLayoutConstraint.activate([
             trackISSButton.heightAnchor.constraint(equalToConstant: height),
             trackISSButton.widthAnchor.constraint(equalToConstant: 260)
+        ])
+
+        addActionToSearchImagesButton()
+        NSLayoutConstraint.activate([
+            searchImagesButton.heightAnchor.constraint(equalToConstant: height),
+            searchImagesButton.widthAnchor.constraint(equalToConstant: 260)
         ])
 
         addActionToPeopleInSpaceButton()
@@ -178,9 +183,9 @@ class MainVC: ITDataLoadingVC {
         buttonsStackView.distribution = .equalCentering
         buttonsStackView.alignment = .center
         buttonsStackView.axis = .vertical
-        buttonsStackView.spacing = 10
+        buttonsStackView.spacing = 15
 
-        let height: CGFloat = DeviceType.isiPhoneSE ? 120 : 160
+        let height: CGFloat = DeviceType.isiPhoneSE ? 160 : 225
         let bottomConstant : CGFloat = DeviceType.isiPhoneSE ? -40 : -60
 
         NSLayoutConstraint.activate([
@@ -190,12 +195,16 @@ class MainVC: ITDataLoadingVC {
             buttonsStackView.heightAnchor.constraint(equalToConstant: height)
         ])
 
-        buttonsStackView.addArrangedSubviews(trackISSButton, peopleInSpaceButton)
+        buttonsStackView.addArrangedSubviews(trackISSButton, searchImagesButton, peopleInSpaceButton)
     }
 
     /// Adds the getISSLocation method to the trackISSButton, for the touchUpInside action
     func addActionToTrackISSButton(){
         trackISSButton.addTarget(self, action: #selector(getISSLocation), for: .touchUpInside)
+    }
+
+    func addActionToSearchImagesButton(){
+        searchImagesButton.addTarget(self, action: #selector(openSearchImagesVC), for: .touchUpInside)
     }
 
     /// Adds the getPeopleInSpace method to the peopleInSpaceButton, for the touchUpInside action
@@ -230,6 +239,33 @@ class MainVC: ITDataLoadingVC {
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
             }
         }
+    }
+
+    @objc func openSearchImagesVC() {
+        searchImagesButton.pulsate()
+        self.showLoadingView()
+
+        NetworkManager.shared.conductNASAImageSearch(for: "international%20space%20station%20\(Date().monthYear)", page: 1) { [weak self] result in
+            guard let self = self else { return }
+
+            self.dismissLoadingView()
+
+            switch result {
+            case .success(let searchResults):
+                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
+                DispatchQueue.main.async {
+                    let searchImagesVC = SearchImagesVC()
+                    searchImagesVC.imageData = searchResults.collection.items
+                    searchImagesVC.updateData(on: searchResults.collection.items)
+                    let navController = UINavigationController(rootViewController: searchImagesVC)
+                    self.present(navController, animated: true)
+                }
+            case .failure(let error):
+                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.error) }
+                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
+            }
+        }
+
     }
 
     @objc func getPeopleInSpace(){

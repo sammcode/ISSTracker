@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AstronautCell: UICollectionViewCell {
+class ITAstronautCell: UICollectionViewCell {
     static let reuseID = "AstronautCell"
     var astro: Astronaut?
 

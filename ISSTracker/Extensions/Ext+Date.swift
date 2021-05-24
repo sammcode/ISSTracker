@@ -34,4 +34,9 @@ extension Date {
     static func - (lhs: Date, rhs: Date) -> TimeInterval {
         return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
     }
+
+    var monthYear: String {
+        DF.dateFormatter.dateFormat = "MMM%20YYYY"
+        return DF.dateFormatter.string(from: self)
+    }
 }

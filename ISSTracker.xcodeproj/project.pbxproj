@@ -44,7 +44,7 @@
 		B232461A2624E9D5000EF307 /* nasalization-rg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B23246162624D9F4000EF307 /* nasalization-rg.ttf */; };
 		B232462A2625E018000EF307 /* PeopleInSpaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246292625E018000EF307 /* PeopleInSpaceVC.swift */; };
 		B232463426274343000EF307 /* Ext+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232463326274342000EF307 /* Ext+Array.swift */; };
-		B232463E2628BACB000EF307 /* AstronautCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232463D2628BACB000EF307 /* AstronautCell.swift */; };
+		B232463E2628BACB000EF307 /* ITAstronautCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232463D2628BACB000EF307 /* ITAstronautCell.swift */; };
 		B23246432629EED0000EF307 /* ITNumberOfPeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246422629EED0000EF307 /* ITNumberOfPeopleView.swift */; };
 		B2324653262CAC6F000EF307 /* Ext+MKAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2324652262CAC6F000EF307 /* Ext+MKAnnotationView.swift */; };
 		B232465B262F6340000EF307 /* ITIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B232465A262F6340000EF307 /* ITIconButton.swift */; };
@@ -82,8 +82,13 @@
 		B23246F126376DDE000EF307 /* darkBlueIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23246EE26376DDE000EF307 /* darkBlueIcon@3x.png */; };
 		B23246FC26377105000EF307 /* IconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246FB26377105000EF307 /* IconManager.swift */; };
 		B23247162638E66E000EF307 /* ITPassTimeStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23247152638E66C000EF307 /* ITPassTimeStatusView.swift */; };
+		B26A21B8265893BA00488DE8 /* SearchImagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21B7265893BA00488DE8 /* SearchImagesVC.swift */; };
+		B26A21BA2658945F00488DE8 /* NASAImageSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21B92658945F00488DE8 /* NASAImageSearchResults.swift */; };
+		B26A21BC265895D100488DE8 /* ITNasaImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21BB265895D100488DE8 /* ITNasaImageView.swift */; };
+		B26A21BE2658962B00488DE8 /* ITNasaImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21BD2658962B00488DE8 /* ITNasaImageCell.swift */; };
 		B2798283264C92D70002EA1F /* ISSLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2798282264C92D70002EA1F /* ISSLocation.swift */; };
 		B2798285264CB65E0002EA1F /* NasaAstronaut.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B2798284264CB65E0002EA1F /* NasaAstronaut.jpg */; };
+		B2D7D4502658B49E008FAB15 /* ImageViewerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D7D44F2658B49E008FAB15 /* ImageViewerVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -145,7 +150,7 @@
 		B23246162624D9F4000EF307 /* nasalization-rg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "nasalization-rg.ttf"; sourceTree = "<group>"; };
 		B23246292625E018000EF307 /* PeopleInSpaceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleInSpaceVC.swift; sourceTree = "<group>"; };
 		B232463326274342000EF307 /* Ext+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Array.swift"; sourceTree = "<group>"; };
-		B232463D2628BACB000EF307 /* AstronautCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstronautCell.swift; sourceTree = "<group>"; };
+		B232463D2628BACB000EF307 /* ITAstronautCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITAstronautCell.swift; sourceTree = "<group>"; };
 		B23246422629EED0000EF307 /* ITNumberOfPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITNumberOfPeopleView.swift; sourceTree = "<group>"; };
 		B2324652262CAC6F000EF307 /* Ext+MKAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+MKAnnotationView.swift"; sourceTree = "<group>"; };
 		B232465A262F6340000EF307 /* ITIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITIconButton.swift; sourceTree = "<group>"; };
@@ -183,8 +188,13 @@
 		B23246EE26376DDE000EF307 /* darkBlueIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "darkBlueIcon@3x.png"; sourceTree = "<group>"; };
 		B23246FB26377105000EF307 /* IconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconManager.swift; sourceTree = "<group>"; };
 		B23247152638E66C000EF307 /* ITPassTimeStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITPassTimeStatusView.swift; sourceTree = "<group>"; };
+		B26A21B7265893BA00488DE8 /* SearchImagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchImagesVC.swift; sourceTree = "<group>"; };
+		B26A21B92658945F00488DE8 /* NASAImageSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NASAImageSearchResults.swift; sourceTree = "<group>"; };
+		B26A21BB265895D100488DE8 /* ITNasaImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITNasaImageView.swift; sourceTree = "<group>"; };
+		B26A21BD2658962B00488DE8 /* ITNasaImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITNasaImageCell.swift; sourceTree = "<group>"; };
 		B2798282264C92D70002EA1F /* ISSLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSLocation.swift; sourceTree = "<group>"; };
 		B2798284264CB65E0002EA1F /* NasaAstronaut.jpg */ = {isa = PBXFileReference; explicitFileType = image.jpeg; path = NasaAstronaut.jpg; sourceTree = "<group>"; };
+		B2D7D44F2658B49E008FAB15 /* ImageViewerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,6 +267,8 @@
 				B232465F262F6F82000EF307 /* SettingsVC.swift */,
 				B232466C263090E5000EF307 /* AppIconSelectorVC.swift */,
 				B2247626264D8E1D0031BD39 /* DeveloperVC.swift */,
+				B26A21B7265893BA00488DE8 /* SearchImagesVC.swift */,
+				B2D7D44F2658B49E008FAB15 /* ImageViewerVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -327,8 +339,9 @@
 			children = (
 				B21D0D4725F5764800A87141 /* ITImageCell.swift */,
 				B21D0DEF25FA7DDF00A87141 /* ITPredictedTimeCell.swift */,
-				B232463D2628BACB000EF307 /* AstronautCell.swift */,
+				B232463D2628BACB000EF307 /* ITAstronautCell.swift */,
 				B23246E626375120000EF307 /* ITAppIconCell.swift */,
+				B26A21BD2658962B00488DE8 /* ITNasaImageCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -337,6 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				B21D0D5025F576CD00A87141 /* ITImageView.swift */,
+				B26A21BB265895D100488DE8 /* ITNasaImageView.swift */,
 			);
 			path = ImageViews;
 			sourceTree = "<group>";
@@ -369,6 +383,7 @@
 				B21D0D9725F6BD2500A87141 /* PassTime.swift */,
 				B2250CD32622015A0060DB42 /* PeopleInSpace.swift */,
 				B2798282264C92D70002EA1F /* ISSLocation.swift */,
+				B26A21B92658945F00488DE8 /* NASAImageSearchResults.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -670,6 +685,7 @@
 				B21D0DDB25F70DE900A87141 /* HelpfulFunctions.swift in Sources */,
 				B21D0DD625F6EB0400A87141 /* ITCoordinatesView.swift in Sources */,
 				B21D0E1625FD550000A87141 /* Ext+Date.swift in Sources */,
+				B26A21B8265893BA00488DE8 /* SearchImagesVC.swift in Sources */,
 				B21D0D6C25F593CC00A87141 /* Ext+UIView.swift in Sources */,
 				B21D0E1B25FD5E0F00A87141 /* Ext+UITableView.swift in Sources */,
 				B23246722630B9F6000EF307 /* UserDefaultsManager.swift in Sources */,
@@ -679,9 +695,11 @@
 				B21D0DA325F6C2E300A87141 /* ITAlertVC.swift in Sources */,
 				B23247162638E66E000EF307 /* ITPassTimeStatusView.swift in Sources */,
 				B21D0D8625F6B05C00A87141 /* GPSLocation.swift in Sources */,
+				B26A21BE2658962B00488DE8 /* ITNasaImageCell.swift in Sources */,
 				B2250CD42622015A0060DB42 /* PeopleInSpace.swift in Sources */,
 				B232463426274343000EF307 /* Ext+Array.swift in Sources */,
 				B21D0E2025FD648700A87141 /* InfoVC.swift in Sources */,
+				B26A21BA2658945F00488DE8 /* NASAImageSearchResults.swift in Sources */,
 				B21D0D9325F6B29700A87141 /* NetworkManager.swift in Sources */,
 				B21D0D3725F562B100A87141 /* MainVC.swift in Sources */,
 				B21D0DB025F6C35500A87141 /* ITBodyLabel.swift in Sources */,
@@ -694,6 +712,8 @@
 				B21D0CF825F55F5A00A87141 /* AppDelegate.swift in Sources */,
 				B21D0E2525FE5F0F00A87141 /* ITSecondaryTitleLabel.swift in Sources */,
 				B232465B262F6340000EF307 /* ITIconButton.swift in Sources */,
+				B26A21BC265895D100488DE8 /* ITNasaImageView.swift in Sources */,
+				B2D7D4502658B49E008FAB15 /* ImageViewerVC.swift in Sources */,
 				B2247625264CED730031BD39 /* ITPaddingLabel.swift in Sources */,
 				B21D0DBE25F6C53400A87141 /* Ext+UIViewController.swift in Sources */,
 				B21D0DB625F6C49900A87141 /* ITAlertContainerView.swift in Sources */,
@@ -708,7 +728,7 @@
 				B21D0D4225F5711400A87141 /* Constants.swift in Sources */,
 				B23246E726375120000EF307 /* ITAppIconCell.swift in Sources */,
 				B23246432629EED0000EF307 /* ITNumberOfPeopleView.swift in Sources */,
-				B232463E2628BACB000EF307 /* AstronautCell.swift in Sources */,
+				B232463E2628BACB000EF307 /* ITAstronautCell.swift in Sources */,
 				B21D0D9825F6BD2500A87141 /* PassTime.swift in Sources */,
 				B2324653262CAC6F000EF307 /* Ext+MKAnnotationView.swift in Sources */,
 			);
