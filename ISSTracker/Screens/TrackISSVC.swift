@@ -316,7 +316,7 @@ class TrackISSVC: UIViewController {
     func trackingModeButtonTapped(){
         trackingModeButton.pulsate()
         if !UserDefaults.standard.bool(forKey: "trackingModeEnabledBefore") {
-            presentITAlertOnMainThread(title: "Tracking Mode", message: "This awesome feature will follow the ISS autonomously 🤯. As the map is continuously animating while in Tracking Mode, be weary that CPU usage can be as high as 50%. When exiting Tracking Mode, the ISS may take a few seconds to animate to it's updated location.\n\n -Sam 👨‍💻", buttonTitle: "Ok", isLongMessage: true)
+            presentITAlertOnMainThread(title: "Tracking Mode", message: "This awesome feature will follow the ISS autonomously 🤯. As the map is continuously animating while in Tracking Mode, be weary that CPU usage can be as high as 50%. \n\n -Sam 👨‍💻", buttonTitle: "Ok", isLongMessage: true)
             UserDefaults.standard.set(true, forKey: "trackingModeEnabledBefore")
         } else {
             isTrackingModeEnabled.toggle()

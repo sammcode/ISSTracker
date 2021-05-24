@@ -28,6 +28,8 @@ class SearchImagesVC: ITDataLoadingVC {
     var pinchGestureRecognizer: UIPinchGestureRecognizer!
     var currentLayoutScale: layoutScale = .twoColumn
 
+    var emptyStateView: ITEmptyStateView?
+
     var hasMoreImages = true
     var isSearching = false
     var isLoadingMoreImages = false
@@ -64,7 +66,7 @@ class SearchImagesVC: ITDataLoadingVC {
     func configureSearchController(){
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = "Search by keyword (Ex: 'Astronauts')"
+        searchController.searchBar.placeholder = "Search by keywords (e.g. 'Astronauts')"
         searchController.searchBar.showsBookmarkButton = true
         searchController.searchBar.setImage(UIImage(systemName: "line.horizontal.3.decrease"), for: .bookmark, state: .normal)
         searchController.obscuresBackgroundDuringPresentation = false
@@ -158,6 +160,15 @@ class SearchImagesVC: ITDataLoadingVC {
     func updateUI(with images: [Item]){
         if images.count < 100 { self.hasMoreImages = false }
         self.imageData.append(contentsOf: images)
+
+        if self.imageData.isEmpty {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                let message = "No results found for search: \(String(describing: self.searchController.searchBar.text!))"
+                self.showEmptyStateView(with: message, in: self.view)
+                return
+            }
+        }
         self.updateData(on: self.imageData)
     }
 
@@ -177,6 +188,12 @@ class SearchImagesVC: ITDataLoadingVC {
 
     @objc func dismissVC(){
         dismiss(animated: true)
+    }
+
+    func showEmptyStateView(with message: String, in view: UIView){
+        emptyStateView = ITEmptyStateView(message: message)
+        emptyStateView!.frame = view.bounds
+        view.addSubview(emptyStateView!)
     }
 }
 
@@ -244,6 +261,7 @@ extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
         }
         isSearching = true
 
+        if emptyStateView != nil { emptyStateView?.removeFromSuperview() }
         imageData.removeAll()
         currentQ = q + "%20" + filter.replacingOccurrences(of: " ", with: "%20")
         resetSearch()
