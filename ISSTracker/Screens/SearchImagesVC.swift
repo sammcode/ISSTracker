@@ -258,7 +258,7 @@ extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let filter = searchBar.text?.replacingOccurrences(of: "“", with: "").replacingOccurrences(of: "”", with: ""), !filter.isEmpty, !isSetToFilter else {
+        guard let filter = searchBar.text?.replacingOccurrences(of: "“", with: "").replacingOccurrences(of: "”", with: "").replacingOccurrences(of: "<", with: "").replacingOccurrences(of: ">", with: "").replacingOccurrences(of: "‘", with: "").replacingOccurrences(of: "’", with: "").replacingOccurrences(of: "&", with: ""), !filter.isEmpty, !isSetToFilter else {
             searchBar.text = ""
             return
         }
