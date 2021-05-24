@@ -365,7 +365,7 @@ class TrackISSVC: UIViewController {
 
     /// Starts a timer that calls the updateMapView method every 10 seconds
     func startUpdating(){
-        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
     }
 
     /// Dismisses the ViewController
@@ -388,13 +388,13 @@ class TrackISSVC: UIViewController {
 
                     let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
 
-                    UIView.animate(withDuration: 10, delay: 0, options: .curveLinear) {
+                    UIView.animate(withDuration: 2, delay: 0, options: .curveLinear) {
                         self.anno.coordinate = coordinates
                     }
 
                     if self.isTrackingModeEnabled {
                         let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(60000), longitudinalMeters: CLLocationDistance(60000))
-                        Map.mapView.animatedZoom(zoomRegion: region, duration: 10)
+                        Map.mapView.animatedZoom(zoomRegion: region, duration: 2)
                     }
 
                     self.coordinatesView.issLocation = self.issLocation
