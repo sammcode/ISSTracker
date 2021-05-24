@@ -148,8 +148,10 @@ class SearchImagesVC: ITDataLoadingVC {
             switch result {
             case .success(let searchResults):
                 self.updateUI(with: searchResults.collection.items)
-                DispatchQueue.main.async {
-                    self.collectionView.scrollToItem(at: IndexPath(index: 0), at: .top, animated: false)
+                if page == 1 {
+                    DispatchQueue.main.async {
+                        self.collectionView.scrollToItem(at: IndexPath(index: 0), at: .top, animated: false)
+                    }
                 }
             case .failure(let error):
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
@@ -256,7 +258,8 @@ extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let filter = searchBar.text, !filter.isEmpty, !isSetToFilter else {
+        guard let filter = searchBar.text?.replacingOccurrences(of: "“", with: "").replacingOccurrences(of: "”", with: ""), !filter.isEmpty, !isSetToFilter else {
+            searchBar.text = ""
             return
         }
         isSearching = true
