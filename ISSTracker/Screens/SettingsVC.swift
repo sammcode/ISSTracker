@@ -15,7 +15,7 @@ protocol SettingsVCDelegate: AnyObject{
 class SettingsVC: UIViewController {
 
     var tableView = UITableView(frame: .zero, style: .insetGrouped)
-    var cells = [[UITableViewCell](), [UITableViewCell](), [UITableViewCell](), [UITableViewCell]()]
+    var cells = [[UITableViewCell](), [UITableViewCell](), [UITableViewCell](), [UITableViewCell](), [UITableViewCell](), [UITableViewCell]()]
 
     weak var delegate: SettingsVCDelegate!
 
@@ -89,16 +89,55 @@ class SettingsVC: UIViewController {
     }
 
     func configureCells(){
-        let cell0 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell0.textLabel?.text = "App Icon"
-        cell0.imageView?.image = UIImage(systemName: "square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
-        cell0.accessoryType = .disclosureIndicator
+        configureAppearanceCells()
+        configureGeneralCells()
+        configureMapCells()
+        configureImageSearchCells()
+        configureResourceCells()
+        configureDeveloperCell()
+    }
 
-        cells[0].append(cell0)
+    func configureAppearanceCells(){
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.textLabel?.text = "App Icon"
+        cell.imageView?.image = UIImage(systemName: "square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell.accessoryType = .disclosureIndicator
 
+        cells[0].append(cell)
+    }
+
+    func configureGeneralCells(){
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.textLabel?.text = "Reduce Animations"
+        cell.imageView?.image = UIImage(systemName: "bolt.slash.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell.selectionStyle = .none
+
+        let switchView = UISwitch(frame: .zero)
+        switchView.setOn(UserDefaultsManager.reduceAnimations, animated: true)
+        switchView.tag = 1
+        switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
+        cell.accessoryView = switchView
+
+        cells[1].append(cell)
+
+        let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell1.textLabel?.text = "Haptics"
+        cell1.imageView?.image = UIImage(systemName: "iphone.radiowaves.left.and.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell1.selectionStyle = .none
+
+        let switchView1 = UISwitch(frame: .zero)
+        switchView1.setOn(UserDefaultsManager.haptics, animated: true)
+        switchView1.tag = 2
+        switchView1.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
+        cell1.accessoryView = switchView1
+
+        cells[1].append(cell1)
+    }
+
+    func configureMapCells(){
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = "Large Map Annotations"
-        cell.imageView?.image = UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell.imageView?.image = UIImage(systemName: "mappin.and.ellipse", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
         cell.selectionStyle = .none
 
         let switchView = UISwitch(frame: .zero)
@@ -107,62 +146,79 @@ class SettingsVC: UIViewController {
         switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell.accessoryView = switchView
 
-        cells[1].append(cell)
+        cells[2].append(cell)
 
         let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell1.textLabel?.text = "Reduce Animations"
-        cell1.imageView?.image = UIImage(systemName: "bolt.slash.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell1.textLabel?.text = "Map Type"
+        cell1.imageView?.image = UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
         cell1.selectionStyle = .none
 
-        let switchView1 = UISwitch(frame: .zero)
-        switchView1.setOn(UserDefaultsManager.reduceAnimations, animated: true)
-        switchView1.tag = 1 // for detect which row switch Changed
-        switchView1.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
-        cell1.accessoryView = switchView1
+        let items = ["Standard", "Hybrid"]
+        let segmentedControl = UISegmentedControl(items: items)
+        var index = 0
+        switch UserDefaultsManager.defaultMapType {
+        case 1:
+            index = 1
+        default:
+            break
+        }
+        segmentedControl.selectedSegmentIndex = index
+        segmentedControl.addTarget(self, action: #selector(defaultMapTypeChanged(_:)), for: .valueChanged)
+        cell1.accessoryView = segmentedControl
+        cells[2].append(cell1)
+    }
 
-        cells[1].append(cell1)
+    func configureImageSearchCells(){
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.textLabel?.text = "Image Columns"
+        cell.imageView?.image = UIImage(systemName: "increase.quotelevel", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell.selectionStyle = .none
+
+        let items = ["  2   ", "  3   ", "  4   "]
+        let segmentedControl = UISegmentedControl(items: items)
+        var index = 0
+        switch UserDefaultsManager.numberOfImageColumns {
+        case 3:
+            index = 1
+        case 4:
+            index = 2
+        default:
+            break
+        }
+        segmentedControl.selectedSegmentIndex = index
+        segmentedControl.addTarget(self, action: #selector(numberOfImageColumnsChanged(_:)), for: .valueChanged)
+        cell.accessoryView = segmentedControl
+        cells[3].append(cell)
+    }
+
+    func configureResourceCells(){
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.textLabel?.text = "TrackISS Github repo"
+        cell.accessoryType = .disclosureIndicator
+        cells[4].append(cell)
+
+        let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell1.textLabel?.text = "Open-Notify API"
+        cell1.accessoryType = .disclosureIndicator
+        cells[4].append(cell1)
 
         let cell2 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell2.textLabel?.text = "Haptics"
-        cell2.imageView?.image = UIImage(systemName: "iphone.radiowaves.left.and.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
-        cell2.selectionStyle = .none
+        cell2.textLabel?.text = "Where the ISS at? API"
+        cell2.accessoryType = .disclosureIndicator
+        cells[4].append(cell2)
 
-        let switchView2 = UISwitch(frame: .zero)
-        switchView2.setOn(UserDefaultsManager.haptics, animated: true)
-        switchView2.tag = 2
-        switchView2.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
-        cell2.accessoryView = switchView2
-
-        cells[1].append(cell2)
-
-        //RESOURCES
         let cell3 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell3.textLabel?.text = "TrackISS Github repo"
+        cell3.textLabel?.text = "NASA Image and Video Library API"
         cell3.accessoryType = .disclosureIndicator
-        cells[2].append(cell3)
+        cells[4].append(cell3)
+    }
 
-        let cell4 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell4.textLabel?.text = "Open-Notify API"
-        cell4.accessoryType = .disclosureIndicator
-        cells[2].append(cell4)
-
-        let cell5 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell5.textLabel?.text = "Where the ISS at? API"
-        cell5.accessoryType = .disclosureIndicator
-        cells[2].append(cell5)
-
-        let cell6 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell6.textLabel?.text = "NASA Image and Video Library API"
-        cell6.accessoryType = .disclosureIndicator
-        cells[2].append(cell6)
-
-        //DEVELOPER
-
-        let cell7 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell7.textLabel?.text = "Developer"
-        cell7.imageView?.image = UIImage(systemName: "person", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
-        cell7.accessoryType = .disclosureIndicator
-        cells[3].append(cell7)
+    func configureDeveloperCell(){
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.textLabel?.text = "Developer"
+        cell.imageView?.image = UIImage(systemName: "person", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell.accessoryType = .disclosureIndicator
+        cells[5].append(cell)
     }
 
     @objc func switchChanged(_ sender : UISwitch!){
@@ -178,6 +234,30 @@ class SettingsVC: UIViewController {
             break
         }
     }
+
+    @objc func numberOfImageColumnsChanged(_ sender: UISegmentedControl){
+        switch sender.selectedSegmentIndex {
+        case 0:
+            UserDefaultsManager.numberOfImageColumns = 2
+        case 1:
+            UserDefaultsManager.numberOfImageColumns = 3
+        case 2:
+            UserDefaultsManager.numberOfImageColumns = 4
+        default:
+            break
+        }
+    }
+
+    @objc func defaultMapTypeChanged(_ sender: UISegmentedControl){
+        switch sender.selectedSegmentIndex {
+        case 0:
+            UserDefaultsManager.defaultMapType = 0
+        case 1:
+            UserDefaultsManager.defaultMapType = 1
+        default:
+            break
+        }
+    }
 }
 
 extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
@@ -187,7 +267,7 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        4
+        6
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -197,6 +277,10 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
         case 1:
             return "General"
         case 2:
+            return "Map"
+        case 3:
+            return "Image Search"
+        case 4:
             return "Resources"
         default:
             return ""
@@ -212,7 +296,7 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
         case 0:
             let appIconSelectorVC = AppIconSelectorVC()
             self.navigationController?.pushViewController(appIconSelectorVC, animated: true)
-        case 2:
+        case 4:
             var url = URL(string: "")
             switch indexPath.row {
             case 0:
@@ -229,7 +313,7 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
             let safariVC = SFSafariViewController(url: url!)
             safariVC.preferredControlTintColor = Colors.mainBlueYellow
             present(safariVC, animated: true)
-        case 3:
+        case 5:
             let developerVC = DeveloperVC()
             self.navigationController?.pushViewController(developerVC, animated: true)
         default:

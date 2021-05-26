@@ -47,6 +47,7 @@ class SearchImagesVC: ITDataLoadingVC {
         configureSearchController()
         configureCollectionView()
         configureDataSource()
+        configureCurrentLayoutScale()
     }
 
     override func viewWillAppear(_ animated: Bool){
@@ -74,7 +75,7 @@ class SearchImagesVC: ITDataLoadingVC {
     }
 
     func configureCollectionView(){
-        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: HelpfulFunctions.createColumnFlowLayout(in: view, itemHeightConstant: 0, hasHeaderView: false, columns: 2))
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: HelpfulFunctions.createColumnFlowLayout(in: view, itemHeightConstant: 0, hasHeaderView: false, columns: CGFloat(UserDefaultsManager.numberOfImageColumns)))
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
@@ -91,6 +92,17 @@ class SearchImagesVC: ITDataLoadingVC {
             collectionView.widthAnchor.constraint(equalToConstant: view.bounds.width),
             collectionView.heightAnchor.constraint(equalToConstant: view.bounds.height)
         ])
+    }
+
+    func configureCurrentLayoutScale(){
+        switch UserDefaultsManager.numberOfImageColumns {
+        case 3:
+            currentLayoutScale = .threeColumn
+        case 4:
+            currentLayoutScale = .fourColumn
+        default:
+            break
+        }
     }
 
     @objc
