@@ -172,6 +172,13 @@ class TrackISSVC: UIViewController {
             Map.mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             Map.mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+
+        switch UserDefaultsManager.defaultMapType {
+        case 1:
+            Map.mapView.mapType = .hybrid
+        default:
+            break
+        }
     }
 
     func configureMapTypeButton(){
