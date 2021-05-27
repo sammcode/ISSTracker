@@ -57,6 +57,41 @@ class NetworkManager {
         task.resume()
     }
 
+    func getIssLocations(for timestamps: [Int64], completed: @escaping (Result<IssLocations, ITError>) -> Void) {
+
+        let endpoint = whereTheISSatBaseURL + "25544/positions?timestamps=\(timestamps[0]),\(timestamps[1]),\(timestamps[2]),\(timestamps[3]),\(timestamps[4]),\(timestamps[5]),\(timestamps[6]),\(timestamps[7]),\(timestamps[8]),\(timestamps[9])&units=kilometers"
+
+        let url = URL(string: endpoint)
+
+        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+
+            if let _ = error {
+                completed(.failure(.unableToComplete))
+            }
+
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completed(.failure(.invalidResponse))
+                return
+            }
+
+            guard let data = data else {
+                completed(.failure(.invalidData))
+                return
+            }
+
+            do{
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let issLocations = try decoder.decode(IssLocations.self, from: data)
+                completed(.success(issLocations))
+            }catch {
+                print(error.localizedDescription)
+                completed(.failure(.invalidData))
+            }
+        }
+        task.resume()
+    }
+
 
     /// Retrieves ISS pass time predictions from the API based on inputted gps coordinates
     /// - Parameters:

@@ -17,3 +17,5 @@ struct IssLocation: Codable {
     let daynum, solarLat, solarLon: Double
     let units: String
 }
+
+typealias IssLocations = [IssLocation]
