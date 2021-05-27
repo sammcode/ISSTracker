@@ -37,7 +37,7 @@ class TrackISSVC: UIViewController {
     var zoomInButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "plus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
     var zoomOutButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "minus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
 
-
+    var orbitPathButtonLeadingConstraint = NSLayoutConstraint()
     var zoomInButtonLeadingConstraint = NSLayoutConstraint()
     var zoomOutButtonLeadingConstraint = NSLayoutConstraint()
 
@@ -253,6 +253,8 @@ class TrackISSVC: UIViewController {
             Map.mapView.mapType = .standard
         }
         iconView.frame.size = CGSize(width: iconWidth, height: iconHeight)
+        clearPulseLayer()
+        createPulseLayer()
     }
 
     func configureShowCoordinatesButton(){
@@ -378,6 +380,7 @@ class TrackISSVC: UIViewController {
                 trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
                 zoomInButtonLeadingConstraint.constant = 10
                 zoomOutButtonLeadingConstraint.constant = 10
+                orbitPathButtonLeadingConstraint.constant = 10
                 UIView.animate(withDuration: 0.5) {
                     self.view.layoutIfNeeded()
                 }
@@ -393,6 +396,7 @@ class TrackISSVC: UIViewController {
                 trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
                 zoomInButtonLeadingConstraint.constant = -80
                 zoomOutButtonLeadingConstraint.constant = -80
+                orbitPathButtonLeadingConstraint.constant = -80
                 UIView.animate(withDuration: 0.5) {
                     self.view.layoutIfNeeded()
                 }
@@ -438,11 +442,12 @@ class TrackISSVC: UIViewController {
         view.addSubview(orbitPathButton)
         addActionToOrbitPathButton()
 
+        orbitPathButtonLeadingConstraint = orbitPathButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10)
         NSLayoutConstraint.activate([
             orbitPathButton.widthAnchor.constraint(equalToConstant: 45),
             orbitPathButton.heightAnchor.constraint(equalToConstant: 45),
-            orbitPathButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
-            orbitPathButton.topAnchor.constraint(equalTo: trackingModeButton.bottomAnchor, constant: 10)
+            orbitPathButton.topAnchor.constraint(equalTo: trackingModeButton.bottomAnchor, constant: 10),
+            orbitPathButtonLeadingConstraint
         ])
     }
 
@@ -564,7 +569,8 @@ class TrackISSVC: UIViewController {
         }
 
         @objc func animatePulse() {
-            pulseLayer.strokeColor = Colors.mainBlueYellow.cgColor
+            if Map.mapView.mapType == .hybrid { pulseLayer.strokeColor = Colors.deepYellow.cgColor }
+            else{ pulseLayer.strokeColor = Colors.mainBlueYellow.cgColor }
 
             let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
             scaleAnimation.duration = 3.0
@@ -612,7 +618,7 @@ extension TrackISSVC: MKMapViewDelegate {
             }
             let renderer = MKPolylineRenderer(polyline: polyline)
             renderer.lineWidth = 3.0
-            renderer.alpha = 0.5
+            renderer.alpha = 0.7
             if Map.mapView.mapType == .hybrid { renderer.strokeColor = Colors.deepYellow }
             else { renderer.strokeColor = Colors.mainBlueYellow }
 
