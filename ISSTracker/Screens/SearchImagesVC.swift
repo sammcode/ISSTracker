@@ -62,6 +62,8 @@ class SearchImagesVC: ITDataLoadingVC {
         navigationItem.rightBarButtonItem = doneButton
 
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 38)!]
+        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     func configureSearchController(){

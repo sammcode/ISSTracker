@@ -144,11 +144,14 @@ class TrackISSVC: UIViewController {
         let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(issLocation.latitude), longitude: CLLocationDegrees(issLocation.longitude))
         let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
         Map.mapView.setRegion(region, animated: true)
+        if isShowingLiveFeed { player.play() }
+        updateOrbitPathOverlays()
     }
 
     @objc func didEnterBackground(){
         clearPulseLayer()
         isTrackingModeEnabled = false
+        player.pause()
     }
 
     @objc func clearPulseLayer(){
@@ -326,19 +329,19 @@ class TrackISSVC: UIViewController {
         case 20:
             self.viewOffset = 260
             coordinatesViewBottomConstraint.constant = viewOffset
-            UIView.animate(withDuration: 0.5) {
+            UIView.animate(withDuration: 0.2) {
                 self.view.layoutIfNeeded()
             }
         case 260:
             self.viewOffset = 20
             coordinatesViewBottomConstraint.constant = viewOffset
-            UIView.animate(withDuration: 0.5) {
+            UIView.animate(withDuration: 0.2) {
                 self.view.layoutIfNeeded()
             }
         default:
             self.viewOffset = 260
             coordinatesViewBottomConstraint.constant = viewOffset
-            UIView.animate(withDuration: 0.5) {
+            UIView.animate(withDuration: 0.2) {
                 self.view.layoutIfNeeded()
             }
         }
@@ -369,7 +372,7 @@ class TrackISSVC: UIViewController {
                 self.playerLayer.frame = CGRect(x: self.view.center.x - (self.view.bounds.width/2), y: self.playerYCoordinate, width: self.view.bounds.width, height: 260)
                 self.player.play()
             case true:
-                self.playerYCoordinate = self.view.center.y + (self.view.bounds.width * 0.21) + 260
+                self.playerYCoordinate = self.view.center.y + (self.view.bounds.width * 0.21) + 265
                 self.playerLayer.frame = CGRect(x: self.view.center.x - (self.view.bounds.width/2), y: self.playerYCoordinate, width: self.view.bounds.width, height: 260)
             }
         }
@@ -698,8 +701,7 @@ extension TrackISSVC: MKMapViewDelegate {
             let renderer = MKPolylineRenderer(polyline: polyline)
             renderer.lineWidth = 3.0
             renderer.alpha = 0.7
-            if Map.mapView.mapType == .hybrid { renderer.strokeColor = Colors.deepYellow }
-            else { renderer.strokeColor = Colors.mainBlueYellow }
+            renderer.strokeColor = .systemGreen
 
             return renderer
         }
