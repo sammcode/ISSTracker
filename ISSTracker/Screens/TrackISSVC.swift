@@ -145,12 +145,13 @@ class TrackISSVC: UIViewController {
         let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
         Map.mapView.setRegion(region, animated: true)
         if isShowingLiveFeed { player.play() }
-        updateOrbitPathOverlays()
+        if isOrbitPathEnabled { updateOrbitPathOverlays(); print("HELLO")}
     }
 
     @objc func didEnterBackground(){
         clearPulseLayer()
         isTrackingModeEnabled = false
+        exitTrackingMode()
         player.pause()
     }
 
@@ -453,49 +454,54 @@ class TrackISSVC: UIViewController {
             UserDefaults.standard.set(true, forKey: "trackingModeEnabledBefore")
         } else {
             isTrackingModeEnabled.toggle()
-
-            let coordinates: CLLocationCoordinate2D!
-            let region: MKCoordinateRegion!
             switch trackingModeLabelOffset {
             case 10:
-                self.trackingModeLabelOffset = -100
-                trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
-                zoomInButtonLeadingConstraint.constant = 10
-                zoomOutButtonLeadingConstraint.constant = 10
-                orbitPathButtonLeadingConstraint.constant = 10
-                UIView.animate(withDuration: 0.5) {
-                    self.view.layoutIfNeeded()
-                }
-                createPulseLayer()
-                coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
-                region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
-                Map.mapView.setRegion(region, animated: true)
-                updateOrbitPathOverlays()
-                Map.mapView.view(for: self.anno)?.isHidden = false
-                iconImageView.isHidden = true
+                exitTrackingMode()
             case -100:
-                self.trackingModeLabelOffset = 10
-                trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
-                zoomInButtonLeadingConstraint.constant = -80
-                zoomOutButtonLeadingConstraint.constant = -80
-                orbitPathButtonLeadingConstraint.constant = -80
-                UIView.animate(withDuration: 0.5) {
-                    self.view.layoutIfNeeded()
-                }
-                clearPulseLayer()
-                coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
-                region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(60000), longitudinalMeters: CLLocationDistance(60000))
-                Map.mapView.setRegion(region, animated: true)
-                Map.mapView.removeOverlays(Map.mapView.overlays)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-                    guard let self = self else { return }
-                    if self.isTrackingModeEnabled {
-                        Map.mapView.view(for: self.anno)?.isHidden = true
-                        self.iconImageView.isHidden = false
-                    }
-                }
+                enterTrackingMode()
             default:
                 break
+            }
+        }
+    }
+
+    func exitTrackingMode(){
+        self.trackingModeLabelOffset = -100
+        trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
+        zoomInButtonLeadingConstraint.constant = 10
+        zoomOutButtonLeadingConstraint.constant = 10
+        orbitPathButtonLeadingConstraint.constant = 10
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+        createPulseLayer()
+        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
+        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
+        Map.mapView.setRegion(region, animated: true)
+        if isOrbitPathEnabled { updateOrbitPathOverlays() }
+        Map.mapView.view(for: self.anno)?.isHidden = false
+        iconImageView.isHidden = true
+    }
+
+    func enterTrackingMode(){
+        self.trackingModeLabelOffset = 10
+        trackingModeLabelTopConstraint.constant = trackingModeLabelOffset
+        zoomInButtonLeadingConstraint.constant = -80
+        zoomOutButtonLeadingConstraint.constant = -80
+        orbitPathButtonLeadingConstraint.constant = -80
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+        clearPulseLayer()
+        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
+        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(60000), longitudinalMeters: CLLocationDistance(60000))
+        Map.mapView.setRegion(region, animated: true)
+        Map.mapView.removeOverlays(Map.mapView.overlays)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            guard let self = self else { return }
+            if self.isTrackingModeEnabled {
+                Map.mapView.view(for: self.anno)?.isHidden = true
+                self.iconImageView.isHidden = false
             }
         }
     }
@@ -608,7 +614,7 @@ class TrackISSVC: UIViewController {
                     let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(location.latitude), longitude: CLLocationDegrees(location.longitude))
                     self.coords.append(coordinates)
                 }
-                self.updateOrbitPathOverlays()
+                if self.isOrbitPathEnabled { self.updateOrbitPathOverlays() }
             case .failure(let error):
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
             }
