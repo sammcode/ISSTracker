@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import AVKit
 
 class TrackISSVC: UIViewController {
 
@@ -26,16 +27,23 @@ class TrackISSVC: UIViewController {
 
     var isTrackingModeEnabled = false
     var isOrbitPathEnabled = true
+    var isShowingLiveFeed = false
+
+    let player = AVPlayer(url: URL(string: "http://iphone-streaming.ustream.tv/uhls/17074538/streams/live/iphone/playlist.m3u8")!)
+    var playerLayer: AVPlayerLayer!
+    var playerYCoordinate: CGFloat = 0
 
     let iconWidth = UserDefaultsManager.largeMapAnnotations ? 90 : 60
     let iconHeight = UserDefaultsManager.largeMapAnnotations ? 60 : 40
 
     var mapTypeButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
     var showCoordinatesButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "note.text", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
+    var showLiveFeedButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "video", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
     var trackingModeButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "binoculars", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
     var orbitPathButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "location.north.line", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
     var zoomInButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "plus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
     var zoomOutButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "minus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
+    var exitButton = ITIconButton(backgroundColor: .systemGray, image: (UIImage(systemName: "multiply", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
 
     var orbitPathButtonLeadingConstraint = NSLayoutConstraint()
     var zoomInButtonLeadingConstraint = NSLayoutConstraint()
@@ -80,9 +88,11 @@ class TrackISSVC: UIViewController {
     func configure(){
         configureViewController()
         configureMapView()
+        configureExitButton()
         configureCoordinatesView()
         configureMapTypeButton()
         configureShowCoordinatesButton()
+        configureShowLiveFeedButton()
         configureTrackingModeButton()
         configureOrbitPathButton()
         configureZoomInButton()
@@ -94,6 +104,29 @@ class TrackISSVC: UIViewController {
         configureTrackingModeLabel()
 
         addBackgroundandForegroundObservers()
+
+        playVideo()
+    }
+
+    func playVideo() {
+
+        player.allowsExternalPlayback = true
+        playerLayer = AVPlayerLayer(player: player)
+        let width = view.bounds.width
+        playerYCoordinate = view.center.y + (view.bounds.width * 0.21) + 260
+        playerLayer.frame = CGRect(x: view.center.x - width/2, y: playerYCoordinate, width: width, height: 260)
+        playerLayer.masksToBounds = true
+        playerLayer.cornerRadius = 20
+        playerLayer.borderWidth = 2
+        playerLayer.borderColor = Colors.mainBlueYellow.cgColor
+        playerLayer.videoGravity = .resizeAspectFill
+        player.automaticallyWaitsToMinimizeStalling = false
+
+        view.layer.insertSublayer(playerLayer, at: 1)
+
+        UIView.animate(withDuration: 1.0, delay: 1.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+            self.view.alpha = 1.0
+        }, completion: nil)
     }
 
     func addBackgroundandForegroundObservers() {
@@ -169,6 +202,7 @@ class TrackISSVC: UIViewController {
         navigationItem.rightBarButtonItem = doneButton
 
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     /// Configures the coordinates view
@@ -219,6 +253,19 @@ class TrackISSVC: UIViewController {
         default:
             break
         }
+    }
+
+    func configureExitButton(){
+        view.addSubview(exitButton)
+        exitButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
+        exitButton.layer.cornerRadius = 45/2
+
+        NSLayoutConstraint.activate([
+            exitButton.widthAnchor.constraint(equalToConstant: 45),
+            exitButton.heightAnchor.constraint(equalToConstant: 45),
+            exitButton.trailingAnchor.constraint(equalTo: Map.mapView.trailingAnchor, constant: -10),
+            exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10)
+        ])
     }
 
     func configureMapTypeButton(){
@@ -297,6 +344,38 @@ class TrackISSVC: UIViewController {
         }
     }
 
+    func configureShowLiveFeedButton(){
+        view.addSubview(showLiveFeedButton)
+        addActionToShowLiveFeedButton()
+        NSLayoutConstraint.activate([
+            showLiveFeedButton.widthAnchor.constraint(equalToConstant: 45),
+            showLiveFeedButton.heightAnchor.constraint(equalToConstant: 45),
+            showLiveFeedButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
+            showLiveFeedButton.topAnchor.constraint(equalTo: showCoordinatesButton.bottomAnchor, constant: 10)
+        ])
+    }
+
+    func addActionToShowLiveFeedButton(){
+        showLiveFeedButton.addTarget(self, action: #selector(showLiveFeedButtonTapped), for: .touchUpInside)
+    }
+
+    @objc func showLiveFeedButtonTapped(){
+        showLiveFeedButton.pulsate()
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            guard let self = self else { return }
+            switch self.isShowingLiveFeed {
+            case false:
+                self.playerYCoordinate = self.view.center.y + (self.view.bounds.width * 0.21) + 20
+                self.playerLayer.frame = CGRect(x: self.view.center.x - (self.view.bounds.width/2), y: self.playerYCoordinate, width: self.view.bounds.width, height: 260)
+                self.player.play()
+            case true:
+                self.playerYCoordinate = self.view.center.y + (self.view.bounds.width * 0.21) + 260
+                self.playerLayer.frame = CGRect(x: self.view.center.x - (self.view.bounds.width/2), y: self.playerYCoordinate, width: self.view.bounds.width, height: 260)
+            }
+        }
+        isShowingLiveFeed.toggle()
+    }
+
     func configureZoomInButton(){
         view.addSubview(zoomInButton)
         addActionToZoomInButton()
@@ -355,7 +434,7 @@ class TrackISSVC: UIViewController {
             trackingModeButton.widthAnchor.constraint(equalToConstant: 45),
             trackingModeButton.heightAnchor.constraint(equalToConstant: 45),
             trackingModeButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
-            trackingModeButton.topAnchor.constraint(equalTo: showCoordinatesButton.bottomAnchor, constant: 10)
+            trackingModeButton.topAnchor.constraint(equalTo: showLiveFeedButton.bottomAnchor, constant: 10)
         ])
     }
 

@@ -115,7 +115,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Accesses user's GPS coordinates for use in API call</string>
+	<string>Accesses user&apos;s GPS coordinates for use in API call</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Save ISS photos to photo library.</string>
 	<key>UIAppFonts</key>
