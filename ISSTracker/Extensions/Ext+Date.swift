@@ -39,4 +39,8 @@ extension Date {
         DF.dateFormatter.dateFormat = "MMM%20YYYY"
         return DF.dateFormatter.string(from: self)
     }
+
+    func currentTimeMillis() -> Int64 {
+        return Int64(self.timeIntervalSince1970)
+    }
 }
