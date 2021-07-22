@@ -113,10 +113,9 @@ class TrackISSVC: UIViewController {
         player.allowsExternalPlayback = true
         playerLayer = AVPlayerLayer(player: player)
         let width = view.bounds.width
-        playerYCoordinate = view.center.y + (view.bounds.width * 0.21) + 260
+        playerYCoordinate = view.center.y + (view.bounds.height/2)
         playerLayer.frame = CGRect(x: view.center.x - width/2, y: playerYCoordinate, width: width, height: 260)
         playerLayer.masksToBounds = true
-        playerLayer.cornerRadius = 20
         playerLayer.borderWidth = 2
         playerLayer.borderColor = Colors.mainBlueYellow.cgColor
         playerLayer.videoGravity = .resizeAspectFill
@@ -145,7 +144,7 @@ class TrackISSVC: UIViewController {
         let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
         Map.mapView.setRegion(region, animated: true)
         if isShowingLiveFeed { player.play() }
-        if isOrbitPathEnabled { updateOrbitPathOverlays(); print("HELLO")}
+        if isOrbitPathEnabled { updateOrbitPathOverlays()}
     }
 
     @objc func didEnterBackground(){
@@ -369,11 +368,11 @@ class TrackISSVC: UIViewController {
             guard let self = self else { return }
             switch self.isShowingLiveFeed {
             case false:
-                self.playerYCoordinate = self.view.center.y + (self.view.bounds.width * 0.21) + 20
+                self.playerYCoordinate = self.view.center.y + (self.view.bounds.height/2) - 260
                 self.playerLayer.frame = CGRect(x: self.view.center.x - (self.view.bounds.width/2), y: self.playerYCoordinate, width: self.view.bounds.width, height: 260)
                 self.player.play()
             case true:
-                self.playerYCoordinate = self.view.center.y + (self.view.bounds.width * 0.21) + 265
+                self.playerYCoordinate = self.view.center.y + (self.view.bounds.height/2)
                 self.playerLayer.frame = CGRect(x: self.view.center.x - (self.view.bounds.width/2), y: self.playerYCoordinate, width: self.view.bounds.width, height: 260)
             }
         }
