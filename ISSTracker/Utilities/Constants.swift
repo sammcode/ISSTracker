@@ -115,6 +115,11 @@ enum AstronautData {
         "Chris Sembroski" : Astronaut(name: "Chris Sembroski", image: (UIImage(named: "ChrisSembroski") ?? Images.iss1)!, nationality: "USA 🇺🇸", role: "Civilian", biographyURL: "https://inspiration4.com/crew"),
         "Dr. Sian Proctor" : Astronaut(name: "Dr. Sian Proctor", image: (UIImage(named: "Dr. Sian Proctor") ?? Images.iss1)!, nationality: "USA 🇺🇸", role: "Civilian", biographyURL: "https://inspiration4.com/crew"),
 
+        //Tiangong
+        "Nie Haisheng" : Astronaut(name: "Nie Haisheng", image: (UIImage(named: "NieHaisheng") ?? Images.iss1)!, nationality: "China 🇨🇳", role: "Flight Engineer", biographyURL: "https://en.wikipedia.org/wiki/Nie_Haisheng"),
+        "Liu Boming" : Astronaut(name: "Liu Boming", image: (UIImage(named: "LiuBoming") ?? Images.iss1)!, nationality: "China 🇨🇳", role: "Flight Engineer", biographyURL: "https://en.wikipedia.org/wiki/Liu_Boming_(astronaut)"),
+        "Tang Hongbo" : Astronaut(name: "Tang Hongbo", image: (UIImage(named: "TangHongbo") ?? Images.iss1)!, nationality: "China 🇨🇳", role: "Flight Engineer", biographyURL: "https://en.wikipedia.org/wiki/Tang_Hongbo")
+
         //Starliner
 //        "Mike Fincke" : Images.iss1,
 //        "Nicole Mann" : Images.iss1,

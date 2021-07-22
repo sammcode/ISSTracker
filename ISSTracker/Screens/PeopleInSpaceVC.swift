@@ -66,8 +66,8 @@ extension PeopleInSpaceVC: UICollectionViewDelegate, UICollectionViewDataSource 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ITAstronautCell.reuseID, for: indexPath) as! ITAstronautCell
         let name = peopleInSpace.people[indexPath.row].name
-        let astronaut = AstronautData.astronauts[name]
-        cell.set(astronaut: astronaut!)
+        let astronaut = AstronautData.astronauts[name] ?? Astronaut(name: name, image: Images.iss1!, nationality: "", role: "", biographyURL: "")
+        cell.set(astronaut: astronaut)
         cell.delegate = self
         return cell
     }
