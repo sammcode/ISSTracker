@@ -36,8 +36,6 @@ class SearchImagesVC: ITDataLoadingVC {
     var isSetToFilter = false
     var page = 1
 
-    var waitAsecond = false
-
     let q = "international%20space%20station"
     var currentQ = ""
 
@@ -48,11 +46,13 @@ class SearchImagesVC: ITDataLoadingVC {
         configureCollectionView()
         configureDataSource()
         configureCurrentLayoutScale()
+        //getMostRecentImages()
     }
 
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        getMostRecentImages()
     }
 
     func configureViewController(){
@@ -211,6 +211,20 @@ class SearchImagesVC: ITDataLoadingVC {
         emptyStateView!.frame = view.bounds
         view.addSubview(emptyStateView!)
     }
+
+    func getMostRecentImages() {
+        currentQ = q + "%202021"
+
+        NetworkManager.shared.conductNASAImageSearch(for: currentQ, page: page) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let searchResults):
+                self.updateUI(with: searchResults.collection.items)
+            case .failure:
+                return
+            }
+        }
+    }
 }
 
 extension SearchImagesVC: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -272,7 +286,7 @@ extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let filter = searchBar.text?.replacingOccurrences(of: "“", with: "").replacingOccurrences(of: "”", with: "").replacingOccurrences(of: "<", with: "").replacingOccurrences(of: ">", with: "").replacingOccurrences(of: "‘", with: "").replacingOccurrences(of: "’", with: "").replacingOccurrences(of: "&", with: ""), !filter.isEmpty, !isSetToFilter else {
+        guard let filteredText = searchBar.text?.safeSearchQuery(), !filteredText.isEmpty, !isSetToFilter else {
             searchBar.text = ""
             return
         }
@@ -280,7 +294,7 @@ extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
 
         if emptyStateView != nil { emptyStateView?.removeFromSuperview() }
         imageData.removeAll()
-        currentQ = q + "%20" + filter.replacingOccurrences(of: " ", with: "%20")
+        currentQ = q + "%20" + filteredText.replacingOccurrences(of: " ", with: "%20")
         resetSearch()
         getIssImages(text: currentQ, page: page)
     }
