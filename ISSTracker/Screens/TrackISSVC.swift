@@ -208,9 +208,9 @@ class TrackISSVC: UIViewController {
 
         switch UserDefaultsManager.defaultMapType {
         case 0:
-            Map.mapView.mapType = .standard
+            Map.mapView.mapType = .satelliteFlyover
         case 1:
-            Map.mapView.mapType = .hybrid
+            Map.mapView.mapType = .standard
         default:
             break
         }
@@ -250,10 +250,10 @@ class TrackISSVC: UIViewController {
         updateOrbitPathOverlays()
         switch Map.mapView.mapType {
         case .standard:
-            Map.mapView.mapType = .hybrid
+            Map.mapView.mapType = .satelliteFlyover
             iconView.set(image: Images.issIcon2!, with: .white)
             iconImageView.image = Images.issIcon2?.withTintColor(.white)
-        case .hybrid:
+        case .satelliteFlyover:
             Map.mapView.mapType = .standard
             iconView.set(image: Images.issIcon2!, with: .label)
             iconImageView.image = Images.issIcon2?.withTintColor(.label)
