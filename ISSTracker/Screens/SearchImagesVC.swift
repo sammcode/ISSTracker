@@ -46,7 +46,6 @@ class SearchImagesVC: ITDataLoadingVC {
         configureCollectionView()
         configureDataSource()
         configureCurrentLayoutScale()
-        //getMostRecentImages()
     }
 
     override func viewWillAppear(_ animated: Bool){

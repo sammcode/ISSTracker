@@ -41,8 +41,6 @@ class TrackISSVC: UIViewController {
     var zoomInButtonLeadingConstraint = NSLayoutConstraint()
     var zoomOutButtonLeadingConstraint = NSLayoutConstraint()
 
-    var iconImageView = ITImageView(frame: .zero)
-
     var coords = [CLLocationCoordinate2D]()
 
     override func viewDidLoad() {
@@ -84,7 +82,6 @@ class TrackISSVC: UIViewController {
         configureZoomInButton()
         configureZoomOutButton()
         configureIconView()
-        configureIconImageView()
         getFutureLocations()
 
         addBackgroundandForegroundObservers()
@@ -118,7 +115,7 @@ class TrackISSVC: UIViewController {
     }
 
     func configureIconView(){
-        if Map.mapView.mapType == .hybrid {
+        if Map.mapView.mapType == .satelliteFlyover {
             iconView.set(image: Images.issIcon2!, with: .white)
         }else{
             iconView.set(image: Images.issIcon2!, with: .label)
@@ -129,30 +126,6 @@ class TrackISSVC: UIViewController {
         iconView.layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
         iconView.layer.shadowRadius = 5
         if !UserDefaultsManager.reduceAnimations { createPulse(in: iconView) }
-    }
-
-    func configureIconImageView(){
-        view.addSubview(iconImageView)
-        if Map.mapView.mapType == .hybrid {
-            iconImageView.image = Images.issIcon2?.withTintColor(.white)
-        }else{
-            iconImageView.image = Images.issIcon2?.withTintColor(.label)
-        }
-        iconImageView.isHidden = true
-        iconImageView.layer.cornerRadius = 0
-        iconImageView.contentMode = .scaleToFill
-        iconImageView.layer.shadowColor = UIColor.black.cgColor
-        iconImageView.layer.shadowOpacity = 0.5
-        iconImageView.layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
-        iconImageView.layer.shadowRadius = 5
-        iconImageView.clipsToBounds = false
-
-        NSLayoutConstraint.activate([
-            iconImageView.widthAnchor.constraint(equalToConstant: CGFloat(iconWidth)),
-            iconImageView.heightAnchor.constraint(equalToConstant: CGFloat(iconHeight) * 1.01),
-            iconImageView.centerYAnchor.constraint(equalTo: Map.mapView.centerYAnchor),
-            iconImageView.centerXAnchor.constraint(equalTo: Map.mapView.centerXAnchor)
-        ])
     }
 
     /// Configures properties for the ViewController
@@ -252,11 +225,9 @@ class TrackISSVC: UIViewController {
         case .standard:
             Map.mapView.mapType = .satelliteFlyover
             iconView.set(image: Images.issIcon2!, with: .white)
-            iconImageView.image = Images.issIcon2?.withTintColor(.white)
         case .satelliteFlyover:
             Map.mapView.mapType = .standard
             iconView.set(image: Images.issIcon2!, with: .label)
-            iconImageView.image = Images.issIcon2?.withTintColor(.label)
         default:
             Map.mapView.mapType = .standard
         }
