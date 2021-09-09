@@ -234,8 +234,8 @@ extension SearchImagesVC: UICollectionViewDelegate, UICollectionViewDelegateFlow
 
         let imageViewerVC = ImageViewerVC()
         imageViewerVC.nasaImageView.downloadNasaImage(fromURL: image!.links[0].href)
-        let navController = UINavigationController(rootViewController: imageViewerVC)
-        self.present(navController, animated: true)
+        imageViewerVC.nasaImageDescriptionLabel.text = image!.data[0].description
+        self.navigationController?.pushViewController(imageViewerVC, animated: true)
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

@@ -22,7 +22,11 @@ struct Collection: Codable {
 }
 
 // MARK: - Item
-struct Item: Codable, Hashable {
+struct Item: Codable, Hashable, Identifiable {
+    let id = UUID()
+
+    private enum CodingKeys : String, CodingKey { case data, href, links }
+
     let data: [NASAdata]
     let href: String
     let links: [ItemLink]

@@ -10,8 +10,10 @@ import UIKit
 class ImageViewerVC: UIViewController {
 
     var nasaImageView = ITNasaImageView(frame: .zero)
+    var nasaImageDescriptionLabel = ITBodyLabel(textAlignment: .left)
     var scrollView = UIScrollView()
     var contentView = UIView()
+    var blurEffectView = UIVisualEffectView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,20 +23,21 @@ class ImageViewerVC: UIViewController {
     func configure(){
         configureViewController()
         configureScrollView()
-        configureNasaImageView()
+        configureNASAImageView()
+        configureNASADescriptionLabel()
+        configureBlurView()
     }
 
     func configureViewController(){
-        title = "Image Viewer"
         view.backgroundColor = .systemGray6
 
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
-        navigationItem.rightBarButtonItem = doneButton
-
         let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareImage))
-        navigationItem.leftBarButtonItem = shareButton
+        let descriptionButton = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(showNASADescription))
 
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
+        navigationItem.rightBarButtonItems = [doneButton, shareButton, descriptionButton]
+
+        self.navigationController?.navigationBar.prefersLargeTitles = false
     }
 
     func configureScrollView(){
@@ -60,12 +63,12 @@ class ImageViewerVC: UIViewController {
         scrollView.addGestureRecognizer(longPressGest)
     }
 
-    func configureNasaImageView(){
+    func configureNASAImageView(){
         scrollView.addSubview(nasaImageView)
 
         NSLayoutConstraint.activate([
             nasaImageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            nasaImageView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor, constant: -view.bounds.width * 0.08),
+            nasaImageView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor, constant: -view.bounds.height * 0.1),
             nasaImageView.widthAnchor.constraint(equalToConstant: view.bounds.width),
             nasaImageView.heightAnchor.constraint(equalToConstant: view.bounds.height * 0.75)
         ])
@@ -79,6 +82,29 @@ class ImageViewerVC: UIViewController {
         nasaImageView.contentMode = .scaleAspectFit
     }
 
+    func configureNASADescriptionLabel(){
+        view.addSubview(nasaImageDescriptionLabel)
+        nasaImageDescriptionLabel.numberOfLines = 0
+        nasaImageDescriptionLabel.textColor = .white
+        nasaImageDescriptionLabel.isHidden = true
+
+        NSLayoutConstraint.activate([
+            nasaImageDescriptionLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            nasaImageDescriptionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nasaImageDescriptionLabel.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.8),
+            nasaImageDescriptionLabel.heightAnchor.constraint(equalToConstant: 400)
+        ])
+    }
+
+    func configureBlurView() {
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.isHidden = true
+        scrollView.addSubview(blurEffectView)
+    }
+
     @objc func shareImage(){
         let img: UIImage = nasaImageView.image!
         let shareItems: Array = [img]
@@ -90,6 +116,17 @@ class ImageViewerVC: UIViewController {
 
     @objc func dismissVC(){
         self.dismiss(animated: true)
+    }
+
+    @objc func showNASADescription() {
+        scrollView.isUserInteractionEnabled.toggle()
+        if blurEffectView.isHidden {
+            blurEffectView.fadeIn()
+            nasaImageDescriptionLabel.fadeIn()
+        } else {
+            blurEffectView.fadeOut()
+            nasaImageDescriptionLabel.fadeOut()
+        }
     }
 
     @objc func handleDoubleTapScrollView(recognizer: UITapGestureRecognizer) {
