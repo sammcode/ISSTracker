@@ -33,7 +33,6 @@ class SearchImagesVC: ITDataLoadingVC {
     var hasMoreImages = true
     var isSearching = false
     var isLoadingMoreImages = false
-    var isSetToFilter = false
     var page = 1
 
     let q = "international%20space%20station"
@@ -69,8 +68,6 @@ class SearchImagesVC: ITDataLoadingVC {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Search by keywords (e.g. 'Astronauts')"
-        searchController.searchBar.showsBookmarkButton = true
-        searchController.searchBar.setImage(UIImage(systemName: "line.horizontal.3.decrease"), for: .bookmark, state: .normal)
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
     }
@@ -253,7 +250,7 @@ extension SearchImagesVC: UICollectionViewDelegate, UICollectionViewDelegateFlow
 
 extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
     func updateSearchResults(for searchController: UISearchController) {
-        guard let filter = searchController.searchBar.text, !filter.isEmpty, isSetToFilter else {
+        guard let filter = searchController.searchBar.text, !filter.isEmpty else {
             filteredImageData.removeAll()
             updateData(on: imageData)
             isSearching = false
@@ -285,7 +282,7 @@ extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let filteredText = searchBar.text?.safeSearchQuery(), !filteredText.isEmpty, !isSetToFilter else {
+        guard let filteredText = searchBar.text?.safeSearchQuery(), !filteredText.isEmpty else {
             searchBar.text = ""
             return
         }
@@ -296,12 +293,5 @@ extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
         currentQ = q + "%20" + filteredText.replacingOccurrences(of: " ", with: "%20")
         resetSearch()
         getIssImages(text: currentQ, page: page)
-    }
-
-    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-        isSetToFilter.toggle()
-        searchController.searchBar.placeholder = isSetToFilter ? "Filter \(imageData.count) results" : "Search ISS Images"
-        let img = !isSetToFilter ? UIImage(systemName: "line.horizontal.3.decrease") : UIImage(systemName: "line.horizontal.3.decrease.circle.fill")
-        searchController.searchBar.setImage(img, for: .bookmark, state: .normal)
     }
 }
