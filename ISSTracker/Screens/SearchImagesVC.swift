@@ -22,7 +22,6 @@ class SearchImagesVC: ITDataLoadingVC {
     let searchController = UISearchController()
 
     var imageData: [Item]!
-    var filteredImageData: [Item] = []
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     var pinchGestureRecognizer: UIPinchGestureRecognizer!
@@ -31,7 +30,6 @@ class SearchImagesVC: ITDataLoadingVC {
     var emptyStateView: ITEmptyStateView?
 
     var hasMoreImages = true
-    var isSearching = false
     var isLoadingMoreImages = false
     var page = 1
 
@@ -65,7 +63,7 @@ class SearchImagesVC: ITDataLoadingVC {
     }
 
     func configureSearchController(){
-        searchController.searchResultsUpdater = self
+        //searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Search by keywords (e.g. 'Astronauts')"
         searchController.obscuresBackgroundDuringPresentation = false
@@ -193,7 +191,6 @@ class SearchImagesVC: ITDataLoadingVC {
 
     func resetSearch(){
         hasMoreImages = true
-        isSearching = false
         isLoadingMoreImages = false
         page = 1
     }
@@ -226,9 +223,7 @@ class SearchImagesVC: ITDataLoadingVC {
 extension SearchImagesVC: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let activeArray = isSearching ? filteredImageData : imageData
-        let image = activeArray?[indexPath.item]
-
+        let image = imageData?[indexPath.item]
         let imageViewerVC = ImageViewerVC()
         imageViewerVC.nasaImageView.downloadNasaImage(fromURL: image!.links[0].href)
         imageViewerVC.nasaImageDescriptionLabel.text = image!.data[0].description
@@ -248,49 +243,17 @@ extension SearchImagesVC: UICollectionViewDelegate, UICollectionViewDelegateFlow
     }
 }
 
-extension SearchImagesVC: UISearchResultsUpdating, UISearchBarDelegate{
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let filter = searchController.searchBar.text, !filter.isEmpty else {
-            filteredImageData.removeAll()
-            updateData(on: imageData)
-            isSearching = false
-            return
-        }
-        isSearching = true
-
-        filteredImageData = imageData.filter {
-            var result = false
-            let searchWords = filter.components(separatedBy: " ")
-            for word in searchWords {
-                if $0.data[0].description != nil {
-                    if $0.data[0].description!.lowercased().contains(word.lowercased()){
-                        result = true
-                    }else {
-                        result = false
-                    }
-                }else{
-                    if $0.data[0].title.lowercased().contains(word.lowercased()){
-                        result = true
-                    }else {
-                        result = false
-                    }
-                }
-            }
-            return result
-        }
-        updateData(on: filteredImageData)
-    }
+extension SearchImagesVC: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let filteredText = searchBar.text?.safeSearchQuery(), !filteredText.isEmpty else {
+        guard let searchQuery = searchBar.text?.safeSearchQuery(), !searchQuery.isEmpty else {
             searchBar.text = ""
             return
         }
-        isSearching = true
 
         if emptyStateView != nil { emptyStateView?.removeFromSuperview() }
         imageData.removeAll()
-        currentQ = q + "%20" + filteredText.replacingOccurrences(of: " ", with: "%20")
+        currentQ = q + "%20" + searchQuery.replacingOccurrences(of: " ", with: "%20")
         resetSearch()
         getIssImages(text: currentQ, page: page)
     }
