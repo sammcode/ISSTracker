@@ -118,22 +118,17 @@ enum AstronautData {
         //Tiangong
         "Nie Haisheng" : Astronaut(name: "Nie Haisheng", image: (UIImage(named: "NieHaisheng") ?? Images.iss1)!, nationality: "China 🇨🇳", role: "Flight Engineer", biographyURL: "https://en.wikipedia.org/wiki/Nie_Haisheng"),
         "Liu Boming" : Astronaut(name: "Liu Boming", image: (UIImage(named: "LiuBoming") ?? Images.iss1)!, nationality: "China 🇨🇳", role: "Flight Engineer", biographyURL: "https://en.wikipedia.org/wiki/Liu_Boming_(astronaut)"),
-        "Tang Hongbo" : Astronaut(name: "Tang Hongbo", image: (UIImage(named: "TangHongbo") ?? Images.iss1)!, nationality: "China 🇨🇳", role: "Flight Engineer", biographyURL: "https://en.wikipedia.org/wiki/Tang_Hongbo")
+        "Tang Hongbo" : Astronaut(name: "Tang Hongbo", image: (UIImage(named: "TangHongbo") ?? Images.iss1)!, nationality: "China 🇨🇳", role: "Flight Engineer", biographyURL: "https://en.wikipedia.org/wiki/Tang_Hongbo"),
 
-        //Starliner
-//        "Mike Fincke" : Images.iss1,
-//        "Nicole Mann" : Images.iss1,
-//        "Barry Wilmore" : Images.iss1,
-//
-//        //Soyuz mission
-//        "Anton Shkaplerov" : Images.iss1,
-//        "Klim Shipenko" : Images.iss1,
-//        "unnamed" : Images.iss1,
-//
+        //Soyuz-19 mission
+        "Anton Shkaplerov" : Astronaut(name: "Anton Shkaplerov", image: (UIImage(named: "AntonShkaplerov") ?? Images.iss1)!, nationality: "Russia 🇷🇺", role: "Commander", biographyURL: "https://en.wikipedia.org/wiki/Anton_Shkaplerov"),
+        "Klim Shipenko" : Astronaut(name: "Klim Shipenko", image: (UIImage(named: "KlimShipenko") ?? Images.iss1)!, nationality: "Russia 🇷🇺", role: "Spaceflight Participant", biographyURL: "https://en.wikipedia.org/wiki/Klim_Shipenko"),
+        "Yulia Peresild" : Astronaut(name: "Yulia Peresild", image: (UIImage(named: "YuliaPeresild") ?? Images.iss1)!, nationality: "Russia 🇷🇺", role: "Spaceflight Participant", biographyURL: "https://en.wikipedia.org/wiki/Yulia_Peresild"),
+
 //        //Crew-3
-//        "Raja Chari" : Images.iss1,
-//        "Thomas Marshburn" : Images.iss1,
-//        "Matthias Maurer" : Images.iss1,
-//        "unnamed2" : Images.iss1,
+        "Raja Chari" : Astronaut(name: "Raja Chari", image: (UIImage(named: "RajaChari") ?? Images.iss1)!, nationality: "Commander", role: "USA 🇺🇸", biographyURL: "https://www.nasa.gov/content/astronaut-raja-chari"),
+        "Thomas Marshburn" : Astronaut(name: "Thomas Marshburn", image: (UIImage(named: "ThomasMarshburn") ?? Images.iss1)!, nationality: "USA 🇺🇸", role: "Flight Engineer", biographyURL: "https://www.nasa.gov/astronauts/biographies/thomas-h-marshburn/biography"),
+        "Matthias Maurer" : Astronaut(name: "Matthias Maurer", image: (UIImage(named: "MatthiasMaurer") ?? Images.iss1)!, nationality: "Germany 🇩🇪", role: "Flight Engineer", biographyURL: "https://blogs.esa.int/exploration/category/astronauts/matthias-maurer/"),
+        "Kayla Barron" : Astronaut(name: "Kayla Barron", image: (UIImage(named: "KaylaBarron") ?? Images.iss1)!, nationality: "USA 🇺🇸", role: "Flight Engineer", biographyURL: "https://www.nasa.gov/content/astronaut-kayla-barron")
     ]
 }
