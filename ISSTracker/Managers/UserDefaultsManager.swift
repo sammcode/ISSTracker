@@ -20,18 +20,6 @@ enum UserDefaultsManager {
     }
     private static var largeMapAnnotationsInfo = UserDefaultInfo(key: "largeMapAnnotations", defaultValue: false)
 
-    static var defaultMapType: Int {
-        get { return defaultMapTypeInfo.get() }
-        set { defaultMapTypeInfo.set(newValue) }
-    }
-    private static var defaultMapTypeInfo = UserDefaultInfo(key: "defaultMapType", defaultValue: 0)
-
-    static var numberOfImageColumns: Int {
-        get { return numberOfImageColumnsInfo.get() }
-        set { numberOfImageColumnsInfo.set(newValue) }
-    }
-    private static var numberOfImageColumnsInfo = UserDefaultInfo(key: "numberOfImageColumns", defaultValue: 2)
-
     static var reduceAnimations: Bool {
         get { return reduceAnimationsInfo.get() }
         set { reduceAnimationsInfo.set(newValue) }
