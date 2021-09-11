@@ -15,7 +15,7 @@ protocol SettingsVCDelegate: AnyObject{
 class SettingsVC: UIViewController {
 
     var tableView = UITableView(frame: .zero, style: .insetGrouped)
-    var cells = [[UITableViewCell](), [UITableViewCell](), [UITableViewCell](), [UITableViewCell](), [UITableViewCell](), [UITableViewCell]()]
+    var cells = [[UITableViewCell](), [UITableViewCell](), [UITableViewCell](), [UITableViewCell](), [UITableViewCell]()]
 
     weak var delegate: SettingsVCDelegate!
 
@@ -63,7 +63,7 @@ class SettingsVC: UIViewController {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
         let label = ITTitleLabel(textAlignment: .center, fontSize: 24)
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-        label.text = "TrackISS v\(appVersion!)\nMade with ❤️ by Sam."
+        label.text = "TrackISS v\(appVersion!)\nMade with ❤️"
         label.textColor = .label
         label.font = UIFont(name: "NasalizationRg-Regular", size: 18)
         label.numberOfLines = 2
@@ -92,7 +92,6 @@ class SettingsVC: UIViewController {
         configureAppearanceCells()
         configureGeneralCells()
         configureMapCells()
-        configureImageSearchCells()
         configureResourceCells()
         configureDeveloperCell()
     }
@@ -147,70 +146,28 @@ class SettingsVC: UIViewController {
         cell.accessoryView = switchView
 
         cells[2].append(cell)
-
-        let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell1.textLabel?.text = "Map Type"
-        cell1.imageView?.image = UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
-        cell1.selectionStyle = .none
-
-        let items = ["Standard", "Hybrid"]
-        let segmentedControl = UISegmentedControl(items: items)
-        var index = 0
-        switch UserDefaultsManager.defaultMapType {
-        case 1:
-            index = 1
-        default:
-            break
-        }
-        segmentedControl.selectedSegmentIndex = index
-        segmentedControl.addTarget(self, action: #selector(defaultMapTypeChanged(_:)), for: .valueChanged)
-        cell1.accessoryView = segmentedControl
-        cells[2].append(cell1)
-    }
-
-    func configureImageSearchCells(){
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = "Image Columns"
-        cell.imageView?.image = UIImage(systemName: "increase.quotelevel", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
-        cell.selectionStyle = .none
-
-        let items = ["  2   ", "  3   ", "  4   "]
-        let segmentedControl = UISegmentedControl(items: items)
-        var index = 0
-        switch UserDefaultsManager.numberOfImageColumns {
-        case 3:
-            index = 1
-        case 4:
-            index = 2
-        default:
-            break
-        }
-        segmentedControl.selectedSegmentIndex = index
-        segmentedControl.addTarget(self, action: #selector(numberOfImageColumnsChanged(_:)), for: .valueChanged)
-        cell.accessoryView = segmentedControl
-        cells[3].append(cell)
     }
 
     func configureResourceCells(){
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = "TrackISS Github repo"
         cell.accessoryType = .disclosureIndicator
-        cells[4].append(cell)
+        cells[3].append(cell)
 
         let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell1.textLabel?.text = "Open-Notify API"
         cell1.accessoryType = .disclosureIndicator
-        cells[4].append(cell1)
+        cells[3].append(cell1)
 
         let cell2 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell2.textLabel?.text = "Where the ISS at? API"
         cell2.accessoryType = .disclosureIndicator
-        cells[4].append(cell2)
+        cells[3].append(cell2)
 
         let cell3 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell3.textLabel?.text = "NASA Image and Video Library API"
         cell3.accessoryType = .disclosureIndicator
-        cells[4].append(cell3)
+        cells[3].append(cell3)
     }
 
     func configureDeveloperCell(){
@@ -218,7 +175,7 @@ class SettingsVC: UIViewController {
         cell.textLabel?.text = "Developer"
         cell.imageView?.image = UIImage(systemName: "person", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
         cell.accessoryType = .disclosureIndicator
-        cells[5].append(cell)
+        cells[4].append(cell)
     }
 
     @objc func switchChanged(_ sender : UISwitch!){
@@ -234,30 +191,6 @@ class SettingsVC: UIViewController {
             break
         }
     }
-
-    @objc func numberOfImageColumnsChanged(_ sender: UISegmentedControl){
-        switch sender.selectedSegmentIndex {
-        case 0:
-            UserDefaultsManager.numberOfImageColumns = 2
-        case 1:
-            UserDefaultsManager.numberOfImageColumns = 3
-        case 2:
-            UserDefaultsManager.numberOfImageColumns = 4
-        default:
-            break
-        }
-    }
-
-    @objc func defaultMapTypeChanged(_ sender: UISegmentedControl){
-        switch sender.selectedSegmentIndex {
-        case 0:
-            UserDefaultsManager.defaultMapType = 0
-        case 1:
-            UserDefaultsManager.defaultMapType = 1
-        default:
-            break
-        }
-    }
 }
 
 extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
@@ -267,7 +200,7 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        6
+        5
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -279,8 +212,6 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
         case 2:
             return "Map"
         case 3:
-            return "Image Search"
-        case 4:
             return "Resources"
         default:
             return ""

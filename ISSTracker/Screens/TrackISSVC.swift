@@ -160,6 +160,7 @@ class TrackISSVC: UIViewController {
     /// Constraints it to the bottom of the description label
     func configureMapView(){
         view.addSubview(Map.mapView)
+        Map.mapView.mapType = .satelliteFlyover
         Map.mapView.translatesAutoresizingMaskIntoConstraints = false
         Map.mapView.delegate = self
 
@@ -178,15 +179,6 @@ class TrackISSVC: UIViewController {
             Map.mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             Map.mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
-        switch UserDefaultsManager.defaultMapType {
-        case 0:
-            Map.mapView.mapType = .satelliteFlyover
-        case 1:
-            Map.mapView.mapType = .standard
-        default:
-            break
-        }
     }
 
     func configureExitButton(){
