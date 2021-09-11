@@ -28,7 +28,6 @@ class MainVC: ITDataLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        //checkIfFirstLaunch()
         addBackgroundandForegroundObservers()
     }
 
@@ -107,15 +106,6 @@ class MainVC: ITDataLoadingVC {
 
     @objc fileprivate func reinitializePlayerLayer(){
         if !UserDefaultsManager.reduceAnimations { player.play() }
-    }
-
-    /// Checks if the app has been launched before
-    /// If not, the InfoVC ViewController is presented to the user
-    func checkIfFirstLaunch(){
-        if !launchedBefore {
-            presentSettingsVC()
-            UserDefaults.standard.set(true, forKey: "launchedBefore")
-        }
     }
 
     /// Calls all configuration methods for the ViewController
@@ -258,7 +248,6 @@ class MainVC: ITDataLoadingVC {
                 DispatchQueue.main.async {
                     let searchImagesVC = SearchImagesVC()
                     searchImagesVC.imageData = searchResults.collection.items
-                    searchImagesVC.updateData(on: searchResults.collection.items)
                     searchImagesVC.currentQ = q
                     let navController = UINavigationController(rootViewController: searchImagesVC)
                     self.present(navController, animated: true)
