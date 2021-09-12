@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -82,6 +82,9 @@
 		B23246F126376DDE000EF307 /* darkBlueIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B23246EE26376DDE000EF307 /* darkBlueIcon@3x.png */; };
 		B23246FC26377105000EF307 /* IconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23246FB26377105000EF307 /* IconManager.swift */; };
 		B234A9EF26E6F65C0042DE7B /* Ext+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B234A9EE26E6F65C0042DE7B /* Ext+String.swift */; };
+		B234A9F126ED6A580042DE7B /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B234A9F026ED6A580042DE7B /* IAPManager.swift */; };
+		B234A9F426ED6B990042DE7B /* Purchases in Frameworks */ = {isa = PBXBuildFile; productRef = B234A9F326ED6B990042DE7B /* Purchases */; };
+		B234A9F626ED6E250042DE7B /* TipVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B234A9F526ED6E250042DE7B /* TipVC.swift */; };
 		B26A21B8265893BA00488DE8 /* SearchImagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21B7265893BA00488DE8 /* SearchImagesVC.swift */; };
 		B26A21BA2658945F00488DE8 /* NASAImageSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21B92658945F00488DE8 /* NASAImageSearchResults.swift */; };
 		B26A21BC265895D100488DE8 /* ITNasaImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21BB265895D100488DE8 /* ITNasaImageView.swift */; };
@@ -189,6 +192,8 @@
 		B23246EE26376DDE000EF307 /* darkBlueIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "darkBlueIcon@3x.png"; sourceTree = "<group>"; };
 		B23246FB26377105000EF307 /* IconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconManager.swift; sourceTree = "<group>"; };
 		B234A9EE26E6F65C0042DE7B /* Ext+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+String.swift"; sourceTree = "<group>"; };
+		B234A9F026ED6A580042DE7B /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
+		B234A9F526ED6E250042DE7B /* TipVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipVC.swift; sourceTree = "<group>"; };
 		B26A21B7265893BA00488DE8 /* SearchImagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchImagesVC.swift; sourceTree = "<group>"; };
 		B26A21B92658945F00488DE8 /* NASAImageSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NASAImageSearchResults.swift; sourceTree = "<group>"; };
 		B26A21BB265895D100488DE8 /* ITNasaImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITNasaImageView.swift; sourceTree = "<group>"; };
@@ -204,6 +209,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B234A9F426ED6B990042DE7B /* Purchases in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +277,7 @@
 				B2247626264D8E1D0031BD39 /* DeveloperVC.swift */,
 				B26A21B7265893BA00488DE8 /* SearchImagesVC.swift */,
 				B2D7D44F2658B49E008FAB15 /* ImageViewerVC.swift */,
+				B234A9F526ED6E250042DE7B /* TipVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -307,6 +314,7 @@
 				B21D0D9225F6B29700A87141 /* NetworkManager.swift */,
 				B23246712630B9F6000EF307 /* UserDefaultsManager.swift */,
 				B23246FB26377105000EF307 /* IconManager.swift */,
+				B234A9F026ED6A580042DE7B /* IAPManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -541,6 +549,9 @@
 			dependencies = (
 			);
 			name = ISSTracker;
+			packageProductDependencies = (
+				B234A9F326ED6B990042DE7B /* Purchases */,
+			);
 			productName = ISSTracker;
 			productReference = B21D0CF425F55F5A00A87141 /* ISSTracker.app */;
 			productType = "com.apple.product-type.application";
@@ -612,6 +623,9 @@
 				Base,
 			);
 			mainGroup = B21D0CEB25F55F5900A87141;
+			packageReferences = (
+				B234A9F226ED6B990042DE7B /* XCRemoteSwiftPackageReference "purchases-ios" */,
+			);
 			productRefGroup = B21D0CF525F55F5A00A87141 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -704,6 +718,7 @@
 				B21D0E2025FD648700A87141 /* InfoVC.swift in Sources */,
 				B26A21BA2658945F00488DE8 /* NASAImageSearchResults.swift in Sources */,
 				B21D0D9325F6B29700A87141 /* NetworkManager.swift in Sources */,
+				B234A9F126ED6A580042DE7B /* IAPManager.swift in Sources */,
 				B21D0D3725F562B100A87141 /* MainVC.swift in Sources */,
 				B21D0DB025F6C35500A87141 /* ITBodyLabel.swift in Sources */,
 				B21D0D6425F5908600A87141 /* ITButton.swift in Sources */,
@@ -717,6 +732,7 @@
 				B232465B262F6340000EF307 /* ITIconButton.swift in Sources */,
 				B26A21BC265895D100488DE8 /* ITNasaImageView.swift in Sources */,
 				B2D7D4502658B49E008FAB15 /* ImageViewerVC.swift in Sources */,
+				B234A9F626ED6E250042DE7B /* TipVC.swift in Sources */,
 				B2247625264CED730031BD39 /* ITPaddingLabel.swift in Sources */,
 				B21D0DBE25F6C53400A87141 /* Ext+UIViewController.swift in Sources */,
 				B21D0DB625F6C49900A87141 /* ITAlertContainerView.swift in Sources */,
@@ -1061,6 +1077,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B234A9F226ED6B990042DE7B /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.12.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B234A9F326ED6B990042DE7B /* Purchases */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B234A9F226ED6B990042DE7B /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = Purchases;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B21D0CEC25F55F5900A87141 /* Project object */;
 }
