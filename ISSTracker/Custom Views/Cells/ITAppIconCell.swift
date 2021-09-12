@@ -10,7 +10,7 @@ import UIKit
 class ITAppIconCell: UICollectionViewCell {
     static let reuseID = "AppIconCell"
 
-    let appIconImageView = ITImageView(frame: .zero)
+    let appIconImageView = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,7 +28,11 @@ class ITAppIconCell: UICollectionViewCell {
     private func configure() {
         backgroundColor = .clear
         addSubview(appIconImageView)
-        appIconImageView.layer.cornerRadius = 32
+        appIconImageView.translatesAutoresizingMaskIntoConstraints = false
+        appIconImageView.layer.cornerCurve = CALayerCornerCurve.continuous
+        appIconImageView.layer.cornerRadius = 25
+        appIconImageView.backgroundColor = .clear
+        appIconImageView.clipsToBounds = true
         let padding: CGFloat = 8
         NSLayoutConstraint.activate([
             appIconImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
