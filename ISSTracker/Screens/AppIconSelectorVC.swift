@@ -10,7 +10,7 @@ import UIKit
 class AppIconSelectorVC: UIViewController {
 
     var collectionView: UICollectionView!
-    var icons = [Images.darkBlueIcon, Images.lightBlueIcon, Images.greenIcon, Images.redIcon, Images.yellowIcon, Images.orangeIcon, Images.purpleIcon, Images.whiteIcon, Images.blackIcon]
+    var icons = [Images.darkBlueIcon, Images.lightBlueIcon, Images.greenIcon, Images.redIcon, Images.yellowIcon, Images.orangeIcon, Images.purpleIcon, Images.blackIcon]
     var iconManager = IconManager()
 
     override func viewDidLoad() {
@@ -64,8 +64,6 @@ extension AppIconSelectorVC: UICollectionViewDelegate, UICollectionViewDataSourc
         case 6:
             iconManager.changeAppIcon(to: .purpleIcon)
         case 7:
-            iconManager.changeAppIcon(to: .whiteIcon)
-        case 8:
             iconManager.changeAppIcon(to: .blackIcon)
         default:
             UIApplication.shared.setAlternateIconName(nil)
