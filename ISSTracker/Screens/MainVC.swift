@@ -16,9 +16,9 @@ class MainVC: ITDataLoadingVC {
     let generator = UINotificationFeedbackGenerator()
 
     var buttonsStackView = UIStackView()
-    var trackISSButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Track ISS")
-    var searchImagesButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Search Images")
-    var peopleInSpaceButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "People In Space")
+    var trackISSButton = ITButton(backgroundColor: UIColor.systemIndigo, title: "Track ISS")
+    var searchImagesButton = ITButton(backgroundColor: UIColor.systemIndigo, title: "Search Images")
+    var peopleInSpaceButton = ITButton(backgroundColor: UIColor.systemIndigo, title: "People In Space")
     var titleLabel = ITTitleLabel(textAlignment: .center, fontSize: 48)
 
     var playerLooper: AVPlayerLooper?
@@ -119,10 +119,10 @@ class MainVC: ITDataLoadingVC {
     /// Configures properties for the ViewController
     func configureViewController(){
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.barTintColor = Colors.mainBlueYellow
+        navigationController?.navigationBar.barTintColor = UIColor.systemIndigo
         view.backgroundColor = .systemBackground
         let infoButton = UIBarButtonItem(image: UIImage(systemName: "gear", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .medium, scale: .medium)), style: .plain, target: self, action: #selector(presentSettingsVC))
-        infoButton.tintColor = Colors.mainBlueYellow
+        infoButton.tintColor = UIColor.systemIndigo
         navigationItem.rightBarButtonItem = infoButton
     }
 

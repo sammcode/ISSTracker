@@ -62,19 +62,19 @@ class TipVC: UIViewController {
 
         cells.append(cell)
 
-//        let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-//        cell1.textLabel?.text = "$4.99 - Rocket Tip"
-//        cell1.imageView?.image = "🚀".image()
-//        cell1.selectionStyle = .none
-//
-//        cells.append(cell1)
-//
-//        let cell2 = UITableViewCell(style: .default, reuseIdentifier: "cell")
-//        cell2.textLabel?.text = "$8.99 - Space Tip"
-//        cell2.imageView?.image = "🛰".image()
-//        cell2.selectionStyle = .none
-//
-//        cells.append(cell2)
+        let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell1.textLabel?.text = "$4.99 - Rocket Tip"
+        cell1.imageView?.image = "🚀".image()
+        cell1.selectionStyle = .none
+
+        cells.append(cell1)
+
+        let cell2 = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell2.textLabel?.text = "$8.99 - Space Tip"
+        cell2.imageView?.image = "🛰".image()
+        cell2.selectionStyle = .none
+
+        cells.append(cell2)
     }
 
     @objc func dismissVC(){
@@ -101,14 +101,14 @@ extension TipVC: UITableViewDelegate, UITableViewDataSource {
             IAPManager.shared.purchase(product: packages[0]) {
                 self.presentITAlertOnMainThread(title: "Success!", message: "You left a tip of $1.99. Thanks for your support!", buttonTitle: "Ok")
             }
-//        case 1:
-//            IAPManager.shared.purchase(product: packages[1]) {
-//                self.presentITAlertOnMainThread(title: "Success!", message: "You left a tip of $4.99. Thanks for your support!", buttonTitle: "Ok")
-//            }
-//        case 2:
-//            IAPManager.shared.purchase(product: packages[2]) {
-//                self.presentITAlertOnMainThread(title: "Success!", message: "You left a tip of $8.99. Thanks for your support!", buttonTitle: "Ok")
-//            }
+        case 1:
+            IAPManager.shared.purchase(product: packages[1]) {
+                self.presentITAlertOnMainThread(title: "Success!", message: "You left a tip of $4.99. Thanks for your support!", buttonTitle: "Ok")
+            }
+        case 2:
+            IAPManager.shared.purchase(product: packages[2]) {
+                self.presentITAlertOnMainThread(title: "Success!", message: "You left a tip of $8.99. Thanks for your support!", buttonTitle: "Ok")
+            }
         default:
             break
         }

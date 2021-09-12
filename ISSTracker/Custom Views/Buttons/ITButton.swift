@@ -27,13 +27,8 @@ class ITButton: UIButton {
     private func configure(){
         layer.cornerRadius = 10
         titleLabel?.font = UIFont(name: "NasalizationRg-Regular", size: 24)
-        setTitleColor(.systemBackground, for: .normal)
+        setTitleColor(.white, for: .normal)
         translatesAutoresizingMaskIntoConstraints = false
-
-        layer.shadowColor = Colors.whiteBlack.cgColor
-        layer.shadowOpacity = 0.5
-        layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
-        layer.shadowRadius = 5
     }
 
     func set(backgroundColor: UIColor, title: String){

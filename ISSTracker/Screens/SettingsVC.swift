@@ -77,7 +77,7 @@ class SettingsVC: UIViewController {
 
         let logoImageView = ITImageView(frame: .zero)
         footerView.addSubview(logoImageView)
-        logoImageView.image = Images.issIcon3?.withTintColor(Colors.mainBlueYellow)
+        logoImageView.image = Images.issIcon3?.withTintColor(UIColor.systemIndigo)
         NSLayoutConstraint.activate([
             logoImageView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
             logoImageView.widthAnchor.constraint(equalToConstant: 80),
@@ -99,7 +99,7 @@ class SettingsVC: UIViewController {
     func configureAppearanceCells(){
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = "App Icon"
-        cell.imageView?.image = UIImage(systemName: "square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell.imageView?.image = UIImage(systemName: "square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor.systemIndigo)
         cell.accessoryType = .disclosureIndicator
 
         cells[0].append(cell)
@@ -108,7 +108,7 @@ class SettingsVC: UIViewController {
     func configureGeneralCells(){
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = "Reduce Animations"
-        cell.imageView?.image = UIImage(systemName: "bolt.slash.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell.imageView?.image = UIImage(systemName: "bolt.slash.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor.systemIndigo)
         cell.selectionStyle = .none
 
         let switchView = UISwitch(frame: .zero)
@@ -121,7 +121,7 @@ class SettingsVC: UIViewController {
 
         let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell1.textLabel?.text = "Haptics"
-        cell1.imageView?.image = UIImage(systemName: "iphone.radiowaves.left.and.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell1.imageView?.image = UIImage(systemName: "iphone.radiowaves.left.and.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor.systemIndigo)
         cell1.selectionStyle = .none
 
         let switchView1 = UISwitch(frame: .zero)
@@ -136,7 +136,7 @@ class SettingsVC: UIViewController {
     func configureMapCells(){
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = "Large Map Annotations"
-        cell.imageView?.image = UIImage(systemName: "mappin.and.ellipse", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell.imageView?.image = UIImage(systemName: "mappin.and.ellipse", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor.systemIndigo)
         cell.selectionStyle = .none
 
         let switchView = UISwitch(frame: .zero)
@@ -173,13 +173,13 @@ class SettingsVC: UIViewController {
     func configureDeveloperCell(){
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = "Developer"
-        cell.imageView?.image = UIImage(systemName: "person", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell.imageView?.image = UIImage(systemName: "person", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor.systemIndigo)
         cell.accessoryType = .disclosureIndicator
         cells[4].append(cell)
 
         let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell1.textLabel?.text = "Leave a tip"
-        cell1.imageView?.image = UIImage(systemName: "dollarsign.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell1.imageView?.image = UIImage(systemName: "dollarsign.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor.systemIndigo)
         cell1.accessoryType = .disclosureIndicator
         cells[4].append(cell1)
     }
@@ -248,7 +248,7 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
                 break
             }
             let safariVC = SFSafariViewController(url: url!)
-            safariVC.preferredControlTintColor = Colors.mainBlueYellow
+            safariVC.preferredControlTintColor = UIColor.systemIndigo
             present(safariVC, animated: true)
         case 4:
             switch indexPath.row {

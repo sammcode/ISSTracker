@@ -50,16 +50,14 @@ class ITCoordinatesView: UIView {
     }
 
     private func configureView(){
-        backgroundColor = .systemBackground
+        backgroundColor = .systemGray5
         layer.cornerRadius = 20
-        layer.borderWidth = 2
-        layer.borderColor = Colors.mainBlueYellow.cgColor
         translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func configureTitleLabel(){
         addSubview(titleLabel)
-        titleLabel.textColor = Colors.mainBlueYellow
+        titleLabel.textColor = .label
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
