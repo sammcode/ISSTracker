@@ -176,6 +176,12 @@ class SettingsVC: UIViewController {
         cell.imageView?.image = UIImage(systemName: "person", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
         cell.accessoryType = .disclosureIndicator
         cells[4].append(cell)
+
+        let cell1 = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell1.textLabel?.text = "Leave a tip"
+        cell1.imageView?.image = UIImage(systemName: "dollarsign.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal).withTintColor(Colors.mainBlueYellow)
+        cell1.accessoryType = .disclosureIndicator
+        cells[4].append(cell1)
     }
 
     @objc func switchChanged(_ sender : UISwitch!){
@@ -227,7 +233,7 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
         case 0:
             let appIconSelectorVC = AppIconSelectorVC()
             self.navigationController?.pushViewController(appIconSelectorVC, animated: true)
-        case 4:
+        case 3:
             var url = URL(string: "")
             switch indexPath.row {
             case 0:
@@ -244,9 +250,17 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
             let safariVC = SFSafariViewController(url: url!)
             safariVC.preferredControlTintColor = Colors.mainBlueYellow
             present(safariVC, animated: true)
-        case 5:
-            let developerVC = DeveloperVC()
-            self.navigationController?.pushViewController(developerVC, animated: true)
+        case 4:
+            switch indexPath.row {
+            case 0:
+                let developerVC = DeveloperVC()
+                self.navigationController?.pushViewController(developerVC, animated: true)
+            case 1:
+                let tipVC = TipVC()
+                self.navigationController?.pushViewController(tipVC, animated: true)
+            default:
+                break
+            }
         default:
             break
         }
