@@ -24,7 +24,6 @@ class ITBodyLabel: UILabel {
     }
 
     func configure(){
-        textColor = Colors.darkGray
         font = UIFont.preferredFont(forTextStyle: .body)
         adjustsFontForContentSizeCategory = true
         adjustsFontSizeToFitWidth = true

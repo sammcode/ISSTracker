@@ -40,7 +40,7 @@ class ITNumberOfPeopleView: UICollectionReusableView {
     func configureNumberLabel(){
         addSubview(numberLabel)
         numberLabel.font = UIFont(name: "NasalizationRg-Regular", size: 140)
-        numberLabel.textColor = Colors.mainBlueYellow
+        numberLabel.textColor = UIColor.systemIndigo
         numberLabel.text = "0"
 
         NSLayoutConstraint.activate([
@@ -54,7 +54,7 @@ class ITNumberOfPeopleView: UICollectionReusableView {
     func configureSecondaryLabel(){
         addSubview(secondaryLabel)
         secondaryLabel.font = UIFont(name: "NasalizationRg-Regular", size: 24)
-        secondaryLabel.textColor = Colors.mainBlueYellow
+        secondaryLabel.textColor = UIColor.systemIndigo
         secondaryLabel.text = "people are currently in space"
         secondaryLabel.numberOfLines = 0
 

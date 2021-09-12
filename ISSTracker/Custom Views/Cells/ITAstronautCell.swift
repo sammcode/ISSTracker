@@ -22,7 +22,7 @@ class ITAstronautCell: UICollectionViewCell {
     let nameLabel = ITTitleLabel(textAlignment: .left, fontSize: 16)
     let nationalityLabel = ITBodyLabel(textAlignment: .left)
     let roleLabel = ITBodyLabel(textAlignment: .left)
-    let bioButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Bio")
+    let bioButton = ITButton(backgroundColor: UIColor.systemIndigo, title: "Bio")
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,7 +45,7 @@ class ITAstronautCell: UICollectionViewCell {
         addSubviews(astronautImageView, nameLabel, nationalityLabel, roleLabel, bioButton)
 
         nameLabel.numberOfLines = 2
-        nameLabel.textColor = Colors.mainBlueYellow
+        nameLabel.textColor = .label
         nameLabel.adjustsFontSizeToFitWidth = true
 
         nationalityLabel.textColor = .label
@@ -56,12 +56,7 @@ class ITAstronautCell: UICollectionViewCell {
         bioButton.layer.shadowOpacity = 0
         bioButton.addTarget(self, action: #selector(bioButtonTapped), for: .touchUpInside)
 
-        layer.shadowColor = Colors.whiteBlack.cgColor
-        layer.shadowOpacity = 0.5
-        layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
-        layer.shadowRadius = 5
-
-        backgroundColor = .systemBackground
+        backgroundColor = .systemGray5
         layer.cornerRadius = 20
         contentView.isUserInteractionEnabled = false
 
@@ -72,10 +67,10 @@ class ITAstronautCell: UICollectionViewCell {
             astronautImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             astronautImageView.heightAnchor.constraint(equalTo: astronautImageView.widthAnchor),
 
-            nameLabel.topAnchor.constraint(equalTo: astronautImageView.bottomAnchor, constant: 0),
+            nameLabel.topAnchor.constraint(equalTo: astronautImageView.bottomAnchor, constant: 10),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            nameLabel.heightAnchor.constraint(equalToConstant: 35),
+            nameLabel.heightAnchor.constraint(equalToConstant: 25),
 
             nationalityLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 0),
             nationalityLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
@@ -97,15 +92,5 @@ class ITAstronautCell: UICollectionViewCell {
     @objc func bioButtonTapped(){
         bioButton.pulsate()
         delegate?.bioButtonTapped(self)
-    }
-
-    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if #available(iOS 13, *), self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            DispatchQueue.main.async {
-                self.layer.shadowColor = Colors.whiteBlack.cgColor
-            }
-        }
     }
 }

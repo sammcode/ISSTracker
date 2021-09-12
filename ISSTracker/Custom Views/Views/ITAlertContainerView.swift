@@ -22,7 +22,7 @@ class ITAlertContainerView: UIView {
         backgroundColor = .systemBackground
         layer.cornerRadius = 12
         layer.borderWidth = 2
-        layer.borderColor = Colors.mainBlueYellow.cgColor
+        layer.borderColor = UIColor.systemIndigo.cgColor
         translatesAutoresizingMaskIntoConstraints = false
     }
 }

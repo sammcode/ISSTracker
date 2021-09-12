@@ -37,18 +37,6 @@ enum Images {
     static let portrait = UIImage(named: "portrait")
 }
 
-enum Colors {
-    static let midnightBlue = UIColor(red: 0, green: 0.161, blue: 0.42, alpha: 1)
-    static let darkBlue = UIColor(red: 0, green: 0.314, blue: 0.616, alpha: 1)
-    static let calmBlue = UIColor(red: 0, green: 0.247, blue: 0.533, alpha: 1)
-    static let darkGray = UIColor(red: 0.338, green: 0.3, blue: 0.3, alpha: 1)
-    static let deepYellow = UIColor(red: 1, green: 0.835, blue: 0, alpha: 1)
-
-    static let mainBlueYellow = UIColor(named: "MainBlueYellow") ?? Colors.midnightBlue
-    static let mainYellowBlue = UIColor(named: "MainYellowBlue") ?? Colors.deepYellow
-    static let whiteBlack = UIColor(named: "WhiteBlack") ?? Colors.calmBlue
-}
-
 enum ScreenSize {
     static let width        = UIScreen.main.bounds.size.width
     static let height       = UIScreen.main.bounds.size.height

@@ -14,9 +14,9 @@ class DeveloperVC: UIViewController {
     var aboutMeTitleLabel = ITTitleLabel(textAlignment: .left, fontSize: 24)
     var aboutMeLabelContainerView = UIView()
 
-    var twitterButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Twitter")
-    var githubButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Github")
-    var websiteButton = ITButton(backgroundColor: Colors.mainBlueYellow, title: "Website")
+    var twitterButton = ITButton(backgroundColor: UIColor.systemIndigo, title: "Twitter")
+    var githubButton = ITButton(backgroundColor: UIColor.systemIndigo, title: "Github")
+    var websiteButton = ITButton(backgroundColor: UIColor.systemIndigo, title: "Website")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,13 +42,8 @@ class DeveloperVC: UIViewController {
     func configureAboutMeLabelContainerView(){
         view.addSubview(aboutMeLabelContainerView)
         aboutMeLabelContainerView.translatesAutoresizingMaskIntoConstraints = false
-        aboutMeLabelContainerView.backgroundColor = .systemBackground
+        aboutMeLabelContainerView.backgroundColor = .systemGray5
         aboutMeLabelContainerView.layer.cornerRadius = 10
-
-        aboutMeLabelContainerView.layer.shadowColor = Colors.whiteBlack.cgColor
-        aboutMeLabelContainerView.layer.shadowOpacity = 0.5
-        aboutMeLabelContainerView.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        aboutMeLabelContainerView.layer.shadowRadius = 3
 
         NSLayoutConstraint.activate([
             aboutMeLabelContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -61,7 +56,7 @@ class DeveloperVC: UIViewController {
     func configureAboutMeTitleLabel(){
         view.addSubview(aboutMeTitleLabel)
         aboutMeTitleLabel.text = "About me"
-        aboutMeTitleLabel.textColor = Colors.mainBlueYellow
+        aboutMeTitleLabel.textColor = .label
         aboutMeTitleLabel.font = UIFont(name: "NasalizationRg-Regular", size: 24)
 
         NSLayoutConstraint.activate([
@@ -91,7 +86,7 @@ class DeveloperVC: UIViewController {
     func configureTwitterButton(){
         view.addSubview(twitterButton)
         twitterButton.addTarget(self, action: #selector(twitterButtonTapped), for: .touchUpInside)
-        twitterButton.setImage(UIImage(named: "twitterIcon")?.withTintColor(.systemBackground), for: .normal)
+        twitterButton.setImage(UIImage(named: "twitterIcon")?.withTintColor(.white), for: .normal)
         twitterButton.imageView?.contentMode = .scaleAspectFit
         twitterButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 20)
         twitterButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 60)
@@ -109,7 +104,7 @@ class DeveloperVC: UIViewController {
     func configureGithubButton(){
         view.addSubview(githubButton)
         githubButton.addTarget(self, action: #selector(githubButtonTapped), for: .touchUpInside)
-        githubButton.setImage(UIImage(named: "githubIcon")?.withTintColor(.systemBackground), for: .normal)
+        githubButton.setImage(UIImage(named: "githubIcon")?.withTintColor(.white), for: .normal)
         githubButton.imageView?.contentMode = .scaleAspectFit
         githubButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 20)
         githubButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 60)
@@ -127,7 +122,7 @@ class DeveloperVC: UIViewController {
     func configureWebsiteButton(){
         view.addSubview(websiteButton)
         websiteButton.addTarget(self, action: #selector(websiteButtonTapped), for: .touchUpInside)
-        websiteButton.setImage(UIImage(named: "websiteIcon")?.withTintColor(.systemBackground), for: .normal)
+        websiteButton.setImage(UIImage(named: "websiteIcon")?.withTintColor(.white), for: .normal)
         websiteButton.imageView?.contentMode = .scaleAspectFit
         websiteButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 20)
         websiteButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 60)
@@ -144,19 +139,19 @@ class DeveloperVC: UIViewController {
 
     @objc func twitterButtonTapped(){
         let safariVC = SFSafariViewController(url: URL(string: "https://twitter.com/sammcode")!)
-        safariVC.preferredControlTintColor = Colors.mainBlueYellow
+        safariVC.preferredControlTintColor = UIColor.systemIndigo
         present(safariVC, animated: true)
     }
 
     @objc func githubButtonTapped(){
         let safariVC = SFSafariViewController(url: URL(string: "https://github.com/sammcode")!)
-        safariVC.preferredControlTintColor = Colors.mainBlueYellow
+        safariVC.preferredControlTintColor = UIColor.systemIndigo
         present(safariVC, animated: true)
     }
 
     @objc func websiteButtonTapped(){
         let safariVC = SFSafariViewController(url: URL(string: "https://www.sammcgarry.dev/")!)
-        safariVC.preferredControlTintColor = Colors.mainBlueYellow
+        safariVC.preferredControlTintColor = UIColor.systemIndigo
         present(safariVC, animated: true)
     }
 }

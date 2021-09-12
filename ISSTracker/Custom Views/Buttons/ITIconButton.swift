@@ -27,11 +27,6 @@ class ITIconButton: UIButton {
     private func configure(){
         layer.cornerRadius = 10
         translatesAutoresizingMaskIntoConstraints = false
-
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.5
-        layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
-        layer.shadowRadius = 5
     }
 
     func set(backgroundColor: UIColor, image: UIImage){

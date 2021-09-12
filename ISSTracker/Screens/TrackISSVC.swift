@@ -30,11 +30,11 @@ class TrackISSVC: UIViewController {
     let iconWidth = UserDefaultsManager.largeMapAnnotations ? 90 : 60
     let iconHeight = UserDefaultsManager.largeMapAnnotations ? 60 : 40
 
-    var mapTypeButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
-    var showCoordinatesButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "note.text", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
-    var orbitPathButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "location.north.line", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
-    var zoomInButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "plus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
-    var zoomOutButton = ITIconButton(backgroundColor: Colors.mainBlueYellow, image: (UIImage(systemName: "minus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBackground))
+    var mapTypeButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
+    var showCoordinatesButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "note.text", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
+    var orbitPathButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "location.north.line", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
+    var zoomInButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "plus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
+    var zoomOutButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "minus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
     var exitButton = ITIconButton(backgroundColor: .systemGray, image: (UIImage(systemName: "multiply", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
 
     var orbitPathButtonLeadingConstraint = NSLayoutConstraint()
@@ -443,8 +443,7 @@ class TrackISSVC: UIViewController {
         }
 
         @objc func animatePulse() {
-            if Map.mapView.mapType == .hybrid { pulseLayer.strokeColor = Colors.deepYellow.cgColor }
-            else{ pulseLayer.strokeColor = Colors.mainBlueYellow.cgColor }
+            pulseLayer.strokeColor = UIColor.systemIndigo.cgColor
 
             let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
             scaleAnimation.duration = 3.0

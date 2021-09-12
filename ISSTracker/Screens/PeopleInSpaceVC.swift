@@ -52,7 +52,7 @@ class PeopleInSpaceVC: UIViewController {
         let name = peopleInSpace.people[0].name
         let astronaut = AstronautData.astronauts[name]
         let safariVC = SFSafariViewController(url: URL(string: astronaut!.biographyURL)!)
-        safariVC.preferredControlTintColor = Colors.mainBlueYellow
+        safariVC.preferredControlTintColor = UIColor.systemIndigo
         present(safariVC, animated: true)
     }
 }
@@ -79,7 +79,7 @@ extension PeopleInSpaceVC: ITAstronautCellDelegate {
         let name = peopleInSpace.people[index].name
         let astronaut = AstronautData.astronauts[name]
         let safariVC = SFSafariViewController(url: URL(string: astronaut!.biographyURL)!)
-        safariVC.preferredControlTintColor = Colors.mainBlueYellow
+        safariVC.preferredControlTintColor = UIColor.systemIndigo
         present(safariVC, animated: true)
     }
 }
