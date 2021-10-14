@@ -23,4 +23,8 @@ extension Int {
         DF.dateFormatter.dateFormat = "h:mm a"
         return DF.dateFormatter.string(from: date)
     }
+
+    func toDate() -> Date {
+        return Date(timeIntervalSince1970: Double(self))
+    }
 }

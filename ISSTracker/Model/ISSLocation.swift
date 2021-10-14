@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 struct IssLocation: Codable {
     let name: String
@@ -16,6 +17,12 @@ struct IssLocation: Codable {
     let timestamp: Int
     let daynum, solarLat, solarLon: Double
     let units: String
+}
+
+extension IssLocation {
+    func getCoordinate() -> CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
+    }
 }
 
 typealias IssLocations = [IssLocation]

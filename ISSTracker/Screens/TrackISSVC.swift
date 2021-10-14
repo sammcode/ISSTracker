@@ -11,12 +11,13 @@ import AVKit
 
 class TrackISSVC: UIViewController {
 
-    var issLocation: IssLocation!
+    var currentCoordinate: CLLocationCoordinate2D!
+    var currentOrbitLocations: [IssLocation]!
+
     var coordinatesView: ITCoordinatesView!
 
-    var anno: MKPointAnnotation!
+    var iconAnnotation: MKPointAnnotation!
     var timer: Timer!
-    var timer1: Timer!
 
     var viewOffset: CGFloat = 260
     var coordinatesViewBottomConstraint = NSLayoutConstraint()
@@ -41,8 +42,6 @@ class TrackISSVC: UIViewController {
     var zoomInButtonLeadingConstraint = NSLayoutConstraint()
     var zoomOutButtonLeadingConstraint = NSLayoutConstraint()
 
-    var coords = [CLLocationCoordinate2D]()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -51,10 +50,9 @@ class TrackISSVC: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         timer.invalidate()
-        timer1.invalidate()
         Map.mapView.removeFromSuperview()
         Map.mapView.delegate = nil
-        Map.mapView.removeAnnotation(anno)
+        Map.mapView.removeAnnotation(iconAnnotation)
         Map.mapView.removeAnnotations(Map.mapView.annotations)
         Map.mapView.removeOverlays(Map.mapView.overlays)
     }
@@ -82,7 +80,6 @@ class TrackISSVC: UIViewController {
         configureZoomInButton()
         configureZoomOutButton()
         configureIconView()
-        getFutureLocations()
 
         addBackgroundandForegroundObservers()
     }
@@ -99,8 +96,7 @@ class TrackISSVC: UIViewController {
 
     @objc func willEnterForeground(){
         if !UserDefaultsManager.reduceAnimations { createPulseLayer() }
-        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(issLocation.latitude), longitude: CLLocationDegrees(issLocation.longitude))
-        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
+        let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
         Map.mapView.setRegion(region, animated: true)
         if isOrbitPathEnabled { updateOrbitPathOverlays()}
     }
@@ -143,7 +139,7 @@ class TrackISSVC: UIViewController {
     /// Sets the data based on the gpsLocation variable
     /// Constrains it to the top of the view
     func configureCoordinatesView(){
-        coordinatesView = ITCoordinatesView(title: "ISS Data", issLocationData: issLocation)
+        coordinatesView = ITCoordinatesView(title: "ISS Data", issLocationData: currentOrbitLocations[0])
         coordinatesViewBottomConstraint = coordinatesView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: viewOffset)
         view.addSubview(coordinatesView)
         NSLayoutConstraint.activate([
@@ -164,14 +160,17 @@ class TrackISSVC: UIViewController {
         Map.mapView.translatesAutoresizingMaskIntoConstraints = false
         Map.mapView.delegate = self
 
-        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(issLocation.latitude), longitude: CLLocationDegrees(issLocation.longitude))
-        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(15000000), longitudinalMeters: CLLocationDistance(15000000))
+        currentCoordinate = currentOrbitLocations.first!.getCoordinate()
+
+        let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(15000000), longitudinalMeters: CLLocationDistance(15000000))
         Map.mapView.setRegion(region, animated: true)
 
-        anno = MKPointAnnotation()
-        anno.coordinate = coordinates
+        iconAnnotation = MKPointAnnotation()
+        iconAnnotation.coordinate = currentCoordinate
 
-        Map.mapView.addAnnotation(anno)
+        Map.mapView.addAnnotation(iconAnnotation)
+
+        if self.isOrbitPathEnabled { self.updateOrbitPathOverlays() }
 
         NSLayoutConstraint.activate([
             Map.mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -288,8 +287,7 @@ class TrackISSVC: UIViewController {
     @objc
     func zoomInButtonTapped() {
         zoomInButton.pulsate()
-        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(issLocation.latitude), longitude: CLLocationDegrees(issLocation.longitude))
-        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(800000), longitudinalMeters: CLLocationDistance(800000))
+        let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(800000), longitudinalMeters: CLLocationDistance(800000))
         Map.mapView.setRegion(region, animated: true)
     }
 
@@ -313,8 +311,7 @@ class TrackISSVC: UIViewController {
     @objc
     func zoomOutButtonTapped() {
         zoomOutButton.pulsate()
-        let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(issLocation.latitude), longitude: CLLocationDegrees(issLocation.longitude))
-        let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
+        let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
         Map.mapView.setRegion(region, animated: true)
     }
 
@@ -346,10 +343,9 @@ class TrackISSVC: UIViewController {
         isOrbitPathEnabled.toggle()
     }
 
-    /// Starts a timer that calls the updateMapView method every 10 seconds
+    /// Starts a timer that calls the updateMapView method every 1 seconds
     func startUpdating(){
-        timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
-        timer1 = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(self.getFutureLocations), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
     }
 
     /// Dismisses the ViewController
@@ -361,45 +357,25 @@ class TrackISSVC: UIViewController {
     /// On success, the coordinates view is updated with the retrieved data, and the map view annotation is moved to the updated coordinates
     /// On failure, a custom alert is presented stating the error in question
     @objc func updateMapView() {
-        NetworkManager.shared.getISSLocation { [weak self] result in
 
-            guard let self = self else { return }
+        let currentTime = Date()
+        let currentOrbitEndTime = currentOrbitLocations.last!.timestamp.toDate()
 
-            switch result {
-            case .success(let iss):
-                DispatchQueue.main.async { [self] in
-                    self.issLocation = iss
-
-                    let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(self.issLocation.latitude), longitude: CLLocationDegrees(self.issLocation.longitude))
-
-                    UIView.animate(withDuration: 2, delay: 0, options: .curveLinear) {
-                        self.anno.coordinate = coordinates
-                    }
-
-                    self.coordinatesView.issLocation = self.issLocation
-                }
-            case .failure(let error):
-                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
-            }
+        if currentTime > currentOrbitEndTime {
+            getNewISSLocationsAndUpdateCurrentCoordinate(currentTime: currentTime)
+        } else {
+            calculateAndUpdateCurrentCoordinate(currentTime: currentTime)
         }
     }
 
-    @objc func getFutureLocations(){
-        var timestamps = [Int64]()
-        for x in 1..<11{
-            let time = (Date() + Double(557 * x)).currentTimeMillis()
-            timestamps.append(time)
-        }
-        NetworkManager.shared.getIssLocations(for: timestamps) { [weak self] result in
+    func getNewISSLocationsAndUpdateCurrentCoordinate(currentTime: Date) {
+        NetworkManager.shared.getIssLocations(for: LocationCalculator.getTimestampsForCurrentOrbit()) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
             case .success(let issLocations):
-                self.coords = [CLLocationCoordinate2D]()
-                for location in issLocations {
-                    let coordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(location.latitude), longitude: CLLocationDegrees(location.longitude))
-                    self.coords.append(coordinates)
-                }
+                self.currentOrbitLocations = issLocations
+                self.currentCoordinate = issLocations.first!.getCoordinate()
                 if self.isOrbitPathEnabled { self.updateOrbitPathOverlays() }
             case .failure(let error):
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
@@ -407,20 +383,48 @@ class TrackISSVC: UIViewController {
         }
     }
 
+    func calculateAndUpdateCurrentCoordinate(currentTime: Date) {
+        var intervalStartLocation: IssLocation!
+        var intervalEndLocation: IssLocation!
+
+        // Determine current location interval
+
+        for i in 0..<currentOrbitLocations.count - 1 {
+            let startTime = currentOrbitLocations[i].timestamp.toDate()
+            let endTime = currentOrbitLocations[i+1].timestamp.toDate()
+
+            if currentTime > startTime && currentTime < endTime {
+                intervalStartLocation = currentOrbitLocations[i]
+                intervalEndLocation = currentOrbitLocations[i + 1]
+                break
+            }
+        }
+
+        let intervalStartTime = intervalStartLocation.timestamp.toDate()
+        let intervalEndTime = intervalEndLocation.timestamp.toDate()
+
+        // Determine percent completion of the current time interval
+
+        let percentCompletion = (currentTime - intervalStartTime) / (intervalEndTime - intervalStartTime)
+
+        currentCoordinate = LocationCalculator.intermediateLocationBetween(startLocation: intervalStartLocation.getCoordinate(), endLocation: intervalEndLocation.getCoordinate(), percentFromStart: percentCompletion)
+
+        UIView.animate(withDuration: 1, delay: 0, options: .curveLinear) {
+            self.iconAnnotation.coordinate = self.currentCoordinate
+        }
+    }
+
     func updateOrbitPathOverlays(){
-        let polyline = MKGeodesicPolyline(coordinates: [self.anno.coordinate, coords[0]], count: 2)
-        let polyline1 = MKGeodesicPolyline(coordinates: [coords[0], coords[1]], count: 2)
-        let polyline2 = MKGeodesicPolyline(coordinates: [coords[1], coords[2]], count: 2)
-        let polyline3 = MKGeodesicPolyline(coordinates: [coords[2], coords[3]], count: 2)
-        let polyline4 = MKGeodesicPolyline(coordinates: [coords[3], coords[4]], count: 2)
-        let polyline5 = MKGeodesicPolyline(coordinates: [coords[4], coords[5]], count: 2)
-        let polyline6 = MKGeodesicPolyline(coordinates: [coords[5], coords[6]], count: 2)
-        let polyline7 = MKGeodesicPolyline(coordinates: [coords[6], coords[7]], count: 2)
-        let polyline8 = MKGeodesicPolyline(coordinates: [coords[7], coords[8]], count: 2)
-        let polyline9 = MKGeodesicPolyline(coordinates: [coords[8], coords[9]], count: 2)
+        var polylines = [MKGeodesicPolyline]()
+        for i in 0..<currentOrbitLocations.count - 1 {
+            let startCoordinate = currentOrbitLocations[i].getCoordinate()
+            let endCoordinate = currentOrbitLocations[i + 1].getCoordinate()
+            let polyline = MKGeodesicPolyline(coordinates: [startCoordinate, endCoordinate], count: 2)
+            polylines.append(polyline)
+        }
         DispatchQueue.main.async {
             Map.mapView.removeOverlays(Map.mapView.overlays)
-            Map.mapView.addOverlays([polyline, polyline1, polyline2, polyline3, polyline4, polyline5, polyline6, polyline7, polyline8, polyline9])
+            Map.mapView.addOverlays(polylines)
         }
     }
 
