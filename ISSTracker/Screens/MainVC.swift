@@ -190,7 +190,7 @@ class MainVC: ITDataLoadingVC {
 
     /// Adds the getISSLocation method to the trackISSButton, for the touchUpInside action
     func addActionToTrackISSButton(){
-        trackISSButton.addTarget(self, action: #selector(getISSLocation), for: .touchUpInside)
+        trackISSButton.addTarget(self, action: #selector(getISSLocationsAndPresentTrackISSVC), for: .touchUpInside)
     }
 
     func addActionToSearchImagesButton(){
@@ -199,28 +199,25 @@ class MainVC: ITDataLoadingVC {
 
     /// Adds the getPeopleInSpace method to the peopleInSpaceButton, for the touchUpInside action
     func addActionToPeopleInSpaceButton(){
-        peopleInSpaceButton.addTarget(self, action: #selector(getPeopleInSpace), for: .touchUpInside)
+        peopleInSpaceButton.addTarget(self, action: #selector(getPeopleInSpaceAndPresentPeopleInSpaceVC), for: .touchUpInside)
     }
 
     /// Uses the NetworkManager class to get the current location of the ISS
     /// On success, an instance of the TrackISSVC ViewController is presented with the retrieved data
     /// On failure, a custom alert is presented stating the error in question
-    @objc func getISSLocation() {
+    @objc func getISSLocationsAndPresentTrackISSVC() {
         trackISSButton.pulsate()
         showLoadingView()
 
-        NetworkManager.shared.getISSLocation { [weak self] result in
-
+        NetworkManager.shared.getIssLocations(for: LocationCalculator.getTimestampsForCurrentOrbit()) { [weak self] result in
             guard let self = self else { return }
 
-            self.dismissLoadingView()
-
             switch result {
-            case .success(let issLocationData):
+            case .success(let issLocations):
                 if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
                 DispatchQueue.main.async {
                     let trackISSVC = TrackISSVC()
-                    trackISSVC.issLocation = issLocationData
+                    trackISSVC.currentOrbitLocations = issLocations
                     let navController = UINavigationController(rootViewController: trackISSVC)
                     self.present(navController, animated: true)
                 }
@@ -260,7 +257,7 @@ class MainVC: ITDataLoadingVC {
 
     }
 
-    @objc func getPeopleInSpace(){
+    @objc func getPeopleInSpaceAndPresentPeopleInSpaceVC(){
         peopleInSpaceButton.pulsate()
         showLoadingView()
         NetworkManager.shared.getPeopleInSpace { [weak self] result in

@@ -59,7 +59,7 @@ class NetworkManager {
 
     func getIssLocations(for timestamps: [Int64], completed: @escaping (Result<IssLocations, ITError>) -> Void) {
 
-        let endpoint = whereTheISSatBaseURL + "25544/positions?timestamps=\(timestamps[0]),\(timestamps[1]),\(timestamps[2]),\(timestamps[3]),\(timestamps[4]),\(timestamps[5]),\(timestamps[6]),\(timestamps[7]),\(timestamps[8]),\(timestamps[9])&units=kilometers"
+        let endpoint = whereTheISSatBaseURL + "25544/positions?timestamps=\(timestamps[0]),\(timestamps[1]),\(timestamps[2]),\(timestamps[3]),\(timestamps[4]),\(timestamps[5]),\(timestamps[6]),\(timestamps[7]),\(timestamps[8]),\(timestamps[9]),\(timestamps[10])&units=kilometers"
 
         let url = URL(string: endpoint)
 
