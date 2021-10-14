@@ -19,44 +19,6 @@ class NetworkManager {
 
     private init() {}
 
-
-    /// Retrieves the current location of the ISS from the API
-    /// - Parameter completed: On completion, returns a Result type that can either be a GPSLocation struct or an ITError
-    func getISSLocation(completed: @escaping (Result<IssLocation, ITError>) -> Void){
-
-        let endpoint = whereTheISSatBaseURL + "25544"
-
-        let url = URL(string: endpoint)
-
-        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
-
-            if let _ = error {
-                completed(.failure(.unableToComplete))
-            }
-
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(.failure(.invalidResponse))
-                return
-            }
-
-            guard let data = data else {
-                completed(.failure(.invalidData))
-                return
-            }
-
-            do{
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let issLocation = try decoder.decode(IssLocation.self, from: data)
-                completed(.success(issLocation))
-            }catch {
-                print(error.localizedDescription)
-                completed(.failure(.invalidData))
-            }
-        }
-        task.resume()
-    }
-
     func getIssLocations(for timestamps: [Int64], completed: @escaping (Result<IssLocations, ITError>) -> Void) {
 
         let endpoint = whereTheISSatBaseURL + "25544/positions?timestamps=\(timestamps[0]),\(timestamps[1]),\(timestamps[2]),\(timestamps[3]),\(timestamps[4]),\(timestamps[5]),\(timestamps[6]),\(timestamps[7]),\(timestamps[8]),\(timestamps[9]),\(timestamps[10])&units=kilometers"

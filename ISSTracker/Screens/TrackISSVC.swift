@@ -7,7 +7,6 @@
 
 import UIKit
 import MapKit
-import AVKit
 
 class TrackISSVC: UIViewController {
 
@@ -376,7 +375,12 @@ class TrackISSVC: UIViewController {
             case .success(let issLocations):
                 self.currentOrbitLocations = issLocations
                 self.currentCoordinate = issLocations.first!.getCoordinate()
-                if self.isOrbitPathEnabled { self.updateOrbitPathOverlays() }
+                DispatchQueue.main.async {
+                    if self.isOrbitPathEnabled { self.updateOrbitPathOverlays() }
+                    UIView.animate(withDuration: 1, delay: 0, options: .curveLinear) {
+                        self.iconAnnotation.coordinate = self.currentCoordinate
+                    }
+                }
             case .failure(let error):
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
             }
@@ -409,8 +413,10 @@ class TrackISSVC: UIViewController {
 
         currentCoordinate = LocationCalculator.intermediateLocationBetween(startLocation: intervalStartLocation.getCoordinate(), endLocation: intervalEndLocation.getCoordinate(), percentFromStart: percentCompletion)
 
-        UIView.animate(withDuration: 1, delay: 0, options: .curveLinear) {
-            self.iconAnnotation.coordinate = self.currentCoordinate
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1, delay: 0, options: .curveLinear) {
+                self.iconAnnotation.coordinate = self.currentCoordinate
+            }
         }
     }
 
