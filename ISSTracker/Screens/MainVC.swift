@@ -212,6 +212,8 @@ class MainVC: ITDataLoadingVC {
         NetworkManager.shared.getIssLocations(for: LocationCalculator.getTimestampsForCurrentOrbit()) { [weak self] result in
             guard let self = self else { return }
 
+            self.dismissLoadingView()
+
             switch result {
             case .success(let issLocations):
                 if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
