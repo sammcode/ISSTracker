@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreData
+import CoreLocation
 
 struct IssLocation: Codable {
     let name: String
