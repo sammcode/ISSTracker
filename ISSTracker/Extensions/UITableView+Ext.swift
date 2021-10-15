@@ -1,5 +1,5 @@
 //
-//  Ext+UITableView.swift
+//  UITableView+Ext.swift
 //  ISSTracker
 //
 //  Created by Sam McGarry on 3/13/21.

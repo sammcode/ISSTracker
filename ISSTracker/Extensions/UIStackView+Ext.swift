@@ -1,5 +1,5 @@
 //
-//  Ext+UIStackView.swift
+//  UIStackView+Ext.swift
 //  ISSTracker
 //
 //  Created by Sam McGarry on 3/7/21.
