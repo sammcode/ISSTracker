@@ -79,6 +79,7 @@
 		B234A9F126ED6A580042DE7B /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B234A9F026ED6A580042DE7B /* IAPManager.swift */; };
 		B234A9F426ED6B990042DE7B /* Purchases in Frameworks */ = {isa = PBXBuildFile; productRef = B234A9F326ED6B990042DE7B /* Purchases */; };
 		B234A9F626ED6E250042DE7B /* TipVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B234A9F526ED6E250042DE7B /* TipVC.swift */; };
+		B2658358271B8F4300C98393 /* MainTabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2658357271B8F4300C98393 /* MainTabBarVC.swift */; };
 		B26A21B8265893BA00488DE8 /* SearchImagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21B7265893BA00488DE8 /* SearchImagesVC.swift */; };
 		B26A21BA2658945F00488DE8 /* NASAImageSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21B92658945F00488DE8 /* NASAImageSearchResults.swift */; };
 		B26A21BC265895D100488DE8 /* ITNasaImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26A21BB265895D100488DE8 /* ITNasaImageView.swift */; };
@@ -182,6 +183,7 @@
 		B234A9EE26E6F65C0042DE7B /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		B234A9F026ED6A580042DE7B /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
 		B234A9F526ED6E250042DE7B /* TipVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipVC.swift; sourceTree = "<group>"; };
+		B2658357271B8F4300C98393 /* MainTabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarVC.swift; sourceTree = "<group>"; };
 		B26A21B7265893BA00488DE8 /* SearchImagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchImagesVC.swift; sourceTree = "<group>"; };
 		B26A21B92658945F00488DE8 /* NASAImageSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NASAImageSearchResults.swift; sourceTree = "<group>"; };
 		B26A21BB265895D100488DE8 /* ITNasaImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITNasaImageView.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				B26A21B7265893BA00488DE8 /* SearchImagesVC.swift */,
 				B2D7D44F2658B49E008FAB15 /* ImageViewerVC.swift */,
 				B234A9F526ED6E250042DE7B /* TipVC.swift */,
+				B2658357271B8F4300C98393 /* MainTabBarVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -718,6 +721,7 @@
 				B23246432629EED0000EF307 /* ITNumberOfPeopleView.swift in Sources */,
 				B232463E2628BACB000EF307 /* ITAstronautCell.swift in Sources */,
 				B2324653262CAC6F000EF307 /* Ext+MKAnnotationView.swift in Sources */,
+				B2658358271B8F4300C98393 /* MainTabBarVC.swift in Sources */,
 				B234A9EF26E6F65C0042DE7B /* String+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
