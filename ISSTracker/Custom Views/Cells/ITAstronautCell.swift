@@ -51,8 +51,6 @@ class ITAstronautCell: UICollectionViewCell {
         nationalityLabel.textColor = .label
         roleLabel.textColor = .label
 
-        astronautImageView.layer.cornerRadius = 20
-
         bioButton.layer.shadowOpacity = 0
         bioButton.addTarget(self, action: #selector(bioButtonTapped), for: .touchUpInside)
 
@@ -62,10 +60,10 @@ class ITAstronautCell: UICollectionViewCell {
 
         let padding: CGFloat = 8
         NSLayoutConstraint.activate([
-            astronautImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
-            astronautImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            astronautImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            astronautImageView.heightAnchor.constraint(equalTo: astronautImageView.widthAnchor),
+            astronautImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
+            astronautImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            astronautImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            astronautImageView.heightAnchor.constraint(equalToConstant: 165),
 
             nameLabel.topAnchor.constraint(equalTo: astronautImageView.bottomAnchor, constant: 10),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),

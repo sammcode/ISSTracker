@@ -14,9 +14,9 @@ extension UIViewController {
     ///   - message: The custom error message displayed to the user
     ///   - buttonTitle: Title of the button that is on the custom alert
     ///   - settingsButtonNeeded: Bool that indicates whether or not the alert should have a button that deep links to the settings for the app
-    func presentITAlertOnMainThread(title: String, message: String, buttonTitle: String, isLongMessage: Bool? = nil){
+    func presentITAlertOnMainThread(title: String, message: String, buttonTitle: String, isLongMessage: Bool? = nil, onClose: (() -> Void)? = nil){
         DispatchQueue.main.async {
-            let alertVC = ITAlertVC(title: title, message: message, buttonTitle: buttonTitle, isLongMessage: isLongMessage)
+            let alertVC = ITAlertVC(title: title, message: message, buttonTitle: buttonTitle, isLongMessage: isLongMessage, onClose: onClose)
             alertVC.modalPresentationStyle = .overFullScreen
             alertVC.modalTransitionStyle = .crossDissolve
             self.present(alertVC, animated: true)

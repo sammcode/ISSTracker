@@ -18,15 +18,17 @@ class ITAlertVC: UIViewController {
     var message: String?
     var buttonTitle: String?
     var isLongMessage: Bool?
+    var onClose: (() -> Void)?
 
     let padding: CGFloat = 20
 
-    init(title: String, message: String, buttonTitle: String, isLongMessage: Bool? = nil){
+    init(title: String, message: String, buttonTitle: String, isLongMessage: Bool? = nil, onClose: (() -> Void)? = nil){
         super.init(nibName: nil, bundle: nil)
         self.alertTitle = title
         self.message = message
         self.buttonTitle = buttonTitle
         self.isLongMessage = isLongMessage
+        self.onClose = onClose
     }
 
     required init?(coder: NSCoder) {
@@ -36,6 +38,11 @@ class ITAlertVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        guard let onClose = onClose else { return }
+        onClose()
     }
 
     func configure(){

@@ -21,7 +21,7 @@ class SearchImagesVC: ITDataLoadingVC {
 
     let searchController = UISearchController()
 
-    var imageData: [Item]!
+    var imageData = [Item]()
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     var pinchGestureRecognizer: UIPinchGestureRecognizer!
@@ -47,7 +47,8 @@ class SearchImagesVC: ITDataLoadingVC {
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-        getMostRecentImages()
+        currentQ = q + "%202021"
+        if imageData.isEmpty { getIssImages(text: currentQ, page: page) }
     }
 
     func configureViewController(){
@@ -135,7 +136,7 @@ class SearchImagesVC: ITDataLoadingVC {
     func getIssImages(text: String, page: Int){
         self.showLoadingView()
         self.isLoadingMoreImages = true
-
+        
         NetworkManager.shared.conductNASAImageSearch(for: text, page: page) { [weak self] result in
             guard let self = self else { return }
 
@@ -144,13 +145,10 @@ class SearchImagesVC: ITDataLoadingVC {
             switch result {
             case .success(let searchResults):
                 self.updateUI(with: searchResults.collection.items)
-                if page == 1 {
-                    DispatchQueue.main.async {
-                        self.collectionView.scrollToItem(at: IndexPath(index: 0), at: .top, animated: false)
-                    }
-                }
             case .failure(let error):
-                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
+                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Try again") {
+                    self.getIssImages(text: text, page: page)
+                }
             }
         }
     }
@@ -192,29 +190,15 @@ class SearchImagesVC: ITDataLoadingVC {
         emptyStateView!.frame = view.bounds
         view.addSubview(emptyStateView!)
     }
-
-    func getMostRecentImages() {
-        currentQ = q + "%202021"
-
-        NetworkManager.shared.conductNASAImageSearch(for: currentQ, page: page) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let searchResults):
-                self.updateUI(with: searchResults.collection.items)
-            case .failure:
-                return
-            }
-        }
-    }
 }
 
 extension SearchImagesVC: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let image = imageData?[indexPath.item]
+        let image = imageData[indexPath.item]
         let imageViewerVC = ImageViewerVC()
-        imageViewerVC.nasaImageView.downloadNasaImage(fromURL: image!.links[0].href)
-        imageViewerVC.nasaImageDescriptionLabel.text = image!.data[0].description
+        imageViewerVC.nasaImageView.downloadNasaImage(fromURL: image.links[0].href)
+        imageViewerVC.nasaImageDescriptionLabel.text = image.data[0].description
         self.navigationController?.pushViewController(imageViewerVC, animated: true)
     }
 
@@ -224,6 +208,7 @@ extension SearchImagesVC: UICollectionViewDelegate, UICollectionViewDelegateFlow
         let height = scrollView.frame.size.height
 
         if offsetY > contentHeight - height {
+            print("here")
             guard hasMoreImages, !isLoadingMoreImages else { return }
             page += 1
             getIssImages(text: currentQ, page: page)
