@@ -193,7 +193,7 @@ class MainVC: ITDataLoadingVC {
     }
 
     func addActionToSearchImagesButton(){
-        searchImagesButton.addTarget(self, action: #selector(openSearchImagesVC), for: .touchUpInside)
+        searchImagesButton.addTarget(self, action: #selector(presentSearchImagesVC), for: .touchUpInside)
     }
 
     /// Adds the getPeopleInSpace method to the peopleInSpaceButton, for the touchUpInside action
@@ -213,32 +213,34 @@ class MainVC: ITDataLoadingVC {
         }
     }
 
-    @objc func openSearchImagesVC() {
+    @objc func presentSearchImagesVC() {
         searchImagesButton.pulsate()
-        self.showLoadingView()
-
-        let q = "international%20space%20station%20\(Date().monthYear)"
-
-        NetworkManager.shared.conductNASAImageSearch(for: q, page: 1) { [weak self] result in
-            guard let self = self else { return }
-
-            self.dismissLoadingView()
-
-            switch result {
-            case .success(let searchResults):
-                if UserDefaultsManager.haptics { generator.notificationOccurred(.success) }
-                DispatchQueue.main.async {
-                    let searchImagesVC = SearchImagesVC()
-                    searchImagesVC.imageData = searchResults.collection.items
-                    searchImagesVC.currentQ = q
-                    let navController = UINavigationController(rootViewController: searchImagesVC)
-                    self.present(navController, animated: true)
-                }
-            case .failure(let error):
-                if UserDefaultsManager.haptics { generator.notificationOccurred(.error) }
-                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
-            }
+        
+        DispatchQueue.main.async {
+            let searchImagesVC = SearchImagesVC()
+            let navController = UINavigationController(rootViewController: searchImagesVC)
+            self.present(navController, animated: true)
         }
+        
+        
+//        self.showLoadingView()
+//
+//        let q = "international%20space%20station%20\(Date().monthYear)"
+//
+//        NetworkManager.shared.conductNASAImageSearch(for: q, page: 1) { [weak self] result in
+//            guard let self = self else { return }
+//
+//            self.dismissLoadingView()
+//
+//            switch result {
+//            case .success(let searchResults):
+//                if UserDefaultsManager.haptics { generator.notificationOccurred(.success) }
+//
+//            case .failure(let error):
+//                if UserDefaultsManager.haptics { generator.notificationOccurred(.error) }
+//                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
+//            }
+//        }
 
     }
 
