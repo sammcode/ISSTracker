@@ -55,6 +55,10 @@ class TrackISSVC: UIViewController {
         Map.mapView.removeAnnotations(Map.mapView.annotations)
         Map.mapView.removeOverlays(Map.mapView.overlays)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        getNewISSLocationsAndUpdateCurrentCoordinate(currentTime: Date())
+    }
 
     override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -382,7 +386,9 @@ class TrackISSVC: UIViewController {
                     }
                 }
             case .failure(let error):
-                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
+                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Try again") {
+                    self.getNewISSLocationsAndUpdateCurrentCoordinate(currentTime: Date())
+                }
             }
         }
     }
