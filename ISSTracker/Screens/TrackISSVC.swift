@@ -17,9 +17,6 @@ class TrackISSVC: UIViewController {
     
     var timer: Timer!
 
-    var viewOffset: CGFloat = 260
-    var coordinatesViewBottomConstraint = NSLayoutConstraint()
-
     var iconView = MKAnnotationView()
     var iconAnnotation = MKPointAnnotation()
 
@@ -31,7 +28,6 @@ class TrackISSVC: UIViewController {
     let iconHeight = UserDefaultsManager.largeMapAnnotations ? 60 : 40
 
     var mapTypeButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
-    var showCoordinatesButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "note.text", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
     var orbitPathButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "location.north.line", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
     var zoomInButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "plus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
     var zoomOutButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "minus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
@@ -74,9 +70,7 @@ class TrackISSVC: UIViewController {
     func configure(){
         configureViewController()
         configureMapView()
-        //configureCoordinatesView()
         configureMapTypeButton()
-        configureShowCoordinatesButton()
         configureOrbitPathButton()
         configureZoomInButton()
         configureZoomOutButton()
@@ -133,21 +127,6 @@ class TrackISSVC: UIViewController {
         view.backgroundColor = .systemBackground
         title = "Track ISS"
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-
-    /// Configures the coordinates view
-    /// Sets the data based on the gpsLocation variable
-    /// Constrains it to the top of the view
-    func configureCoordinatesView(){
-        coordinatesView = ITCoordinatesView(title: "ISS Data", issLocationData: currentOrbitLocations[0])
-        coordinatesViewBottomConstraint = coordinatesView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: viewOffset)
-        view.addSubview(coordinatesView)
-        NSLayoutConstraint.activate([
-            coordinatesView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            coordinatesView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            coordinatesView.heightAnchor.constraint(equalToConstant: 260),
-            coordinatesViewBottomConstraint
-        ])
     }
 
     /// Configures the map view properties
@@ -219,46 +198,6 @@ class TrackISSVC: UIViewController {
         createPulseLayer()
     }
 
-    func configureShowCoordinatesButton(){
-        view.addSubview(showCoordinatesButton)
-        addActionToShowCoordinatesButton()
-        NSLayoutConstraint.activate([
-            showCoordinatesButton.widthAnchor.constraint(equalToConstant: 45),
-            showCoordinatesButton.heightAnchor.constraint(equalToConstant: 45),
-            showCoordinatesButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
-            showCoordinatesButton.topAnchor.constraint(equalTo: mapTypeButton.bottomAnchor, constant: 10)
-        ])
-    }
-
-    func addActionToShowCoordinatesButton() {
-        showCoordinatesButton.addTarget(self, action: #selector(showCoordinatesButtonTapped), for: .touchUpInside)
-    }
-
-    @objc
-    func showCoordinatesButtonTapped() {
-        showCoordinatesButton.pulsate()
-        switch viewOffset {
-        case 20:
-            self.viewOffset = 260
-            coordinatesViewBottomConstraint.constant = viewOffset
-            UIView.animate(withDuration: 0.2) {
-                self.view.layoutIfNeeded()
-            }
-        case 260:
-            self.viewOffset = 20
-            coordinatesViewBottomConstraint.constant = viewOffset
-            UIView.animate(withDuration: 0.2) {
-                self.view.layoutIfNeeded()
-            }
-        default:
-            self.viewOffset = 260
-            coordinatesViewBottomConstraint.constant = viewOffset
-            UIView.animate(withDuration: 0.2) {
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-
     func configureZoomInButton(){
         view.addSubview(zoomInButton)
         addActionToZoomInButton()
@@ -315,7 +254,7 @@ class TrackISSVC: UIViewController {
         NSLayoutConstraint.activate([
             orbitPathButton.widthAnchor.constraint(equalToConstant: 45),
             orbitPathButton.heightAnchor.constraint(equalToConstant: 45),
-            orbitPathButton.topAnchor.constraint(equalTo: showCoordinatesButton.bottomAnchor, constant: 10),
+            orbitPathButton.topAnchor.constraint(equalTo: mapTypeButton.bottomAnchor, constant: 10),
             orbitPathButtonLeadingConstraint
         ])
     }
