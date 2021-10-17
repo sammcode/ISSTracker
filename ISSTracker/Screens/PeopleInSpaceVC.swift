@@ -20,7 +20,7 @@ class PeopleInSpaceVC: ITDataLoadingVC {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getPeopleInSpace()
+        if peopleInSpace == nil { getPeopleInSpace() }
     }
 
     func configure(){
