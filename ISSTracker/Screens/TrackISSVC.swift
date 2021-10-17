@@ -27,10 +27,10 @@ class TrackISSVC: UIViewController {
     let iconWidth = UserDefaultsManager.largeMapAnnotations ? 90 : 60
     let iconHeight = UserDefaultsManager.largeMapAnnotations ? 60 : 40
 
-    var mapTypeButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
-    var orbitPathButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "location.north.line", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
-    var zoomInButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "plus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
-    var zoomOutButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "minus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
+    var mapTypeButton = ITIconButton(backgroundColor: .systemGray4, image: (UIImage(systemName: "map.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .semibold, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemBlue))
+    var orbitPathButton = ITIconButton(backgroundColor: .systemGray4, image: (UIImage(systemName: "location.north.line.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .semibold, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.systemGreen))
+    var zoomInButton = ITIconButton(backgroundColor: .systemGray4, image: (UIImage(systemName: "plus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .semibold, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
+    var zoomOutButton = ITIconButton(backgroundColor: .systemGray4, image: (UIImage(systemName: "minus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .semibold, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
 
     var orbitPathButtonLeadingConstraint = NSLayoutConstraint()
     var zoomInButtonLeadingConstraint = NSLayoutConstraint()
