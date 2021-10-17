@@ -8,7 +8,7 @@
 import UIKit
 import SafariServices
 
-class PeopleInSpaceVC: UIViewController {
+class PeopleInSpaceVC: ITDataLoadingVC {
 
     var peopleInSpace: PeopleInSpace!
 
@@ -17,6 +17,10 @@ class PeopleInSpaceVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        getPeopleInSpace()
     }
 
     func configure(){
@@ -55,11 +59,31 @@ class PeopleInSpaceVC: UIViewController {
         safariVC.preferredControlTintColor = UIColor.systemIndigo
         present(safariVC, animated: true)
     }
+    
+    @objc func getPeopleInSpace(){
+        self.showLoadingView()
+        NetworkManager.shared.getPeopleInSpace { [weak self] result in
+            guard let self = self else { return }
+            self.dismissLoadingView()
+            switch result {
+            case .success(let peopleData):
+                DispatchQueue.main.async {
+                    self.peopleInSpace = peopleData
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Try again") {
+                    self.getPeopleInSpace()
+                }
+            }
+        }
+    }
 }
 
 extension PeopleInSpaceVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let peopleInSpace = peopleInSpace else { return 0 }
         return peopleInSpace.people.count
     }
 

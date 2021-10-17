@@ -9,6 +9,8 @@ import UIKit
 import MapKit
 import AVFoundation
 
+let generator = UINotificationFeedbackGenerator()
+
 enum Images {
     static let issIcon = UIImage(named: "ISSIcon")
     static let issIcon2 = UIImage(named: "ISSIcon2")

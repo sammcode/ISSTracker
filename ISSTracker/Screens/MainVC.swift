@@ -13,7 +13,6 @@ import AVFoundation
 class MainVC: ITDataLoadingVC {
 
     let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
-    let generator = UINotificationFeedbackGenerator()
 
     var buttonsStackView = UIStackView()
     var trackISSButton = ITButton(backgroundColor: UIColor.systemIndigo, title: "Track ISS")
@@ -199,7 +198,7 @@ class MainVC: ITDataLoadingVC {
 
     /// Adds the getPeopleInSpace method to the peopleInSpaceButton, for the touchUpInside action
     func addActionToPeopleInSpaceButton(){
-        peopleInSpaceButton.addTarget(self, action: #selector(getPeopleInSpaceAndPresentPeopleInSpaceVC), for: .touchUpInside)
+        peopleInSpaceButton.addTarget(self, action: #selector(presentPeopleInSpaceVC), for: .touchUpInside)
     }
 
     /// Uses the NetworkManager class to get the current location of the ISS
@@ -227,7 +226,7 @@ class MainVC: ITDataLoadingVC {
 
             switch result {
             case .success(let searchResults):
-                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
+                if UserDefaultsManager.haptics { generator.notificationOccurred(.success) }
                 DispatchQueue.main.async {
                     let searchImagesVC = SearchImagesVC()
                     searchImagesVC.imageData = searchResults.collection.items
@@ -236,33 +235,19 @@ class MainVC: ITDataLoadingVC {
                     self.present(navController, animated: true)
                 }
             case .failure(let error):
-                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.error) }
+                if UserDefaultsManager.haptics { generator.notificationOccurred(.error) }
                 self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
             }
         }
 
     }
 
-    @objc func getPeopleInSpaceAndPresentPeopleInSpaceVC(){
+    @objc func presentPeopleInSpaceVC(){
         peopleInSpaceButton.pulsate()
-        showLoadingView()
-        NetworkManager.shared.getPeopleInSpace { [weak self] result in
-            guard let self = self else { return }
-            self.dismissLoadingView()
-            switch result {
-            case .success(let peopleData):
-                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
-                DispatchQueue.main.async {
-                    let peopleInSpaceVC = PeopleInSpaceVC()
-                    peopleInSpaceVC.peopleInSpace = peopleData
-                    let navController = UINavigationController(rootViewController: peopleInSpaceVC)
-
-                    self.present(navController, animated: true)
-                }
-            case .failure(let error):
-                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.error) }
-                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
-            }
+        DispatchQueue.main.async {
+            let peopleInSpaceVC = PeopleInSpaceVC()
+            let navController = UINavigationController(rootViewController: peopleInSpaceVC)
+            self.present(navController, animated: true)
         }
     }
 
