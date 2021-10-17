@@ -140,7 +140,7 @@ class TrackISSVC: UIViewController {
         Map.mapView.delegate = self
         
         NSLayoutConstraint.activate([
-            Map.mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            Map.mapView.topAnchor.constraint(equalTo: view.topAnchor),
             Map.mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             Map.mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             Map.mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -171,7 +171,7 @@ class TrackISSVC: UIViewController {
             mapTypeButton.widthAnchor.constraint(equalToConstant: 45),
             mapTypeButton.heightAnchor.constraint(equalToConstant: 45),
             mapTypeButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
-            mapTypeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10)
+            mapTypeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
     }
 
