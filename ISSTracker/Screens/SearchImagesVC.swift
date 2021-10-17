@@ -52,14 +52,8 @@ class SearchImagesVC: ITDataLoadingVC {
     }
 
     func configureViewController(){
-        title = "ISS Images"
-
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
-        navigationItem.rightBarButtonItem = doneButton
-
+        title = "Search Images"
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 38)!]
-        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     func configureSearchController(){

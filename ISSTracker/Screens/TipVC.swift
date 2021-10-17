@@ -25,7 +25,6 @@ class TipVC: UIViewController {
     func configureViewController() {
         title = "Leave a Tip"
         view.backgroundColor = .systemBackground
-
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
     }
 

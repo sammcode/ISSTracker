@@ -20,7 +20,7 @@ class PeopleInSpaceVC: ITDataLoadingVC {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getPeopleInSpace()
+        if peopleInSpace == nil { getPeopleInSpace() }
     }
 
     func configure(){
@@ -31,12 +31,8 @@ class PeopleInSpaceVC: ITDataLoadingVC {
     func configureViewController(){
         title = "People In Space"
         view.backgroundColor = .systemBackground
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
-        navigationItem.rightBarButtonItem = doneButton
 
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 38)!]
-        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     @objc func dismissVC(){
