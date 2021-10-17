@@ -35,7 +35,6 @@ class TrackISSVC: UIViewController {
     var orbitPathButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "location.north.line", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
     var zoomInButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "plus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
     var zoomOutButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "minus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
-    var exitButton = ITIconButton(backgroundColor: .systemGray, image: (UIImage(systemName: "multiply", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
 
     var orbitPathButtonLeadingConstraint = NSLayoutConstraint()
     var zoomInButtonLeadingConstraint = NSLayoutConstraint()
@@ -47,16 +46,17 @@ class TrackISSVC: UIViewController {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        timer.invalidate()
-        Map.mapView.removeFromSuperview()
-        Map.mapView.delegate = nil
-        Map.mapView.removeAnnotation(iconAnnotation)
-        Map.mapView.removeAnnotations(Map.mapView.annotations)
-        Map.mapView.removeOverlays(Map.mapView.overlays)
+        clearPulseLayer()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         getNewISSLocationsAndUpdateCurrentCoordinate(currentTime: Date())
+        guard currentCoordinate != nil else { return }
+        guard currentOrbitLocations != nil else { return }
+        if !UserDefaultsManager.reduceAnimations { createPulseLayer() }
+        let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
+        Map.mapView.setRegion(region, animated: true)
+        if isOrbitPathEnabled { updateOrbitPathOverlays()}
     }
 
     override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -74,7 +74,6 @@ class TrackISSVC: UIViewController {
     func configure(){
         configureViewController()
         configureMapView()
-        configureExitButton()
         //configureCoordinatesView()
         configureMapTypeButton()
         configureShowCoordinatesButton()
@@ -107,6 +106,7 @@ class TrackISSVC: UIViewController {
 
     @objc func didEnterBackground(){
         clearPulseLayer()
+        timer.invalidate()
     }
 
     @objc func clearPulseLayer(){
@@ -130,12 +130,8 @@ class TrackISSVC: UIViewController {
 
     /// Configures properties for the ViewController
     func configureViewController(){
-        title = "Track ISS"
         view.backgroundColor = .systemBackground
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
-        navigationItem.rightBarButtonItem = doneButton
-
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "NasalizationRg-Regular", size: 20)!]
+        title = "Track ISS"
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
@@ -187,19 +183,6 @@ class TrackISSVC: UIViewController {
         if self.isOrbitPathEnabled { self.updateOrbitPathOverlays() }
         
         startUpdating()
-    }
-
-    func configureExitButton(){
-        view.addSubview(exitButton)
-        exitButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
-        exitButton.layer.cornerRadius = 45/2
-
-        NSLayoutConstraint.activate([
-            exitButton.widthAnchor.constraint(equalToConstant: 45),
-            exitButton.heightAnchor.constraint(equalToConstant: 45),
-            exitButton.trailingAnchor.constraint(equalTo: Map.mapView.trailingAnchor, constant: -10),
-            exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10)
-        ])
     }
 
     func configureMapTypeButton(){
