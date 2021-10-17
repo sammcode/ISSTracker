@@ -14,14 +14,14 @@ class TrackISSVC: UIViewController {
     var currentOrbitLocations: [IssLocation]!
 
     var coordinatesView: ITCoordinatesView!
-
-    var iconAnnotation: MKPointAnnotation!
+    
     var timer: Timer!
 
     var viewOffset: CGFloat = 260
     var coordinatesViewBottomConstraint = NSLayoutConstraint()
 
     var iconView = MKAnnotationView()
+    var iconAnnotation = MKPointAnnotation()
 
     var pulseLayer = CAShapeLayer()
 
@@ -44,7 +44,6 @@ class TrackISSVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        startUpdating()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -76,7 +75,7 @@ class TrackISSVC: UIViewController {
         configureViewController()
         configureMapView()
         configureExitButton()
-        configureCoordinatesView()
+        //configureCoordinatesView()
         configureMapTypeButton()
         configureShowCoordinatesButton()
         configureOrbitPathButton()
@@ -98,6 +97,8 @@ class TrackISSVC: UIViewController {
     }
 
     @objc func willEnterForeground(){
+        guard currentCoordinate != nil else { return }
+        guard currentOrbitLocations != nil else { return }
         if !UserDefaultsManager.reduceAnimations { createPulseLayer() }
         let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
         Map.mapView.setRegion(region, animated: true)
@@ -162,25 +163,30 @@ class TrackISSVC: UIViewController {
         Map.mapView.mapType = .satelliteFlyover
         Map.mapView.translatesAutoresizingMaskIntoConstraints = false
         Map.mapView.delegate = self
-
-        currentCoordinate = currentOrbitLocations.first!.getCoordinate()
-
-        let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(15000000), longitudinalMeters: CLLocationDistance(15000000))
-        Map.mapView.setRegion(region, animated: true)
-
-        iconAnnotation = MKPointAnnotation()
-        iconAnnotation.coordinate = currentCoordinate
-
-        Map.mapView.addAnnotation(iconAnnotation)
-
-        if self.isOrbitPathEnabled { self.updateOrbitPathOverlays() }
-
+        
         NSLayoutConstraint.activate([
             Map.mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             Map.mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             Map.mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             Map.mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    func configureMapComponents() {
+        // Configure the region
+        let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(15000000), longitudinalMeters: CLLocationDistance(15000000))
+        Map.mapView.setRegion(region, animated: true)
+        
+        // Set the annotation coordinate to the current ISS coordinate
+        iconAnnotation.coordinate = currentCoordinate
+        
+        // Add the ISS annotation to the map
+        Map.mapView.addAnnotation(iconAnnotation)
+        
+        // If the orbit path is enabled, update the current orbit path
+        if self.isOrbitPathEnabled { self.updateOrbitPathOverlays() }
+        
+        startUpdating()
     }
 
     func configureExitButton(){
@@ -379,6 +385,7 @@ class TrackISSVC: UIViewController {
             case .success(let issLocations):
                 self.currentOrbitLocations = issLocations
                 self.currentCoordinate = issLocations.first!.getCoordinate()
+                if Map.mapView.annotations.isEmpty { self.configureMapComponents() }
                 DispatchQueue.main.async {
                     if self.isOrbitPathEnabled { self.updateOrbitPathOverlays() }
                     UIView.animate(withDuration: 1, delay: 0, options: .curveLinear) {

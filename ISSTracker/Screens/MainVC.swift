@@ -190,7 +190,7 @@ class MainVC: ITDataLoadingVC {
 
     /// Adds the getISSLocation method to the trackISSButton, for the touchUpInside action
     func addActionToTrackISSButton(){
-        trackISSButton.addTarget(self, action: #selector(getISSLocationsAndPresentTrackISSVC), for: .touchUpInside)
+        trackISSButton.addTarget(self, action: #selector(presentTrackISSVC), for: .touchUpInside)
     }
 
     func addActionToSearchImagesButton(){
@@ -205,28 +205,12 @@ class MainVC: ITDataLoadingVC {
     /// Uses the NetworkManager class to get the current location of the ISS
     /// On success, an instance of the TrackISSVC ViewController is presented with the retrieved data
     /// On failure, a custom alert is presented stating the error in question
-    @objc func getISSLocationsAndPresentTrackISSVC() {
+    @objc func presentTrackISSVC() {
         trackISSButton.pulsate()
-        showLoadingView()
-
-        NetworkManager.shared.getIssLocations(for: LocationCalculator.getTimestampsForCurrentOrbit()) { [weak self] result in
-            guard let self = self else { return }
-
-            self.dismissLoadingView()
-
-            switch result {
-            case .success(let issLocations):
-                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.success) }
-                DispatchQueue.main.async {
-                    let trackISSVC = TrackISSVC()
-                    trackISSVC.currentOrbitLocations = issLocations
-                    let navController = UINavigationController(rootViewController: trackISSVC)
-                    self.present(navController, animated: true)
-                }
-            case .failure(let error):
-                if UserDefaultsManager.haptics { self.generator.notificationOccurred(.error) }
-                self.presentITAlertOnMainThread(title: "Oh no!", message: error.rawValue, buttonTitle: "Ok")
-            }
+        DispatchQueue.main.async {
+            let trackISSVC = TrackISSVC()
+            let navController = UINavigationController(rootViewController: trackISSVC)
+            self.present(navController, animated: true)
         }
     }
 

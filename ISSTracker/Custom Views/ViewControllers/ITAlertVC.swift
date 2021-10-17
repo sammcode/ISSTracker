@@ -39,6 +39,11 @@ class ITAlertVC: UIViewController {
         super.viewDidLoad()
         configure()
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        guard let onClose = onClose else { return }
+        onClose()
+    }
 
     func configure(){
         view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
