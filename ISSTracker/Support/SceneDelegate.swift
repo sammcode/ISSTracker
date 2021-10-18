@@ -19,6 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         window?.rootViewController = UINavigationController(rootViewController: MainTabBarVC())
         window?.makeKeyAndVisible()
+        window?.overrideUserInterfaceStyle = .dark
 
         configureNavigationBar()
     }

@@ -34,7 +34,7 @@ class MainTabBarVC: UITabBarController {
         
         self.viewControllers = controllers
         self.tabBar.backgroundColor = .systemGray6
-        self.tabBar.tintColor = .systemIndigo
+        self.tabBar.tintColor = .white
     }
 
 }
