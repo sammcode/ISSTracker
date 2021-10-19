@@ -19,6 +19,8 @@ class TrackISSVC: UIViewController {
 
     var iconView = MKAnnotationView()
     var iconAnnotation = MKPointAnnotation()
+    
+    var timeLabelAnnotations = [MKPointAnnotation]()
 
     var pulseLayer = CAShapeLayer()
 
@@ -26,15 +28,14 @@ class TrackISSVC: UIViewController {
 
     let iconWidth = UserDefaultsManager.largeMapAnnotations ? 90 : 60
     let iconHeight = UserDefaultsManager.largeMapAnnotations ? 60 : 40
+    
+    var zoomDistance = 8000000
 
-    var mapTypeButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "map", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
-    var orbitPathButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "location.north.line", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
-    var zoomInButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "plus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
-    var zoomOutButton = ITIconButton(backgroundColor: UIColor.systemIndigo, image: (UIImage(systemName: "minus.magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .small))?.withRenderingMode(.alwaysOriginal))!.withTintColor(.white))
-
-    var orbitPathButtonLeadingConstraint = NSLayoutConstraint()
-    var zoomInButtonLeadingConstraint = NSLayoutConstraint()
-    var zoomOutButtonLeadingConstraint = NSLayoutConstraint()
+    var mapTypeButton = ITIconButton(symbolColor: .systemBlue, symbolName: "map.fill")
+    var orbitPathButton = ITIconButton(symbolColor: .systemGreen, symbolName: "location.north.line.fill")
+    var recenterButton = ITIconButton(symbolColor: .systemRed, symbolName: "scope")
+    
+    let buttonsStackView = UIStackView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,13 +47,13 @@ class TrackISSVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getNewISSLocationsAndUpdateCurrentCoordinate(currentTime: Date())
+        startUpdating()
         guard currentCoordinate != nil else { return }
         guard currentOrbitLocations != nil else { return }
         if !UserDefaultsManager.reduceAnimations { createPulseLayer() }
         let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
         Map.mapView.setRegion(region, animated: true)
-        if isOrbitPathEnabled { updateOrbitPathOverlays()}
+        if isOrbitPathEnabled { updateOrbitPathOverlays() }
     }
 
     override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -70,12 +71,11 @@ class TrackISSVC: UIViewController {
     func configure(){
         configureViewController()
         configureMapView()
+        configureButtonsStackView()
         configureMapTypeButton()
         configureOrbitPathButton()
-        configureZoomInButton()
-        configureZoomOutButton()
+        configureRecenterButton()
         configureIconView()
-
         addBackgroundandForegroundObservers()
     }
 
@@ -106,6 +106,29 @@ class TrackISSVC: UIViewController {
     @objc func clearPulseLayer(){
         pulseLayer.removeAllAnimations()
         pulseLayer.removeFromSuperlayer()
+    }
+    
+    func configureButtonsStackView(){
+        let background = UIView()
+        view.addSubview(background)
+        background.backgroundColor = .systemGray6
+        background.layer.cornerRadius = 15
+        background.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            background.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            background.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            background.heightAnchor.constraint(equalToConstant: 175),
+            background.widthAnchor.constraint(equalToConstant: 65)
+        ])
+        
+        background.addSubview(buttonsStackView)
+        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.axis = .vertical
+        buttonsStackView.spacing = 8
+        NSLayoutConstraint.activate([
+            buttonsStackView.centerXAnchor.constraint(equalTo: background.centerXAnchor),
+            buttonsStackView.centerYAnchor.constraint(equalTo: background.centerYAnchor)
+        ])
     }
 
     func configureIconView(){
@@ -148,30 +171,31 @@ class TrackISSVC: UIViewController {
     }
     
     func configureMapComponents() {
-        // Configure the region
-        let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(15000000), longitudinalMeters: CLLocationDistance(15000000))
-        Map.mapView.setRegion(region, animated: true)
-        
-        // Set the annotation coordinate to the current ISS coordinate
-        iconAnnotation.coordinate = currentCoordinate
-        
-        // Add the ISS annotation to the map
-        Map.mapView.addAnnotation(iconAnnotation)
-        
-        // If the orbit path is enabled, update the current orbit path
-        if self.isOrbitPathEnabled { self.updateOrbitPathOverlays() }
-        
-        startUpdating()
+        DispatchQueue.main.async {
+            // Configure the region
+            let region = MKCoordinateRegion(center: self.currentCoordinate, latitudinalMeters: CLLocationDistance(self.zoomDistance), longitudinalMeters: CLLocationDistance(self.zoomDistance))
+            Map.mapView.setRegion(region, animated: true)
+            
+            // Set the annotation coordinate to the current ISS coordinate
+            self.iconAnnotation.coordinate = self.currentCoordinate
+            
+            // Add the ISS annotation to the map
+            Map.mapView.addAnnotation(self.iconAnnotation)
+            
+            // Update the current orbit path
+            self.updateOrbitPathOverlays()
+            
+            // Start updating ISS location
+            self.startUpdating()
+        }
     }
 
     func configureMapTypeButton(){
-        view.addSubview(mapTypeButton)
+        buttonsStackView.addArrangedSubview(mapTypeButton)
         addActionToMapTypeButton()
         NSLayoutConstraint.activate([
             mapTypeButton.widthAnchor.constraint(equalToConstant: 45),
-            mapTypeButton.heightAnchor.constraint(equalToConstant: 45),
-            mapTypeButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10),
-            mapTypeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+            mapTypeButton.heightAnchor.constraint(equalToConstant: 45)
         ])
     }
 
@@ -198,64 +222,34 @@ class TrackISSVC: UIViewController {
         createPulseLayer()
     }
 
-    func configureZoomInButton(){
-        view.addSubview(zoomInButton)
+    func configureRecenterButton(){
+        buttonsStackView.addArrangedSubview(recenterButton)
         addActionToZoomInButton()
 
-        zoomInButtonLeadingConstraint = zoomInButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10)
         NSLayoutConstraint.activate([
-            zoomInButton.widthAnchor.constraint(equalToConstant: 45),
-            zoomInButton.heightAnchor.constraint(equalToConstant: 45),
-            zoomInButton.topAnchor.constraint(equalTo: orbitPathButton.bottomAnchor, constant: 10),
-            zoomInButtonLeadingConstraint
+            recenterButton.widthAnchor.constraint(equalToConstant: 45),
+            recenterButton.heightAnchor.constraint(equalToConstant: 45)
         ])
     }
 
     func addActionToZoomInButton() {
-        zoomInButton.addTarget(self, action: #selector(zoomInButtonTapped), for: .touchUpInside)
+        recenterButton.addTarget(self, action: #selector(recenterButtonTapped), for: .touchUpInside)
     }
 
     @objc
-    func zoomInButtonTapped() {
-        zoomInButton.pulsate()
-        let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(800000), longitudinalMeters: CLLocationDistance(800000))
-        Map.mapView.setRegion(region, animated: true)
-    }
-
-    func configureZoomOutButton(){
-        view.addSubview(zoomOutButton)
-        addActionToZoomOutButton()
-
-        zoomOutButtonLeadingConstraint = zoomOutButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10)
-        NSLayoutConstraint.activate([
-            zoomOutButton.widthAnchor.constraint(equalToConstant: 45),
-            zoomOutButton.heightAnchor.constraint(equalToConstant: 45),
-            zoomOutButton.topAnchor.constraint(equalTo: zoomInButton.bottomAnchor, constant: 10),
-            zoomOutButtonLeadingConstraint
-        ])
-    }
-
-    func addActionToZoomOutButton() {
-        zoomOutButton.addTarget(self, action: #selector(zoomOutButtonTapped), for: .touchUpInside)
-    }
-
-    @objc
-    func zoomOutButtonTapped() {
-        zoomOutButton.pulsate()
-        let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
+    func recenterButtonTapped() {
+        recenterButton.pulsate()
+        let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(zoomDistance), longitudinalMeters: CLLocationDistance(zoomDistance))
         Map.mapView.setRegion(region, animated: true)
     }
 
     func configureOrbitPathButton(){
-        view.addSubview(orbitPathButton)
+        buttonsStackView.addArrangedSubview(orbitPathButton)
         addActionToOrbitPathButton()
 
-        orbitPathButtonLeadingConstraint = orbitPathButton.leadingAnchor.constraint(equalTo: Map.mapView.leadingAnchor, constant: 10)
         NSLayoutConstraint.activate([
             orbitPathButton.widthAnchor.constraint(equalToConstant: 45),
-            orbitPathButton.heightAnchor.constraint(equalToConstant: 45),
-            orbitPathButton.topAnchor.constraint(equalTo: mapTypeButton.bottomAnchor, constant: 10),
-            orbitPathButtonLeadingConstraint
+            orbitPathButton.heightAnchor.constraint(equalToConstant: 45)
         ])
     }
 
@@ -263,20 +257,22 @@ class TrackISSVC: UIViewController {
         orbitPathButton.addTarget(self, action: #selector(orbitPathButtonTapped), for: .touchUpInside)
     }
 
-    @objc func orbitPathButtonTapped(){
+    @objc
+    func orbitPathButtonTapped(){
         orbitPathButton.pulsate()
         switch isOrbitPathEnabled {
         case false:
             updateOrbitPathOverlays()
         case true:
             Map.mapView.removeOverlays(Map.mapView.overlays)
+            Map.mapView.removeAnnotations(timeLabelAnnotations)
         }
         isOrbitPathEnabled.toggle()
     }
 
     /// Starts a timer that calls the updateMapView method every 1 seconds
     func startUpdating(){
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
     }
 
     /// Dismisses the ViewController
@@ -290,6 +286,12 @@ class TrackISSVC: UIViewController {
     @objc func updateMapView() {
 
         let currentTime = Date()
+        
+        guard currentOrbitLocations != nil else {
+            getNewISSLocationsAndUpdateCurrentCoordinate(currentTime: currentTime)
+            return
+        }
+        
         let currentOrbitEndTime = currentOrbitLocations.last!.timestamp.toDate()
 
         if currentTime > currentOrbitEndTime {
@@ -355,7 +357,7 @@ class TrackISSVC: UIViewController {
         }
     }
 
-    func updateOrbitPathOverlays(){
+    func updateOrbitPathOverlays() {
         var polylines = [MKGeodesicPolyline]()
         for i in 0..<currentOrbitLocations.count - 1 {
             let startCoordinate = currentOrbitLocations[i].getCoordinate()
@@ -366,6 +368,20 @@ class TrackISSVC: UIViewController {
         DispatchQueue.main.async {
             Map.mapView.removeOverlays(Map.mapView.overlays)
             Map.mapView.addOverlays(polylines)
+        }
+        configureOrbitCheckpoints()
+    }
+    
+    func configureOrbitCheckpoints() {
+        for i in 1..<self.currentOrbitLocations.count {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = currentOrbitLocations[i].getCoordinate()
+            annotation.title = currentOrbitLocations[i].timestamp.convertTimestampToStringTime()
+            self.timeLabelAnnotations.append(annotation)
+        }
+        DispatchQueue.main.async {
+            Map.mapView.removeAnnotations(self.timeLabelAnnotations)
+            Map.mapView.addAnnotations(self.timeLabelAnnotations)
         }
     }
 
@@ -379,7 +395,7 @@ class TrackISSVC: UIViewController {
         pulseLayer.lineWidth = 4.0
         pulseLayer.fillColor = UIColor.clear.cgColor
         pulseLayer.lineCap = CAShapeLayerLineCap.round
-        pulseLayer.position = CGPoint(x: view.frame.size.width/2.1, y: view.frame.size.width/2.1)
+        pulseLayer.position = CGPoint(x: view.frame.size.width/2.1, y: view.frame.size.width/2.35)
         view.layer.addSublayer(pulseLayer)
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 self.animatePulse()
@@ -388,7 +404,7 @@ class TrackISSVC: UIViewController {
         }
 
         @objc func animatePulse() {
-            pulseLayer.strokeColor = UIColor.systemIndigo.cgColor
+            pulseLayer.strokeColor = UIColor.white.cgColor
 
             let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
             scaleAnimation.duration = 3.0
@@ -412,7 +428,23 @@ extension TrackISSVC: MKMapViewDelegate {
 
     /// Returns the custom MKAnnotationView for map view annotations, which is set to the ISS icon image
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        return iconView
+        if annotation.isEqual(iconAnnotation) {
+            return iconView
+        } else {
+            let annotationView = MKAnnotationView()
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 20))
+            label.text = annotation.title!!
+            label.textAlignment = .center
+            label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+            label.textColor = .white
+            label.backgroundColor = .systemGray4
+            label.layer.cornerRadius = 5
+            label.layer.masksToBounds = true
+            label.center.x = -1
+            label.center.y = -1
+            annotationView.addSubview(label)
+            return annotationView
+        }
     }
 
     func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {

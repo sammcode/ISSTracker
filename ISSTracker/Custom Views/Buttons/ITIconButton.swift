@@ -18,24 +18,22 @@ class ITIconButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
-    convenience init(backgroundColor: UIColor, image: UIImage) {
+    convenience init(symbolColor: UIColor, symbolName: String) {
         self.init(frame: .zero)
-        self.backgroundColor = backgroundColor
-        setImage(image, for: .normal)
+        let imageConfiguration = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
+        let image = UIImage(systemName: symbolName, withConfiguration: imageConfiguration)
+        self.setImage(image, for: .normal)
+        self.tintColor = symbolColor
     }
 
     private func configure(){
         layer.cornerRadius = 10
+        backgroundColor = .systemGray4
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func set(backgroundColor: UIColor, image: UIImage){
-        self.backgroundColor = backgroundColor
-        setImage(image, for: .normal)
-    }
-
     func pulsate() {
-        if UserDefaultsManager.reduceAnimations { return }
+        guard !UserDefaultsManager.reduceAnimations else { return }
         let pulse = CASpringAnimation(keyPath: "transform.scale")
         pulse.duration = 0.2
         pulse.fromValue = 1.0

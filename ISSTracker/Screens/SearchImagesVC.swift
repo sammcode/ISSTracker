@@ -57,7 +57,6 @@ class SearchImagesVC: ITDataLoadingVC {
     }
 
     func configureSearchController(){
-        //searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Search by keywords (e.g. 'Astronauts')"
         searchController.obscuresBackgroundDuringPresentation = false
@@ -65,7 +64,7 @@ class SearchImagesVC: ITDataLoadingVC {
     }
 
     func configureCollectionView(){
-        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: HelpfulFunctions.createColumnFlowLayout(in: view, itemHeightConstant: 0, hasHeaderView: false, columns: CGFloat(2)))
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: HelpfulFunctions.createColumnFlowLayout(in: view, itemHeightConstant: 0, hasHeaderView: false, columns: CGFloat(3)))
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
