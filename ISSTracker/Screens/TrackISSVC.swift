@@ -19,6 +19,8 @@ class TrackISSVC: UIViewController {
 
     var iconView = MKAnnotationView()
     var iconAnnotation = MKPointAnnotation()
+    
+    var timeLabelAnnotations = [MKPointAnnotation]()
 
     var pulseLayer = CAShapeLayer()
 
@@ -29,11 +31,11 @@ class TrackISSVC: UIViewController {
     
     var zoomDistance = 8000000
 
-    var mapTypeButton = ITIconButton(backgroundColor: .systemBlue, imageName: "map.fill")
-    var orbitPathButton = ITIconButton(backgroundColor: .systemGreen, imageName: "location.north.line.fill")
-    var recenterButton = ITIconButton(backgroundColor: .systemOrange, imageName: "scope")
+    var mapTypeButton = ITIconButton(symbolColor: .systemBlue, symbolName: "map.fill")
+    var orbitPathButton = ITIconButton(symbolColor: .systemGreen, symbolName: "location.north.line.fill")
+    var recenterButton = ITIconButton(symbolColor: .systemRed, symbolName: "scope")
     
-    let stackView = UIStackView()
+    let buttonsStackView = UIStackView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,13 +47,13 @@ class TrackISSVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getNewISSLocationsAndUpdateCurrentCoordinate(currentTime: Date())
+        startUpdating()
         guard currentCoordinate != nil else { return }
         guard currentOrbitLocations != nil else { return }
         if !UserDefaultsManager.reduceAnimations { createPulseLayer() }
         let region = MKCoordinateRegion(center: currentCoordinate, latitudinalMeters: CLLocationDistance(8000000), longitudinalMeters: CLLocationDistance(8000000))
         Map.mapView.setRegion(region, animated: true)
-        if isOrbitPathEnabled { updateOrbitPathOverlays()}
+        if isOrbitPathEnabled { updateOrbitPathOverlays() }
     }
 
     override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -113,19 +115,19 @@ class TrackISSVC: UIViewController {
         background.layer.cornerRadius = 15
         background.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            background.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            background.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            background.heightAnchor.constraint(equalToConstant: 60),
-            background.widthAnchor.constraint(equalToConstant: 175)
+            background.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            background.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            background.heightAnchor.constraint(equalToConstant: 175),
+            background.widthAnchor.constraint(equalToConstant: 65)
         ])
         
-        background.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.spacing = 10
+        background.addSubview(buttonsStackView)
+        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.axis = .vertical
+        buttonsStackView.spacing = 8
         NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: background.centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: background.centerYAnchor)
+            buttonsStackView.centerXAnchor.constraint(equalTo: background.centerXAnchor),
+            buttonsStackView.centerYAnchor.constraint(equalTo: background.centerYAnchor)
         ])
     }
 
@@ -169,9 +171,8 @@ class TrackISSVC: UIViewController {
     }
     
     func configureMapComponents() {
-        // Configure the region
-        
         DispatchQueue.main.async {
+            // Configure the region
             let region = MKCoordinateRegion(center: self.currentCoordinate, latitudinalMeters: CLLocationDistance(self.zoomDistance), longitudinalMeters: CLLocationDistance(self.zoomDistance))
             Map.mapView.setRegion(region, animated: true)
             
@@ -181,15 +182,16 @@ class TrackISSVC: UIViewController {
             // Add the ISS annotation to the map
             Map.mapView.addAnnotation(self.iconAnnotation)
             
-            // If the orbit path is enabled, update the current orbit path
-            if self.isOrbitPathEnabled { self.updateOrbitPathOverlays() }
+            // Update the current orbit path
+            self.updateOrbitPathOverlays()
             
+            // Start updating ISS location
             self.startUpdating()
         }
     }
 
     func configureMapTypeButton(){
-        stackView.addArrangedSubview(mapTypeButton)
+        buttonsStackView.addArrangedSubview(mapTypeButton)
         addActionToMapTypeButton()
         NSLayoutConstraint.activate([
             mapTypeButton.widthAnchor.constraint(equalToConstant: 45),
@@ -221,7 +223,7 @@ class TrackISSVC: UIViewController {
     }
 
     func configureRecenterButton(){
-        stackView.addArrangedSubview(recenterButton)
+        buttonsStackView.addArrangedSubview(recenterButton)
         addActionToZoomInButton()
 
         NSLayoutConstraint.activate([
@@ -242,7 +244,7 @@ class TrackISSVC: UIViewController {
     }
 
     func configureOrbitPathButton(){
-        stackView.addArrangedSubview(orbitPathButton)
+        buttonsStackView.addArrangedSubview(orbitPathButton)
         addActionToOrbitPathButton()
 
         NSLayoutConstraint.activate([
@@ -263,13 +265,13 @@ class TrackISSVC: UIViewController {
             updateOrbitPathOverlays()
         case true:
             Map.mapView.removeOverlays(Map.mapView.overlays)
+            Map.mapView.removeAnnotations(timeLabelAnnotations)
         }
         isOrbitPathEnabled.toggle()
     }
 
     /// Starts a timer that calls the updateMapView method every 1 seconds
     func startUpdating(){
-        print("called")
         self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateMapView), userInfo: nil, repeats: true)
     }
 
@@ -284,6 +286,12 @@ class TrackISSVC: UIViewController {
     @objc func updateMapView() {
 
         let currentTime = Date()
+        
+        guard currentOrbitLocations != nil else {
+            getNewISSLocationsAndUpdateCurrentCoordinate(currentTime: currentTime)
+            return
+        }
+        
         let currentOrbitEndTime = currentOrbitLocations.last!.timestamp.toDate()
 
         if currentTime > currentOrbitEndTime {
@@ -349,7 +357,7 @@ class TrackISSVC: UIViewController {
         }
     }
 
-    func updateOrbitPathOverlays(){
+    func updateOrbitPathOverlays() {
         var polylines = [MKGeodesicPolyline]()
         for i in 0..<currentOrbitLocations.count - 1 {
             let startCoordinate = currentOrbitLocations[i].getCoordinate()
@@ -360,6 +368,20 @@ class TrackISSVC: UIViewController {
         DispatchQueue.main.async {
             Map.mapView.removeOverlays(Map.mapView.overlays)
             Map.mapView.addOverlays(polylines)
+        }
+        configureOrbitCheckpoints()
+    }
+    
+    func configureOrbitCheckpoints() {
+        for i in 1..<self.currentOrbitLocations.count {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = currentOrbitLocations[i].getCoordinate()
+            annotation.title = currentOrbitLocations[i].timestamp.convertTimestampToStringTime()
+            self.timeLabelAnnotations.append(annotation)
+        }
+        DispatchQueue.main.async {
+            Map.mapView.removeAnnotations(self.timeLabelAnnotations)
+            Map.mapView.addAnnotations(self.timeLabelAnnotations)
         }
     }
 
@@ -406,7 +428,23 @@ extension TrackISSVC: MKMapViewDelegate {
 
     /// Returns the custom MKAnnotationView for map view annotations, which is set to the ISS icon image
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        return iconView
+        if annotation.isEqual(iconAnnotation) {
+            return iconView
+        } else {
+            let annotationView = MKAnnotationView()
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 20))
+            label.text = annotation.title!!
+            label.textAlignment = .center
+            label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+            label.textColor = .white
+            label.backgroundColor = .systemGray4
+            label.layer.cornerRadius = 5
+            label.layer.masksToBounds = true
+            label.center.x = -1
+            label.center.y = -1
+            annotationView.addSubview(label)
+            return annotationView
+        }
     }
 
     func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
