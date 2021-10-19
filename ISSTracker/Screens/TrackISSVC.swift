@@ -33,9 +33,10 @@ class TrackISSVC: UIViewController {
 
     var mapTypeButton = ITIconButton(symbolColor: .systemBlue, symbolName: "map.fill")
     var orbitPathButton = ITIconButton(symbolColor: .systemGreen, symbolName: "location.north.line.fill")
-    var recenterButton = ITIconButton(symbolColor: .systemRed, symbolName: "scope")
+    var recenterButton = ITIconButton(symbolColor: .systemYellow, symbolName: "scope")
     
     let buttonsStackView = UIStackView()
+    var draggableBackgroundView = UIView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,26 +110,59 @@ class TrackISSVC: UIViewController {
     }
     
     func configureButtonsStackView(){
-        let background = UIView()
-        view.addSubview(background)
-        background.backgroundColor = .systemGray6
-        background.layer.cornerRadius = 15
-        background.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(draggableBackgroundView)
+        draggableBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            background.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            background.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            background.heightAnchor.constraint(equalToConstant: 175),
-            background.widthAnchor.constraint(equalToConstant: 65)
+            draggableBackgroundView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            draggableBackgroundView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            draggableBackgroundView.heightAnchor.constraint(equalToConstant: 170),
+            draggableBackgroundView.widthAnchor.constraint(equalToConstant: 55)
         ])
         
-        background.addSubview(buttonsStackView)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.systemThickMaterialDark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        
+        draggableBackgroundView.addSubview(blurEffectView)
+        blurEffectView.frame = draggableBackgroundView.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.layer.cornerRadius = 15
+        blurEffectView.clipsToBounds = true
+        
+        draggableBackgroundView.addSubview(buttonsStackView)
         buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
         buttonsStackView.axis = .vertical
         buttonsStackView.spacing = 8
         NSLayoutConstraint.activate([
-            buttonsStackView.centerXAnchor.constraint(equalTo: background.centerXAnchor),
-            buttonsStackView.centerYAnchor.constraint(equalTo: background.centerYAnchor)
+            buttonsStackView.centerXAnchor.constraint(equalTo: draggableBackgroundView.centerXAnchor),
+            buttonsStackView.centerYAnchor.constraint(equalTo: draggableBackgroundView.centerYAnchor)
         ])
+        
+        draggableBackgroundView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(dragHandler)))
+    }
+    
+    @objc func dragHandler(gesture: UIPanGestureRecognizer){
+        let location = gesture.location(in: self.view)
+        let draggedView = gesture.view
+        draggedView?.center = location
+            
+        if gesture.state == .ended {
+            var xOffset: CGFloat = 0
+            var yOffset: CGFloat = 0
+            if self.draggableBackgroundView.frame.midX >= self.view.layer.frame.width / 2 {
+                xOffset = self.view.layer.frame.width - 35
+            } else {
+                xOffset = 35
+            }
+            if self.draggableBackgroundView.frame.midY >= self.view.layer.frame.height - 180 {
+                yOffset = self.view.layer.frame.height - 200
+            } else if self.draggableBackgroundView.frame.midY <= 140 {
+                yOffset = 140
+            }
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                self.draggableBackgroundView.center.x = xOffset
+                if yOffset != 0 { self.draggableBackgroundView.center.y = yOffset }
+            }, completion: nil)
+        }
     }
 
     func configureIconView(){
@@ -373,15 +407,22 @@ class TrackISSVC: UIViewController {
     }
     
     func configureOrbitCheckpoints() {
-        for i in 1..<self.currentOrbitLocations.count {
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = currentOrbitLocations[i].getCoordinate()
-            annotation.title = currentOrbitLocations[i].timestamp.convertTimestampToStringTime()
-            self.timeLabelAnnotations.append(annotation)
-        }
-        DispatchQueue.main.async {
-            Map.mapView.removeAnnotations(self.timeLabelAnnotations)
-            Map.mapView.addAnnotations(self.timeLabelAnnotations)
+        if timeLabelAnnotations.isEmpty {
+            for i in 1..<self.currentOrbitLocations.count {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = currentOrbitLocations[i].getCoordinate()
+                annotation.title = currentOrbitLocations[i].timestamp.convertTimestampToStringTime()
+                self.timeLabelAnnotations.append(annotation)
+            }
+            DispatchQueue.main.async {
+                Map.mapView.removeAnnotations(self.timeLabelAnnotations)
+                Map.mapView.addAnnotations(self.timeLabelAnnotations)
+            }
+        } else {
+            for i in 0..<self.timeLabelAnnotations.count {
+                timeLabelAnnotations[i].coordinate = currentOrbitLocations[i + 1].getCoordinate()
+                timeLabelAnnotations[i].title = currentOrbitLocations[i + 1].timestamp.convertTimestampToStringTime()
+            }
         }
     }
 

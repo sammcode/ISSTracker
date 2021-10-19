@@ -20,10 +20,11 @@ class ITIconButton: UIButton {
 
     convenience init(symbolColor: UIColor, symbolName: String) {
         self.init(frame: .zero)
-        let imageConfiguration = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
+        let imageConfiguration = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold)
         let image = UIImage(systemName: symbolName, withConfiguration: imageConfiguration)
         self.setImage(image, for: .normal)
         self.tintColor = symbolColor
+        self.backgroundColor = .clear
     }
 
     private func configure(){
