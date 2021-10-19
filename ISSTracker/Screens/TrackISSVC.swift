@@ -153,7 +153,7 @@ class TrackISSVC: UIViewController {
             } else {
                 xOffset = 35
             }
-            if self.draggableBackgroundView.frame.midY >= self.view.layer.frame.height - 150 {
+            if self.draggableBackgroundView.frame.midY >= self.view.layer.frame.height - 180 {
                 yOffset = self.view.layer.frame.height - 200
             } else if self.draggableBackgroundView.frame.midY <= 140 {
                 yOffset = 140
@@ -407,15 +407,22 @@ class TrackISSVC: UIViewController {
     }
     
     func configureOrbitCheckpoints() {
-        for i in 1..<self.currentOrbitLocations.count {
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = currentOrbitLocations[i].getCoordinate()
-            annotation.title = currentOrbitLocations[i].timestamp.convertTimestampToStringTime()
-            self.timeLabelAnnotations.append(annotation)
-        }
-        DispatchQueue.main.async {
-            Map.mapView.removeAnnotations(self.timeLabelAnnotations)
-            Map.mapView.addAnnotations(self.timeLabelAnnotations)
+        if timeLabelAnnotations.isEmpty {
+            for i in 1..<self.currentOrbitLocations.count {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = currentOrbitLocations[i].getCoordinate()
+                annotation.title = currentOrbitLocations[i].timestamp.convertTimestampToStringTime()
+                self.timeLabelAnnotations.append(annotation)
+            }
+            DispatchQueue.main.async {
+                Map.mapView.removeAnnotations(self.timeLabelAnnotations)
+                Map.mapView.addAnnotations(self.timeLabelAnnotations)
+            }
+        } else {
+            for i in 0..<self.timeLabelAnnotations.count {
+                timeLabelAnnotations[i].coordinate = currentOrbitLocations[i + 1].getCoordinate()
+                timeLabelAnnotations[i].title = currentOrbitLocations[i + 1].timestamp.convertTimestampToStringTime()
+            }
         }
     }
 
